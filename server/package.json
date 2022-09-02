@@ -1,0 +1,11 @@
+{
+  "name": "rhymetime",
+  "version": "1.0.0",
+  "description": "server for rhymetime software project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yona Voss-Andreae",
+  "license": "ISC"
+}
