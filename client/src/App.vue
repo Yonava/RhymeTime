@@ -1,13 +1,60 @@
 <template>
   <div id="app">
-    <p>Hi, this is yona!</p>
+
+    <p>name has changed {{ numberOfTimesNameChanges }} time(s)</p>
+    <input type="text" v-model="name" placeholder="enter a name">
+
+    <div v-if="validateName">
+      <div>
+        <p>Hi, this is {{ name }}</p>
+      </div>
+    </div>
+    <div v-else>
+      <bad-names :name="name" />
+    </div>
+
+    <button @click="name = ''">clear txt</button>
+    <button @click="incrementNameChangeCount">increment</button>
+    <br><br>
+    <p>{{ notValidAt }}</p>
+    <input v-model="notValidAt" type="range" min="1" max="15">
+
   </div>
 </template>
 
 <script>
+import badNames from './components/badNames.vue'
 
 export default {
-  
+  data() {
+    return {
+      name: 'yona',
+      numberOfTimesNameChanges: 0,
+      notValidAt: 5
+    }
+  },
+  components: {
+    badNames
+  },
+  computed: {
+    validateName() {
+      return this.name.length >= this.notValidAt;
+    }
+  },
+  methods: {
+    incrementNameChangeCount() {
+      if (this.validateName) {
+        this.numberOfTimesNameChanges += this.name.length;
+      }
+    }
+  },
+  watch: {
+    name() {
+      // this.incrementNameChangeCount()
+      // this.incrementNameChangeCount()
+      // this.incrementNameChangeCount()
+    }
+  }
 }
 </script>
 
