@@ -13,6 +13,10 @@
       <bad-names :name="name" />
     </div>
 
+    <button @click="play">play achtung reichelt</button>
+    <button @click="pause">pause achtung reichelt</button>
+    <button @click="stop">reset achtung reichelt</button>
+
     <button @click="name = ''">clear txt</button>
     <button @click="incrementNameChangeCount">increment</button>
     <br><br>
@@ -30,7 +34,8 @@ export default {
     return {
       name: 'yona',
       numberOfTimesNameChanges: 0,
-      notValidAt: 5
+      notValidAt: 5,
+      audio: new Audio( require('./assets/achtungreichelt.mp3') )
     }
   },
   components: {
@@ -46,7 +51,10 @@ export default {
       if (this.validateName) {
         this.numberOfTimesNameChanges += this.name.length;
       }
-    }
+    },
+    play() { this.audio.play() },
+    pause() { this.audio.pause() },
+    stop() { this.audio.pause(); this.audio.currentTime = 0 }
   },
   watch: {
     name() {
