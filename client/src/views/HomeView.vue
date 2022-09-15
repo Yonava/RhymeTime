@@ -6,11 +6,13 @@
           @click.once="host"
           color="green"
           class="ma-3"
+          dark
         >Host Game</v-btn>
         <v-btn
           @click.once="join"
           color="blue"
           class="ma-3"
+          dark
         >Join Active Session</v-btn>
       </v-row>
     </v-container>
