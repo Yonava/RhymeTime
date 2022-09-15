@@ -1,6 +1,6 @@
 const express = require('express')
 const mysql = require('mysql')
-
+  
 const app = express()
 
 const db = mysql.createConnection({
@@ -20,11 +20,16 @@ db.connect((err) => {
 })
 
 app.get('/addsandwich', (req, res) => {
-  res.json({ npm: 'run dev' })
+  let sqlStatement = 'INSERT INTO sandwiches(title) VALUES ("balkaski menu - beef")'
+  db.query(sqlStatement, (err, result) => {
+    if (err) throw err
+    console.log(result)
+    res.send('Check Console For Added Sandwich')
+  })
 })
 
 app.get('/createsandwichtable', (req, res) => {
-  let sqlStatement = 'CREATE TABLE sandwiches(id int AUTO_INCREMENT, title VARCHAR(255));'
+  let sqlStatement = 'CREATE TABLE sandwiches(id int AUTO_INCREMENT, title VARCHAR(255), PRIMARY KEY (id))'
   db.query(sqlStatement, (err, result) => {
     if (err) throw err
     console.log(result)
@@ -33,7 +38,12 @@ app.get('/createsandwichtable', (req, res) => {
 })
 
 app.get('/seesandwiches', (req, res) => {
-  res.json({})
+  let sqlStatement = 'SELECT title FROM sandwiches WHERE title LIKE "%chicken%"'
+  db.query(sqlStatement, (err, result) => {
+    if (err) throw err
+    console.log(result)
+    res.json(result)
+  })
 })
 
 app.listen(3000, () => {

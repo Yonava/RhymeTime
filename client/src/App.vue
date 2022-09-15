@@ -1,33 +1,42 @@
 <template>
   <div id="app">
 
-    <p>name has changed {{ numberOfTimesNameChanges }} time(s)</p>
-    <input type="text" v-model="name" placeholder="enter a name">
-
-    <div v-if="validateName">
-      <div>
-        <p>Hi, this is {{ name }}</p>
-      </div>
-    </div>
-    <div v-else>
-      <bad-names :name="name" />
-    </div>
-
-    <button @click="play">play achtung reichelt</button>
-    <button @click="pause">pause achtung reichelt</button>
-    <button @click="stop">reset achtung reichelt</button>
-
-    <button @click="name = ''">clear txt</button>
-    <button @click="incrementNameChangeCount">increment</button>
+    <button @click="toggleChallenge = !toggleChallenge">toggle challenge</button>
     <br><br>
-    <p>{{ notValidAt }}</p>
-    <input v-model="notValidAt" type="range" min="1" max="15">
+    <div v-if="toggleChallenge">
+      <challenge />
+    </div>
+
+    <div v-else>
+      <p>name has changed {{ numberOfTimesNameChanges }} time(s)</p>
+      <input type="text" v-model="name" placeholder="enter a name">
+
+      <div v-if="validateName">
+        <div>
+          <p>Hi, this is {{ name }}</p>
+        </div>
+      </div>
+      <div v-else>
+        <bad-names :name="name" />
+      </div>
+
+      <button @click="play">play achtung reichelt</button>
+      <button @click="pause">pause achtung reichelt</button>
+      <button @click="stop">reset achtung reichelt</button>
+
+      <button @click="name = ''">clear txt</button>
+      <button @click="incrementNameChangeCount">increment</button>
+      <br><br>
+      <p>{{ notValidAt }}</p>
+      <input v-model="notValidAt" type="range" min="1" max="15">
+    </div>
 
   </div>
 </template>
 
 <script>
 import badNames from './components/badNames.vue'
+import Challenge from './components/challengeActivity.vue';
 
 export default {
   data() {
@@ -35,11 +44,13 @@ export default {
       name: 'yona',
       numberOfTimesNameChanges: 0,
       notValidAt: 5,
-      audio: new Audio( require('./assets/achtungreichelt.mp3') )
+      audio: new Audio( require('./assets/achtungreichelt.mp3') ),
+      toggleChallenge: false
     }
   },
   components: {
-    badNames
+    badNames,
+    Challenge
   },
   computed: {
     validateName() {
