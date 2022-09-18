@@ -2,6 +2,7 @@ const express = require('express')
 const mysql = require('mysql')
 const PORT = process.env.PORT || 1010
 const app = express()
+require('./sockets')
 
 const db = mysql.createConnection({
   host: 'bageterie-boulevard.c0w2juzukesp.us-east-1.rds.amazonaws.com',
@@ -44,16 +45,6 @@ app.get('/seesandwiches', (req, res) => {
     console.log(result)
     res.json(result)
   })
-})
-
-const io = require('socket.io')(PORT, {
-  cors: {
-    origin: "*"
-  }
-})
-
-io.on('connection', socket => {
-  console.log(socket.id)
 })
 
 app.listen(PORT, () => {
