@@ -1,6 +1,6 @@
 const express = require('express')
 const mysql = require('mysql')
-  
+const PORT = process.env.PORT || 1010
 const app = express()
 
 const db = mysql.createConnection({
@@ -46,5 +46,15 @@ app.get('/seesandwiches', (req, res) => {
   })
 })
 
-app.listen(1010, () => {
-  console.log('Running on localhost:1010')})
+const io = require('socket.io')(PORT, {
+  cors: {
+    origin: "*"
+  }
+})
+
+io.on('connection', socket => {
+  console.log(socket.id)
+})
+
+app.listen(PORT, () => {
+  console.log(`Running on port ${PORT}`)})
