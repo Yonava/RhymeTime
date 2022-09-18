@@ -8,7 +8,7 @@
       v-model="username"
       label="Enter name"
     ></v-text-field>
-    <v-btn @click="connectSocket">connect socket</v-btn>
+    <v-btn @click="connectSocket" color="green" dark>connect socket</v-btn>
     <br>
     <v-btn color="red" dark @click="forceDisconnect">Force Disconnect</v-btn>
     <v-dialog
@@ -41,16 +41,17 @@ export default {
       hostPresent: true
     }
   },
-  mounted() {
-    
-  },
   methods: {
     connectSocket() {
       if (this.socket?.connected) return
       this.socket = io('http://localhost:3000')
       this.socket.on('connect', () => {
-        this.connectionStatus = true
-        this.socket.emit('player-join', this.username)
+        this.socket.emit('join-room', this.$route.query.room, (response) => {
+          if (response === 'connected') {
+            this.connectionStatus = true
+            this.socket.emit('player-join', this.username)
+          }
+        })
       })
       this.socket.on('visibility-handler', hostVisibility => {
         this.showPauseDialog = hostVisibility === 'hidden'
@@ -65,27 +66,20 @@ export default {
       this.socket.on('host-present', () => {
         this.hostPresent = true
       })
-    },
-    emitVisibility() {
-      this.socket.emit('visibility-handler', document.visibilityState)
-    },
-    buttonEmit() {
-      this.socket.emit('btn', 1)
+      this.socket.on('report-to-host', () => {
+        this.socket.emit('player-join', this.username)
+      })
     },
     forceDisconnect() {
       this.socket.disconnect()
+      this.connectionStatus = false
     },
     hostCountdown() {
-      console.log(this.hostPresent)
       this.hostPresent = false
       setTimeout(() => {
-        console.log(this.hostPresent)
         if (!this.hostPresent) this.$router.push('/')
       }, 3000)
     }
-  },
-  destroyed() {
-    document.removeEventListener('visibilitychange', this.emitVisibility)
   }
 }
 </script>
