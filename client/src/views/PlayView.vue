@@ -37,7 +37,8 @@ export default {
       socket: null,
       showPauseDialog: false,
       currentView: 0,
-      username: ''
+      username: '',
+      hostPresent: true
     }
   },
   mounted() {
@@ -57,8 +58,12 @@ export default {
       this.socket.on('change-view', newView => {
         this.currentView = newView
       })
-      this.socket.on('call-for-report', () => {
+      this.socket.on('roll-call', () => {
         this.socket.emit('player-join', this.username)
+        this.hostCountdown()
+      })
+      this.socket.on('host-present', () => {
+        this.hostPresent = true
       })
     },
     emitVisibility() {
@@ -69,6 +74,14 @@ export default {
     },
     forceDisconnect() {
       this.socket.disconnect()
+    },
+    hostCountdown() {
+      console.log(this.hostPresent)
+      this.hostPresent = false
+      setTimeout(() => {
+        console.log(this.hostPresent)
+        if (!this.hostPresent) this.$router.push('/')
+      }, 3000)
     }
   },
   destroyed() {

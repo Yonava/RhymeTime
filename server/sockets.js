@@ -18,8 +18,12 @@ io.on('connection', socket => {
     socket.broadcast.emit('change-view', view)
   })
 
+  socket.on('host-present', () => {
+    socket.broadcast.emit('host-present')
+  })
+
   socket.on('disconnect', () => {
-    socket.broadcast.emit('call-for-report')
+    socket.broadcast.emit('roll-call')
   })
 
 });
