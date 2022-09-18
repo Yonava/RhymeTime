@@ -4,22 +4,18 @@
     <v-btn text @click="$router.push('/')">Back</v-btn>  
     <p>Socket Connected: {{ connectionStatus }}</p> 
     <p>Current View: {{ currentView }}</p>
-    <v-btn @click="disc">disconnect socket</v-btn>
+    <v-text-field
+      v-model="username"
+      label="Enter name"
+    ></v-text-field>
+    <v-btn @click="connectSocket">connect socket</v-btn>
+    <br>
+    <v-btn color="red" dark @click="forceDisconnect">Force Disconnect</v-btn>
     <v-dialog
       v-model="showPauseDialog"
       persistent
       max-width="290"
     >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="primary"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          Open Dialog
-        </v-btn>
-      </template>
       <v-card>
         <v-card-title class="text-h5">
           Game Foribly Paused!
@@ -40,22 +36,31 @@ export default {
       connectionStatus: false,
       socket: null,
       showPauseDialog: false,
-      currentView: 0
+      currentView: 0,
+      username: ''
     }
   },
   mounted() {
-    this.socket = io('http://localhost:3000')
-    this.socket.on('connect', () => {
-      this.connectionStatus = true
-    })
-    this.socket.on('visibility-handler', hostVisibility => {
-      this.showPauseDialog = hostVisibility === 'hidden'
-    })
-    this.socket.on('change-view', newView => {
-      this.currentView = newView
-    })
+    
   },
   methods: {
+    connectSocket() {
+      if (this.socket?.connected) return
+      this.socket = io('http://localhost:3000')
+      this.socket.on('connect', () => {
+        this.connectionStatus = true
+        this.socket.emit('player-join', this.username)
+      })
+      this.socket.on('visibility-handler', hostVisibility => {
+        this.showPauseDialog = hostVisibility === 'hidden'
+      })
+      this.socket.on('change-view', newView => {
+        this.currentView = newView
+      })
+      this.socket.on('call-for-report', () => {
+        this.socket.emit('player-join', this.username)
+      })
+    },
     emitVisibility() {
       this.socket.emit('visibility-handler', document.visibilityState)
     },

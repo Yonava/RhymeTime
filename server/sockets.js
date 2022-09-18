@@ -5,10 +5,13 @@ const io = require('socket.io')(3000, {
 })
 
 io.on('connection', socket => {
-  console.log(`${socket.id} connected`)
 
   socket.on('visibility-handler', visibility => {
     socket.broadcast.emit('visibility-handler', visibility)
+  })
+
+  socket.on('player-join', username => {
+    socket.broadcast.emit('player-join', username)
   })
 
   socket.on('change-view', (view) => {
@@ -16,7 +19,7 @@ io.on('connection', socket => {
   })
 
   socket.on('disconnect', () => {
-    console.log('disconnected')
+    socket.broadcast.emit('call-for-report')
   })
 
 });

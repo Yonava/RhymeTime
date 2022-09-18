@@ -5,6 +5,9 @@
     <p>Socket Connected: {{ connectionStatus }}</p> 
     <v-btn @click="changeView">Change View</v-btn>
     <v-btn @click="disc">disconnect socket</v-btn>
+    <div v-for="(player, index) in playerList" :key="player.id">
+      {{ index + 1 }} - {{ player }}
+    </div>
   </div>
 </template>
 
@@ -15,7 +18,8 @@ export default {
     return {
       connectionStatus: false,
       socket: null,
-      currentView: 0
+      currentView: 0,
+      playerList: []
     }
   },
   mounted() {
@@ -23,7 +27,12 @@ export default {
     this.socket.on('connect', () => {
       this.connectionStatus = true
     })
-
+    this.socket.on('player-join', (playerName) => {
+      this.playerList.push(playerName)
+    })
+    this.socket.on('call-for-report', () => {
+      this.playerList = []
+    })
     document.addEventListener('visibilitychange', this.emitVisibility)
   },
   methods: {
