@@ -50,6 +50,8 @@ export default {
           if (response === 'connected') {
             this.connectionStatus = true
             this.socket.emit('player-join', this.username)
+            this.hostCountdown()
+            this.socket.emit('report-to-players')
           }
         })
       })

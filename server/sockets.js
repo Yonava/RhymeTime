@@ -27,6 +27,10 @@ io.on('connection', socket => {
     socket.to(roomid).emit('report-to-host')
   })
 
+  socket.on('report-to-players', () => {
+    socket.to(roomid).emit('report-to-players')
+  })
+
   socket.on('disconnect', () => {
     socket.to(roomid).emit('roll-call')
   })

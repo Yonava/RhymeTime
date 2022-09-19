@@ -42,6 +42,9 @@ export default {
       this.socket.on('player-join', (playerName) => {
         this.playerList.push(playerName)
       })
+      this.socket.on('report-to-players', () => {
+        this.socket.emit('host-present')
+      })
       this.socket.on('roll-call', () => {
         this.playerList = []
         this.socket.emit('host-present')
