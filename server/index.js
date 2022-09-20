@@ -1,7 +1,8 @@
 const express = require('express')
 const mysql = require('mysql')
-  
+const PORT = process.env.PORT || 1010
 const app = express()
+require('./sockets')
 
 const db = mysql.createConnection({
   host: 'bageterie-boulevard.c0w2juzukesp.us-east-1.rds.amazonaws.com',
@@ -46,5 +47,5 @@ app.get('/seesandwiches', (req, res) => {
   })
 })
 
-app.listen(3000, () => {
-  console.log('Running on localhost:3000')})
+app.listen(PORT, () => {
+  console.log(`Running on port ${PORT}`)})
