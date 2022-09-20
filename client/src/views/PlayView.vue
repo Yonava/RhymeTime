@@ -44,7 +44,7 @@ export default {
   methods: {
     connectSocket() {
       if (this.socket?.connected) return
-      this.socket = io('http://localhost:3000')
+      this.socket = io("https://its-rhyme-time.herokuapp.com/")
       this.socket.on('connect', () => {
         this.socket.emit('join-room', this.$route.query.room, (response) => {
           if (response === 'connected') {

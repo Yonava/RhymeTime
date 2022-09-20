@@ -1,4 +1,9 @@
-const io = require('socket.io')(3000, {
+
+// Socket endpoints
+// Authored by Yona Voss-Andreae @yonava
+
+const server = require('http').Server(app);
+const io = require('socket.io')(server, {
   cors: {
     origin: "*"
   }
@@ -39,6 +44,6 @@ io.on('connection', socket => {
     roomid = room
     socket.join(roomid)
     if (typeof callback === "function") callback('connected')
-  });
+  })
 
-});
+})
