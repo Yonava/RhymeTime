@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { io } from 'socket.io-client'
+import io from 'socket.io-client'
 export default {
   data() {
     return {
@@ -44,7 +44,7 @@ export default {
   methods: {
     connectSocket() {
       if (this.socket?.connected) return
-      this.socket = io("https://its-rhyme-time.herokuapp.com/")
+      this.socket = io('/')
       this.socket.on('connect', () => {
         this.socket.emit('join-room', this.$route.query.room, (response) => {
           if (response === 'connected') {
