@@ -1,7 +1,7 @@
 <template>  
   <div class="center">   
     <div class="text-h4 mb-5">Host View</div>
-    <v-btn text @click="$router.push('/')">Back</v-btn> 
+    <v-btn text @click.stop="exit">Back</v-btn> 
     <p>Socket Connected: {{ connectionStatus }}</p> 
     <v-btn @click="changeView">Emit view change</v-btn>
     <br>
@@ -9,12 +9,10 @@
       v-model="currentView"
     ></v-text-field>
     <br>
-    <v-btn @click="connectSocket" color="green" dark>connect to {{ $store.state.roomid }}</v-btn>
-    <br>
-    <v-btn @click="forceDisconnect" color="red" dark>disconnect socket</v-btn>
-    <br>
-    <div v-for="(player, index) in playerList" :key="player.id">
-      {{ index + 1 }} - {{ player }}
+    <div :key="update">
+      <div v-for="(player, index) in playerList" :key="player.id">
+        {{ index + 1 }} - {{ player }} {{ promptResponses[player] }}
+      </div>
     </div>
   </div>
 </template>
@@ -24,15 +22,25 @@ import io from 'socket.io-client'
 export default {
   data() {
     return {
+      // true if sockets have successfully connected to the server
       connectionStatus: false,
+      // stores socket instance
       socket: null,
+      // sets the current view of the game, emits to players
       currentView: 'waiting',
-      playerList: []
+      // playerlist contains strings of every connected players nickname
+      playerList: [],
+      // prompt responses each round are stored here
+      promptResponses: {},
+      update: false
     }
   },
   destroyed() {
     if (this.socket?.connected) this.socket.disconnect()
     document.removeEventListener('visibilitychange', this.emitVisibility)
+  },
+  mounted() {
+    this.connectSocket()
   },
   methods: {
     connectSocket() {
@@ -58,6 +66,11 @@ export default {
         this.playerList = []
         this.socket.emit('host-present')
       })
+      this.socket.on('player-prompt-submission', (playerResponse) => {
+        // obj1 U obj2: obj2 takes precedence over obj1
+        this.promptResponses = { ...this.promptResponses, ...playerResponse }
+        this.update = !this.update
+      })
       document.addEventListener('visibilitychange', this.emitVisibility)
     },
     emitVisibility() {
@@ -66,15 +79,14 @@ export default {
     changeView() {
       this.socket.emit('change-view', this.currentView)
     },
+    exit() {
+      this.forceDisconnect()
+      this.$router.push('/')
+    },
     forceDisconnect() {
       this.socket.disconnect()
       this.connectionStatus = false
-      this.playerList = []
     }
   }
 }
 </script>
-
-<style>
-
-</style>

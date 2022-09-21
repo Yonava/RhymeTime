@@ -50,4 +50,10 @@ io.on('connection', socket => {
     if (typeof callback === "function") callback('connected')
   })
 
+  // in game communication
+  socket.on('player-prompt-response', (playerResponse, callback) => {
+    socket.to(roomid).emit('player-prompt-submission', playerResponse)
+    if (typeof callback === "function") callback('sent')
+  })
+
 })

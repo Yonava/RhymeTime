@@ -6,6 +6,7 @@
       :is="currentView"
       :playerList="['yona', 'shannon', 'bella']"
       :wordsInPrompt="['groan', 'bemoan']"
+      :socketInstance="socket"
     ></component>
     <v-dialog
       v-model="showPauseDialog"
