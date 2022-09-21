@@ -43,8 +43,9 @@ export default {
   },
   methods: {
     connectSocket() {
+      const SOCKET_URL = window.location.href.includes('localhost') ? 'http://localhost:3000' : '/'
       if (this.socket?.connected) return
-      this.socket = io('/')
+      this.socket = io(SOCKET_URL)
       this.socket.on('connect', () => {
         this.socket.emit('join-room', this.$route.query.room, (response) => {
           if (response === 'connected') {

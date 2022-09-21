@@ -2,8 +2,12 @@
 // Socket endpoints
 // Authored by Yona Voss-Andreae @yonava
 
-const server = require('http').Server(app);
-const io = require('socket.io')(server, {
+const { server } = require('./index')
+
+console.log('Sockets Live!')
+
+const SOCKET_SERVER = process.env.NODE_ENV === 'production' ? server : 3000
+const io = module.exports.io = require('socket.io')(SOCKET_SERVER, {
   cors: {
     origin: "*"
   }
