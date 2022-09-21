@@ -29,6 +29,7 @@
 import vote from '../components/GameplayViews/VotingView.vue'
 import respond from '../components/GameplayViews/SubmitResponse.vue'
 import waiting from '../components/GameplayViews/WaitingView.vue'
+import intro from '../components/GameplayViews/IntroView.vue'
 
 import io from 'socket.io-client'
 
@@ -36,7 +37,8 @@ export default {
   components: {
     vote,
     respond,
-    waiting
+    waiting,
+    intro
   },
   data() {
     return {

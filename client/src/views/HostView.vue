@@ -3,23 +3,35 @@
     <div class="text-h4 mb-5">Host View</div>
     <v-btn text @click.stop="exit">Back</v-btn> 
     <p>Socket Connected: {{ connectionStatus }}</p> 
-    <v-btn @click="changeView">Emit view change</v-btn>
     <br>
     <v-text-field
       v-model="currentView"
     ></v-text-field>
     <br>
-    <div :key="update">
-      <div v-for="(player, index) in playerList" :key="player.id">
-        {{ index + 1 }} - {{ player }} {{ promptResponses[player] }}
-      </div>
-    </div>
+    <component
+      :is="currentView"
+      :playerList="playerList"
+      @start-game="currentView = 'intro'"
+      @intro-over="currentView = 'respond'"
+    ></component>
   </div>
 </template>
 
 <script>
+import waiting from '../components/HostViews/WaitingView.vue'
+import respond from '../components/HostViews/PromptPlayerResponse.vue'
+import vote from '../components/HostViews/VoteTally.vue'
+import intro from '../components/HostViews/IntroView.vue'
+
 import io from 'socket.io-client'
+
 export default {
+  components: {
+    waiting,
+    respond,
+    vote,
+    intro
+  },
   data() {
     return {
       // true if sockets have successfully connected to the server
@@ -76,9 +88,6 @@ export default {
     emitVisibility() {
       this.socket.emit('visibility-handler', document.visibilityState)
     },
-    changeView() {
-      this.socket.emit('change-view', this.currentView)
-    },
     exit() {
       this.forceDisconnect()
       this.$router.push('/')
@@ -86,6 +95,14 @@ export default {
     forceDisconnect() {
       this.socket.disconnect()
       this.connectionStatus = false
+    }
+  },
+  watch: {
+    currentView(v) {
+      // only emits view down to player if v is a registered and valid component
+      if (Object.keys(this.$options.components).includes(v)) {
+        this.socket.emit('change-view', v)
+      }
     }
   }
 }
