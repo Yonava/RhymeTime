@@ -1,16 +1,21 @@
 <template>
   <div>
-    Respond To The Prompt On Screen:
-    <div v-for="(word, index) in wordsInPrompt" :key="word.id">
-      <v-text-field
-        v-model="responses[index]"
-        :label="word"
-      ></v-text-field>
+    <div v-if="!submitted">
+      Respond To The Prompt On Screen:
+      <div v-for="(word, index) in wordsInPrompt" :key="word.id">
+        <v-text-field
+          v-model="responses[index]"
+          :label="word"
+        ></v-text-field>
+      </div>
+      <br>
+      <v-btn @click.once="submitResponse">
+        Submit
+      </v-btn>
     </div>
-    <br>
-    <v-btn @click.once="submitResponse">
-      Submit
-    </v-btn>
+    <div v-else>
+      Your response has been submitted. Waiting on other player...
+    </div>
   </div>
 </template>
 
@@ -18,7 +23,8 @@
 export default {
   data() {
     return {
-      responses: []
+      responses: [],
+      submitted: false
     }
   },
   props: {
@@ -28,8 +34,10 @@ export default {
     }
   },
   methods: {
-    submitReponse() {
+    submitResponse() {
       // validation here
+      console.log(this.responses)
+      this.submitted = true
       this.$emit('response-submitted', this.responses)
     }
   }

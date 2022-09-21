@@ -2,11 +2,11 @@
   <div class="center">   
     <div class="text-h4 mb-5">Player View</div>
     <v-btn text @click="$router.push('/')">Back</v-btn>  
-    <p>Socket Connected: {{ connectionStatus }}</p> 
-    <p>Current View: {{ currentView }}</p>
-    <v-btn @click="connectSocket" color="green" dark>connect socket</v-btn>
-    <br>
-    <v-btn color="red" dark @click="forceDisconnect">Force Disconnect</v-btn>
+    <component
+      :is="currentView"
+      :playerList="['yona', 'shannon', 'bella']"
+      :wordsInPrompt="['groan', 'bemoan']"
+    ></component>
     <v-dialog
       v-model="showPauseDialog"
       persistent
@@ -14,10 +14,10 @@
     >
       <v-card>
         <v-card-title class="text-h5">
-          Game Foribly Paused!
+          Game Paused!
         </v-card-title>
         <v-card-text>
-          Tell the fucking host to switch the screen back on so you can resume the dman game
+          Host screen is currently not visible. Once host screen becomes visible again, the game may resume.
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -25,19 +25,37 @@
 </template>
 
 <script>
+import vote from '../components/GameplayViews/VotingView.vue'
+import respond from '../components/GameplayViews/SubmitResponse.vue'
+import waiting from '../components/GameplayViews/WaitingView.vue'
+
 import io from 'socket.io-client'
+
 export default {
+  components: {
+    vote,
+    respond,
+    waiting
+  },
   data() {
     return {
+      // true if sockets have successfully connected to the server
       connectionStatus: false,
+      // stores socket instance
       socket: null,
+      // true when host has paused the game
       showPauseDialog: false,
+      // used for host to control which view the player is on
       currentView: 'waiting',
+      // false if no host can be found in room
       hostPresent: true
     }
   },
   destroyed() {
-    if (this.socket?.connected) this.socket.disconnect()
+    if (this.socket?.connected) this.forceDisconnect()
+  },
+  mounted() {
+    this.connectSocket()
   },
   methods: {
     connectSocket() {
@@ -78,7 +96,10 @@ export default {
     hostCountdown() {
       this.hostPresent = false
       setTimeout(() => {
-        if (!this.hostPresent) this.$router.push('/')
+        if (!this.hostPresent) {
+          if (this.socket?.connected) this.forceDisconnect()
+          this.$router.push('/')
+        }
       }, 3000)
     }
   }
