@@ -8,10 +8,10 @@
       v-model="currentView"
     ></v-text-field>
     <br>
-    <!-- test -->
     <component
       :is="currentView"
       :playerList="playerList"
+      :promptResponses="promptResponses"
       @start-game="currentView = 'intro'"
       @intro-over="currentView = 'respond'"
     ></component>
@@ -44,8 +44,7 @@ export default {
       // playerlist contains strings of every connected players nickname
       playerList: [],
       // prompt responses each round are stored here
-      promptResponses: {},
-      update: false
+      promptResponses: {}
     }
   },
   destroyed() {
