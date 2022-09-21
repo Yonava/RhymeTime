@@ -6,7 +6,7 @@
     </div>
     <br><br>
     <v-btn
-      @click="$emit('start-game')"
+      @click="$emit('change-view', 'intro')"
       color="green"
       dark
     >Start Game</v-btn>

@@ -21,6 +21,10 @@ export default {
       type: Object,
       required: true
     }
-  }
+  },
+  destroyed() {
+    this.$parent.promptResponses = {}
+  },
+  
 }
 </script>

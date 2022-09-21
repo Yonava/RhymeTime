@@ -13,8 +13,7 @@
       :playerList="playerList"
       :promptResponses="promptResponses"
       :socketInstance="socket"
-      @start-game="currentView = 'intro'"
-      @intro-over="currentView = 'respond'"
+      @change-view="currentView = $event"
     ></component>
   </div>
 </template>

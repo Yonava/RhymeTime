@@ -10,8 +10,8 @@
 export default {
   mounted() {
     setTimeout(() => {
-      this.$emit('intro-over')
-    }, 10000)
+      this.$emit('change-view', 'respond')
+    }, 3000)
   }
 }
 </script>

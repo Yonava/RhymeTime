@@ -6,6 +6,8 @@
         <h3>{{ player }}</h3>
       </div>
     </draggable>
+    <br>
+    <v-btn @click.stop="$emit('change-view', 'respond')">Get another prompt</v-btn>
   </div>
 </template>
 

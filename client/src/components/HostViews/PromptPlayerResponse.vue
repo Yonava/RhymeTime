@@ -11,14 +11,19 @@
     </span>
     <br>
     <b>Waiting On:</b>
-    <div v-for="player in playerList" :key="player.id">
-      <p v-if="!responseArray.includes(player)">{{ player }}</p>
+    <div v-for="player in notAnswered" :key="player.id">
+      {{ player }}
     </div>
     <br>
     <b>Players Who Have Responded:</b> 
     <div v-for="response in responseArray" :key="response.id">
       {{ response }} {{ promptResponses[response] }}
     </div>
+    <br>
+    <v-btn 
+      @click.stop="$emit('change-view', 'vote')" 
+      :disabled="!!notAnswered.length"
+    >Start Voting</v-btn>
   </div>
 </template>
 
@@ -29,11 +34,10 @@ export default {
       // list of players who have responded
       responseArray: [],
       // words in current prompt
-      words: []
+      words: [],
+      // array containing players that have not answered the prompt
+      notAnswered: []
     }
-  },
-  destroyed() {
-    this.$parent.promptResponses = {}
   },
   mounted() {
     const RHYMING_PAIRS = [
@@ -43,8 +47,8 @@ export default {
       ['elaborate', 'vacate'],
       ['fvmo', 'w', 'sdf', 'fw', 'wwv']
     ]
-
     this.words = RHYMING_PAIRS[Math.floor(Math.random() * RHYMING_PAIRS.length)]
+    // this.words = ['gvvd', 'cwd', 'cw','cw','dcvv', 'sdcvfeve', 'vwsve']
     this.socketInstance.emit('new-words', this.words)
   },
   props: {
@@ -65,6 +69,9 @@ export default {
       immediate: true,
       handler(v) {
         this.responseArray = Object.keys(v)
+        this.notAnswered = this.playerList.filter((player) => {
+          return !this.responseArray.includes(player)
+        })
       }
     }
   }
