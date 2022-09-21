@@ -56,4 +56,9 @@ io.on('connection', socket => {
     if (typeof callback === "function") callback('sent')
   })
 
+  // when host initiates new prompt
+  socket.on('new-words', (newWords) => {
+    socket.to(roomid).emit('new-words', newWords)
+  })
+
 })

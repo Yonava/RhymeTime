@@ -16,7 +16,7 @@ export default {
     draggable
   },
   props: {
-    playerList: {
+    candidates: {
       type: Array,
       required: true
     }

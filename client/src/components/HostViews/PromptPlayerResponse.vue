@@ -1,12 +1,15 @@
 <template>
   <div>
     Find a way to put these two rhyming words together!
-
-    <br><br><br>
+    <br>
     Yours Words:
-    <br><br>
-    Phone and Czech Kron
-    <br><br>
+    <br>
+    <span v-for="word in words" :key="word.id">
+      <span v-if="words[words.length - 1] === word">{{ ', and ' }}</span>
+      <span v-else-if="words[0] !== word">{{ ', ' }}</span>
+      <span class="word">{{ word }}</span>
+    </span>
+    <br>
     <b>Waiting On:</b>
     <div v-for="player in playerList" :key="player.id">
       <p v-if="!responseArray.includes(player)">{{ player }}</p>
@@ -23,8 +26,26 @@
 export default {
   data() {
     return {
-      responseArray: []
+      // list of players who have responded
+      responseArray: [],
+      // words in current prompt
+      words: []
     }
+  },
+  destroyed() {
+    this.$parent.promptResponses = {}
+  },
+  mounted() {
+    const RHYMING_PAIRS = [
+      ['ground', 'pound', 'round'], 
+      ['crown', 'grown'], 
+      ['paid', 'afraid', 'laid'], 
+      ['elaborate', 'vacate'],
+      ['fvmo', 'w', 'sdf', 'fw', 'wwv']
+    ]
+
+    this.words = RHYMING_PAIRS[Math.floor(Math.random() * RHYMING_PAIRS.length)]
+    this.socketInstance.emit('new-words', this.words)
   },
   props: {
     promptResponses: {
@@ -34,6 +55,9 @@ export default {
     playerList: {
       type: Array,
       require: true
+    },
+    socketInstance: {
+      required: true
     }
   },
   watch: {
@@ -46,3 +70,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.word {
+  color: red;
+  font-style: italic;
+}
+</style>

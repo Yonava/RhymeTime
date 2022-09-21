@@ -4,8 +4,8 @@
     <v-btn text @click="$router.push('/')">Back</v-btn>  
     <component
       :is="currentView"
-      :playerList="['yona', 'shannon', 'bella']"
-      :wordsInPrompt="['groan', 'bemoan']"
+      :candidates="['yona', 'shannon', 'bella']"
+      :wordsInPrompt="wordsInPrompt"
       :socketInstance="socket"
     ></component>
     <v-dialog
@@ -51,7 +51,9 @@ export default {
       // used for host to control which view the player is on
       currentView: 'waiting',
       // false if no host can be found in room
-      hostPresent: true
+      hostPresent: true,
+      // rhyming words in prompt
+      wordsInPrompt: []
     }
   },
   destroyed() {
@@ -90,6 +92,9 @@ export default {
       })
       this.socket.on('report-to-host', () => {
         this.socket.emit('player-join', this.$store.state.nickname)
+      })
+      this.socket.on('new-words', (newWords) => {
+        this.wordsInPrompt = newWords
       })
     },
     forceDisconnect() {

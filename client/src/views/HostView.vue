@@ -12,6 +12,7 @@
       :is="currentView"
       :playerList="playerList"
       :promptResponses="promptResponses"
+      :socketInstance="socket"
       @start-game="currentView = 'intro'"
       @intro-over="currentView = 'respond'"
     ></component>
