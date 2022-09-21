@@ -1,27 +1,32 @@
 <template>
   <div>
     Vote For The Most 🔥 Bar
-    <draggable>
-      <div v-for="player in candidates" :key="player.id">
+    <draggable v-model="$parent.candidates">
+      <div v-for="player in $parent.candidates" :key="player.id">
         <h3>{{ player }}</h3>
       </div>
     </draggable>
-    <br>
-    <v-btn @click.stop="$emit('change-view', 'respond')">Get another prompt</v-btn>
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
+
 export default {
   components: {
     draggable
   },
   props: {
-    candidates: {
-      type: Array,
+    socketInstance: {
       required: true
     }
+  },
+  mounted() {
+    this.$watch(() => this.$parent.candidates, (newValue) => {
+      const BALLOT = {}
+      BALLOT[this.$store.state.nickname] = newValue
+      this.socketInstance.emit('submit-ballot', BALLOT)
+    })
   }
 }
 </script>

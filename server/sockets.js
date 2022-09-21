@@ -66,4 +66,9 @@ io.on('connection', socket => {
     socket.to(roomid).emit('candidate-list', list)
   })
 
+  // takes ballot from player and sends it to host
+  socket.on('submit-ballot', (ballot) => {
+    socket.to(roomid).emit('ballot-collector', ballot)
+  })
+
 })

@@ -84,7 +84,9 @@ export default {
       this.socket.on('player-prompt-submission', (playerResponse) => {
         // obj1 U obj2: obj2 takes precedence over obj1
         this.promptResponses = { ...this.promptResponses, ...playerResponse }
-        this.update = !this.update
+      })
+      this.socket.on('ballot-collector', (playerBallot) => {
+        this.ballotBox = { ...this.ballotBox, ...playerBallot }
       })
       document.addEventListener('visibilitychange', this.emitVisibility)
     },

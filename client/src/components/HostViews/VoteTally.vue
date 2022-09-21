@@ -7,6 +7,8 @@
     Here are the live results!
     <br>
     {{ voteCount }}
+    <br>
+    <v-btn @click.stop="$emit('change-view', 'respond')">Continue to next round</v-btn>
   </div>
 </template>
 
@@ -26,7 +28,9 @@ export default {
     }
   },
   destroyed() {
+    // resets parent state for new round
     this.$parent.promptResponses = {}
+    this.$parent.ballotBox = {}
   },
   mounted() {
     this.socketInstance.emit('candidate-list', Object.keys(this.promptResponses))
