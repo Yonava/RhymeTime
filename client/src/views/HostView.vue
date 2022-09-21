@@ -13,6 +13,7 @@
       :playerList="playerList"
       :promptResponses="promptResponses"
       :socketInstance="socket"
+      :voteCount="ballotBox"
       @change-view="currentView = $event"
     ></component>
   </div>
@@ -44,7 +45,9 @@ export default {
       // playerlist contains strings of every connected players nickname
       playerList: [],
       // prompt responses each round are stored here
-      promptResponses: {}
+      promptResponses: {},
+      // keeps ledger of the votes each player recieves. Format: { 'yona': 14 }
+      ballotBox: {}
     }
   },
   destroyed() {

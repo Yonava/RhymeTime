@@ -48,6 +48,7 @@ export default {
       ['fvmo', 'w', 'sdf', 'fw', 'wwv']
     ]
     this.words = RHYMING_PAIRS[Math.floor(Math.random() * RHYMING_PAIRS.length)]
+    // for experimental purposes
     // this.words = ['gvvd', 'cwd', 'cw','cw','dcvv', 'sdcvfeve', 'vwsve']
     this.socketInstance.emit('new-words', this.words)
   },

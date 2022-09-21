@@ -4,7 +4,7 @@
     <v-btn text @click="$router.push('/')">Back</v-btn>  
     <component
       :is="currentView"
-      :candidates="['yona', 'shannon', 'bella']"
+      :candidates="['yona', 'josh', 'thomas']"
       :wordsInPrompt="wordsInPrompt"
       :socketInstance="socket"
     ></component>

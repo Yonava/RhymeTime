@@ -2,7 +2,7 @@
   <div>
     Your submissions:
     <br>
-    {{ playerSubmissions }}
+    {{ promptResponses }}
     <br><br><br>
     Here are the live results!
     <br>
@@ -13,8 +13,8 @@
 <script>
 export default {
   props: {
-    playerSubmissions: {
-      type: Array,
+    promptResponses: {
+      type: Object,
       required: true
     },
     voteCount: {
