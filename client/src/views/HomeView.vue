@@ -18,7 +18,12 @@
       <br>
       <center>
         <v-text-field
-          v-model="roomid"
+          v-model="$store.state.nickname"
+          label="Nickname"
+          style="width: 200px"
+        ></v-text-field>
+        <v-text-field
+          v-model="$store.state.roomid"
           label="Room ID"
           style="width: 200px"
         ></v-text-field>
@@ -33,15 +38,15 @@ export default {
   name: 'HomeView',
   data() {
     return {
-      roomid: '1234'
+
     }
   },
   methods: {
     host() {
-      this.$router.push({ name: 'host', query: { room: this.roomid } })
+      this.$router.push({ name: 'host' })
     },
     join() {
-      this.$router.push({ name: 'play', query: { room: this.roomid } })
+      this.$router.push({ name: 'play' })
     }
   }
 }

@@ -5,7 +5,11 @@
     <p>Socket Connected: {{ connectionStatus }}</p> 
     <v-btn @click="changeView">Emit view change</v-btn>
     <br>
-    <v-btn @click="connectSocket" color="green" dark>connect to {{ $route.query.room }}</v-btn>
+    <v-text-field
+      v-model="currentView"
+    ></v-text-field>
+    <br>
+    <v-btn @click="connectSocket" color="green" dark>connect to {{ $store.state.roomid }}</v-btn>
     <br>
     <v-btn @click="forceDisconnect" color="red" dark>disconnect socket</v-btn>
     <br>
@@ -22,9 +26,13 @@ export default {
     return {
       connectionStatus: false,
       socket: null,
-      currentView: 0,
+      currentView: 'waiting',
       playerList: []
     }
+  },
+  destroyed() {
+    if (this.socket?.connected) this.socket.disconnect()
+    document.removeEventListener('visibilitychange', this.emitVisibility)
   },
   methods: {
     connectSocket() {
@@ -32,7 +40,7 @@ export default {
       if (this.socket?.connected) return
       this.socket = io(SOCKET_URL)
       this.socket.on('connect', () => { 
-        this.socket.emit('join-room', this.$route.query.room, (response) => {
+        this.socket.emit('join-room', this.$store.state.roomid, (response) => {
           if (response === 'connected') {
             this.connectionStatus = true
             this.socket.emit('host-present')
@@ -56,7 +64,6 @@ export default {
       this.socket.emit('visibility-handler', document.visibilityState)
     },
     changeView() {
-      this.currentView++
       this.socket.emit('change-view', this.currentView)
     },
     forceDisconnect() {
@@ -64,9 +71,6 @@ export default {
       this.connectionStatus = false
       this.playerList = []
     }
-  },
-  destroyed() {
-    document.removeEventListener('visibilitychange', this.emitVisibility)
   }
 }
 </script>

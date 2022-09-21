@@ -4,10 +4,6 @@
     <v-btn text @click="$router.push('/')">Back</v-btn>  
     <p>Socket Connected: {{ connectionStatus }}</p> 
     <p>Current View: {{ currentView }}</p>
-    <v-text-field
-      v-model="username"
-      label="Enter name"
-    ></v-text-field>
     <v-btn @click="connectSocket" color="green" dark>connect socket</v-btn>
     <br>
     <v-btn color="red" dark @click="forceDisconnect">Force Disconnect</v-btn>
@@ -36,10 +32,12 @@ export default {
       connectionStatus: false,
       socket: null,
       showPauseDialog: false,
-      currentView: 0,
-      username: '',
+      currentView: 'waiting',
       hostPresent: true
     }
+  },
+  destroyed() {
+    if (this.socket?.connected) this.socket.disconnect()
   },
   methods: {
     connectSocket() {
@@ -47,10 +45,10 @@ export default {
       if (this.socket?.connected) return
       this.socket = io(SOCKET_URL)
       this.socket.on('connect', () => {
-        this.socket.emit('join-room', this.$route.query.room, (response) => {
+        this.socket.emit('join-room', this.$store.state.roomid, (response) => {
           if (response === 'connected') {
             this.connectionStatus = true
-            this.socket.emit('player-join', this.username)
+            this.socket.emit('player-join', this.$store.state.nickname)
             this.hostCountdown()
             this.socket.emit('report-to-players')
           }
@@ -63,14 +61,14 @@ export default {
         this.currentView = newView
       })
       this.socket.on('roll-call', () => {
-        this.socket.emit('player-join', this.username)
+        this.socket.emit('player-join', this.$store.state.nickname)
         this.hostCountdown()
       })
       this.socket.on('host-present', () => {
         this.hostPresent = true
       })
       this.socket.on('report-to-host', () => {
-        this.socket.emit('player-join', this.username)
+        this.socket.emit('player-join', this.$store.state.nickname)
       })
     },
     forceDisconnect() {
