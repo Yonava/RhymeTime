@@ -4,7 +4,7 @@
     <v-btn text @click="$router.push('/')">Back</v-btn>  
     <component
       :is="currentView"
-      :candidates="['yona', 'josh', 'thomas']"
+      :candidates="candidates"
       :wordsInPrompt="wordsInPrompt"
       :socketInstance="socket"
     ></component>
@@ -53,7 +53,10 @@ export default {
       // false if no host can be found in room
       hostPresent: true,
       // rhyming words in prompt
-      wordsInPrompt: []
+      wordsInPrompt: [],
+      // contains nicknames of players that have submitted a response that is being voted on
+      // hence called a candidate
+      candidates: []
     }
   },
   destroyed() {
@@ -95,6 +98,9 @@ export default {
       })
       this.socket.on('new-words', (newWords) => {
         this.wordsInPrompt = newWords
+      })
+      this.socket.on('candidate-list', (newCandidates) => {
+        this.candidates = newCandidates
       })
     },
     forceDisconnect() {

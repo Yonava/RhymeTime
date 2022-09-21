@@ -61,4 +61,9 @@ io.on('connection', socket => {
     socket.to(roomid).emit('new-words', newWords)
   })
 
+  // is a list of all the usernames of responses that can be voted on
+  socket.on('candidate-list', (list) => {
+    socket.to(roomid).emit('candidate-list', list)
+  })
+
 })

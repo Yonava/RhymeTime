@@ -20,11 +20,17 @@ export default {
     voteCount: {
       type: Object,
       required: true
+    },
+    socketInstance: {
+      required: true
     }
   },
   destroyed() {
     this.$parent.promptResponses = {}
   },
+  mounted() {
+    this.socketInstance.emit('candidate-list', Object.keys(this.promptResponses))
+  }
   
 }
 </script>
