@@ -1,8 +1,8 @@
 <template>
   <div>
-    Find a way to put these two rhyming words together!
+    Find a way to put these {{ words.length }} rhyming words together!
     <br>
-    Yours Words:
+    Your Words:
     <br>
     <span v-for="word in words" :key="word.id">
       <span v-if="words[words.length - 1] === word">{{ ', and ' }}</span>
