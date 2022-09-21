@@ -8,6 +8,7 @@
       v-model="currentView"
     ></v-text-field>
     <br>
+    <!-- test -->
     <component
       :is="currentView"
       :playerList="playerList"
