@@ -13,8 +13,8 @@
       :playerList="playerList"
       :promptResponses="promptResponses"
       :socketInstance="socket"
-      :voteCount="ballotBox"
       @change-view="currentView = $event"
+      ref="hostComponents"
     ></component>
   </div>
 </template>
@@ -45,9 +45,7 @@ export default {
       // playerlist contains strings of every connected players nickname
       playerList: [],
       // prompt responses each round are stored here
-      promptResponses: {},
-      // keeps ledger of the votes each player recieves. Format: { 'yona': 14 }
-      ballotBox: {}
+      promptResponses: {}
     }
   },
   destroyed() {
@@ -86,7 +84,7 @@ export default {
         this.promptResponses = { ...this.promptResponses, ...playerResponse }
       })
       this.socket.on('ballot-collector', (playerBallot) => {
-        this.ballotBox = { ...this.ballotBox, ...playerBallot }
+        this.$refs.hostComponents.countVotes(playerBallot)
       })
       document.addEventListener('visibilitychange', this.emitVisibility)
     },

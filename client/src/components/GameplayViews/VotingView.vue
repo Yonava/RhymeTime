@@ -22,11 +22,16 @@ export default {
     }
   },
   mounted() {
-    this.$watch(() => this.$parent.candidates, (newValue) => {
-      const BALLOT = {}
-      BALLOT[this.$store.state.nickname] = newValue
-      this.socketInstance.emit('submit-ballot', BALLOT)
-    })
+    setTimeout(() => this.watchCandidates(), 1000)
+  },
+  methods: {
+    watchCandidates() {
+      this.$watch(() => this.$parent.candidates, (newValue) => {
+        const BALLOT = {}
+        BALLOT[this.$store.state.nickname] = newValue
+        this.socketInstance.emit('submit-ballot', BALLOT)
+      })
+    }
   }
 }
 </script>
