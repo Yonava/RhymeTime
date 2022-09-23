@@ -9,27 +9,46 @@
     <div class="px-5">
       <v-text-field
         v-model="$store.state.nickname"
-        label="Nickname"
+        label="Enter a nickname"
       ></v-text-field>
       <v-text-field
         v-model="$store.state.roomid"
-        label="Room ID"
+        label="Enter a room ID"
       ></v-text-field>
     </div>
     <v-card-actions>
-      <v-btn block color="purple" dark @click="play">jump in!</v-btn>
+      <v-btn 
+        @click="play"
+        :disabled="!canJoin"
+        color="purple"
+        class="white--text"
+        block
+      >jump in!</v-btn>
     </v-card-actions>
     <v-card-actions>
-      <v-btn block color="red" dark @click="$router.push('/')">go back :(</v-btn>
+      <v-btn 
+        @click="$router.push('/')"
+        block 
+        color="red" 
+        dark 
+      >go back :(</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
 export default {
+  mounted() {
+    this.$store.state.roomid = this.$route.query.room || ''
+  },
   methods: {
     play() {
       this.$router.push({ name: 'play' })
+    }
+  },
+  computed: {
+    canJoin() {
+      return this.$store.state.nickname && this.$store.state.roomid
     }
   }
 }

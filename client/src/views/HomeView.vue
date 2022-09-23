@@ -33,6 +33,11 @@ export default {
   },
   methods: {
     host() {
+      this.$store.state.roomid = Math
+        .random()
+        .toString()
+        .substring(2, 6)
+      
       this.$router.push({ name: 'host' })
     },
     join() {

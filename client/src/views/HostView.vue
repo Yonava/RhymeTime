@@ -4,10 +4,8 @@
     <v-btn text @click.stop="exit">Back</v-btn> 
     <p>Socket Connected: {{ connectionStatus }}</p> 
     <br>
-    <v-text-field
-      v-model="currentView"
-    ></v-text-field>
-    <br>
+    Link to join this game: {{ url }}
+    <br><br>
     <component
       :is="currentView"
       :playerList="playerList"
@@ -59,6 +57,17 @@ export default {
   },
   mounted() {
     this.connectSocket()
+  },
+  computed: {
+    url() {
+      return `
+        ${
+          window.location.href.substring(0, window.location.href.length - 5)
+        }/join?room=${
+          this.$store.state.roomid
+        }
+      `
+    }
   },
   methods: {
     connectSocket() {
