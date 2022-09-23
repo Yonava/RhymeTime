@@ -1,5 +1,9 @@
 <template>
   <div>
+    {{ timeRemaining }}
+    <br>
+    <button @click="stopTimer">stop</button><button @click="startTimer">start</button>
+    <br>
     Find a way to put these {{ words.length }} rhyming words together!
     <br>
     Your Words:
@@ -58,7 +62,9 @@ export default {
     this.socketInstance.emit('new-words', this.words)
   },
   methods: {
-
+    next() {
+      this.$emit('change-view', 'vote')
+    }
   },
   watch: {
     promptResponses: {

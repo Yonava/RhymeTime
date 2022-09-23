@@ -1,5 +1,7 @@
 <template>
   <div>
+    {{ timeRemaining }}
+    <br>
     Your submissions:
     <br>
     {{ promptResponses }}
@@ -10,7 +12,7 @@
       {{ candidate.player }} - Votes: {{ candidate.votes }}
     </div>
     <br>
-    <v-btn @click.stop="$emit('change-view', 'respond')">Continue to next round</v-btn>
+    <v-btn @click.stop="$emit('change-view', 'recap')">Skip</v-btn>
   </div>
 </template>
 
@@ -68,6 +70,9 @@ export default {
       })
 
       this.candidates.sort((a, b) => b.votes - a.votes)
+    },
+    next() {
+      this.$emit('change-view', 'recap')
     }
   }
 }

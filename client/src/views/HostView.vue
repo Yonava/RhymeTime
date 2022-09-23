@@ -14,6 +14,7 @@
       :promptResponses="promptResponses"
       :socketInstance="socket"
       @change-view="currentView = $event"
+      @round-over="roundOver"
       ref="hostComponents"
     ></component>
   </div>
@@ -24,6 +25,7 @@ import waiting from '../components/HostViews/WaitingView.vue'
 import respond from '../components/HostViews/PromptPlayerResponse.vue'
 import vote from '../components/HostViews/VoteTally.vue'
 import intro from '../components/HostViews/IntroView.vue'
+import recap from '../components/HostViews/RecapView.vue'
 
 import io from 'socket.io-client'
 
@@ -32,7 +34,8 @@ export default {
     waiting,
     respond,
     vote,
-    intro
+    intro,
+    recap
   },
   data() {
     return {
@@ -45,7 +48,9 @@ export default {
       // playerlist contains strings of every connected players nickname
       playerList: [],
       // prompt responses each round are stored here
-      promptResponses: []
+      promptResponses: [],
+      // stores what round the game is on
+      roundCount: 1
     }
   },
   destroyed() {
@@ -97,6 +102,13 @@ export default {
     forceDisconnect() {
       this.socket.disconnect()
       this.connectionStatus = false
+    },
+    // called by 'recap' when the round recap is over
+    roundOver() {
+      this.roundCount++
+      console.log(`Going Into Round #${this.roundCount}`)
+      this.currentView = 'respond'
+      // make sessionStorage back-up of game state here
     }
   },
   watch: {
