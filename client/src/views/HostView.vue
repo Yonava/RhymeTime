@@ -10,6 +10,7 @@
       :socketInstance="socket"
       @change-view="currentView = $event"
       @round-over="roundOver"
+      @round-change="totalRounds = $event"
       ref="hostComponents"
     ></component>
   </div>
