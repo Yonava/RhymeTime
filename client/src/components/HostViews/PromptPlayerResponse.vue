@@ -1,9 +1,7 @@
 <template>
   <div>
     Time Left: {{ timeRemaining }}
-    <br>
-    <button @click="stopTimer">stop</button><button @click="startTimer">start</button>
-    <br>
+    <br><br>
     Find a way to put these {{ words.length }} rhyming words together!
     <br>
     Your Words:
@@ -50,8 +48,7 @@ export default {
       ['ground', 'pound', 'round'], 
       ['crown', 'grown'], 
       ['paid', 'afraid', 'laid'], 
-      ['elaborate', 'vacate'],
-      ['fvmo', 'w', 'sdf', 'fw', 'wwv']
+      ['elaborate', 'vacate']
     ]
     this.words = RHYMING_PAIRS[Math.floor(Math.random() * RHYMING_PAIRS.length)]
     // for experimental purposes

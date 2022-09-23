@@ -25,16 +25,16 @@ export default {
       case 'waiting': 
         return
       case 'intro':
-        this.timeRemaining = 5
-        break
-      case 'respond':
         this.timeRemaining = 10
         break
+      case 'respond':
+        this.timeRemaining = 90
+        break
       case 'vote':
-        this.timeRemaining = 8
+        this.timeRemaining = 30
         break
       case 'recap':
-        this.timeRemaining = 9
+        this.timeRemaining = 10
         break
       default:
         return console.error('Uncaught Case Passed Down to HostMixin')

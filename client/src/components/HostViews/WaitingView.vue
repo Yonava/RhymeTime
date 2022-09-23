@@ -1,20 +1,26 @@
 <template>
   <div>
     <center>
-      Scan QR Code or Enter With RoomID {{ $store.state.roomid }} to Join  
+      Scan QR Code or Enter With RoomID {{ $store.state.roomid }} to Join
       <v-img
         :src="qrCodeAPI"
-        width="100"
+        width="200"
+        class="my-4"
       ></v-img>
-      <br>
-      Players In Game:
+      <div class="text-h5">Players In Room:</div>
       <div v-for="player in playerList" :key="player.id">
-        {{ player }}
+        <div class="text-h6">
+          {{ player }}
+        </div>
       </div>
-      <br><br>
+      <div 
+        v-if="!playerList.length" 
+        class="text-h6 red--text"
+      >No Players Have Joined Yet</div>
       <v-btn
         @click.stop="next"
         color="green"
+        class="mt-4"
         text
       >Start Game</v-btn>
     </center>

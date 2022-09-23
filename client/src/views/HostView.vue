@@ -2,6 +2,7 @@
   <div class="center">   
     <div class="text-h4 mb-2">Host View</div>
     <v-btn text @click.stop="exit">Back</v-btn>
+    <p v-if="currentView != 'waiting'">Round {{ roundCount }}/{{ totalRounds }}</p>
     <component
       :is="currentView"
       :playerList="playerList"
@@ -44,7 +45,9 @@ export default {
       // prompt responses each round are stored here
       promptResponses: [],
       // stores what round the game is on
-      roundCount: 1
+      roundCount: 1,
+      // number of rounds that are to be played
+      totalRounds: 3
     }
   },
   destroyed() {
@@ -53,6 +56,7 @@ export default {
   },
   mounted() {
     this.connectSocket()
+    document.addEventListener('visibilitychange', this.emitVisibility)
   },
   methods: {
     connectSocket() {
@@ -84,9 +88,9 @@ export default {
       this.socket.on('ballot-collector', (playerBallot) => {
         this.$refs.hostComponents.countVotes(playerBallot)
       })
-      document.addEventListener('visibilitychange', this.emitVisibility)
     },
     emitVisibility() {
+      document.visibilityState === 'hidden' ? this.$refs.hostComponents.pauseGame() : this.$refs.hostComponents.unpauseGame()
       this.socket.emit('visibility-handler', document.visibilityState)
     },
     exit() {
@@ -99,8 +103,11 @@ export default {
     },
     // called by 'recap' when the round recap is over
     roundOver() {
+      if (this.roundCount === this.totalRounds) {
+        // change currentView to the end state later
+        this.$router.push('/')
+      }
       this.roundCount++
-      console.log(`Going Into Round #${this.roundCount}`)
       this.currentView = 'respond'
       // make sessionStorage back-up of game state here
     }
