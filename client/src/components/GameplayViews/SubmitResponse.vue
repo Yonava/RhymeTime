@@ -2,12 +2,12 @@
   <div>
     <div v-if="!submitted">
       Respond To The Prompt On Screen:
-      <div v-for="(word, index) in wordsInPrompt" :key="word.id">
-        <v-text-field
-          v-model="responses[index]"
-          :label="word"
-        ></v-text-field>
-      </div>
+      <v-textarea
+        v-model="response"
+        label="Your Response"
+        no-resize
+        maxlength="1000"
+      ></v-textarea>
       <br>
       <v-btn @click.once="submitResponse">
         Submit
@@ -33,7 +33,8 @@
 export default {
   data() {
     return {
-      responses: [],
+      // stores the text that user enters
+      response: '',
       // true when player submits on their end
       submitted: false,
       // true when server verifies it has received the submission
@@ -57,8 +58,11 @@ export default {
       this.sendResponseToHost()
     },
     sendResponseToHost() {
-      const RESPONSE_OBJ = {}
-      RESPONSE_OBJ[this.$store.state.nickname] = this.responses
+      const RESPONSE_OBJ = {
+        player: this.$store.state.nickname,
+        response: this.response
+      }
+
       this.socketInstance.emit('player-prompt-response', RESPONSE_OBJ, (callback) => {
         // callback responds with 'sent' if response was successfully transmitted
         this.submissionReceived = callback === 'sent'

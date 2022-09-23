@@ -45,7 +45,7 @@ export default {
       // playerlist contains strings of every connected players nickname
       playerList: [],
       // prompt responses each round are stored here
-      promptResponses: {}
+      promptResponses: []
     }
   },
   destroyed() {
@@ -80,8 +80,7 @@ export default {
         this.socket.emit('host-present')
       })
       this.socket.on('player-prompt-submission', (playerResponse) => {
-        // obj1 U obj2: obj2 takes precedence over obj1
-        this.promptResponses = { ...this.promptResponses, ...playerResponse }
+        this.promptResponses.push(playerResponse)
       })
       this.socket.on('ballot-collector', (playerBallot) => {
         this.$refs.hostComponents.countVotes(playerBallot)

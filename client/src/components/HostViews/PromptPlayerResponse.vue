@@ -16,8 +16,8 @@
     </div>
     <br>
     <b>Players Who Have Responded:</b> 
-    <div v-for="response in responseArray" :key="response.id">
-      {{ response }} {{ promptResponses[response] }}
+    <div v-for="player in respondents" :key="player.id">
+      {{ player }}
     </div>
     <br>
     <v-btn 
@@ -31,10 +31,10 @@
 export default {
   data() {
     return {
-      // list of players who have responded
-      responseArray: [],
       // words in current prompt
       words: [],
+      // array containing players that have answered the prompt
+      respondents: [],
       // array containing players that have not answered the prompt
       notAnswered: []
     }
@@ -54,7 +54,7 @@ export default {
   },
   props: {
     promptResponses: {
-      type: Object,
+      type: Array,
       required: true
     },
     playerList: {
@@ -69,9 +69,9 @@ export default {
     promptResponses: {
       immediate: true,
       handler(v) {
-        this.responseArray = Object.keys(v)
+        this.respondents = v.map((response) => response.player)
         this.notAnswered = this.playerList.filter((player) => {
-          return !this.responseArray.includes(player)
+          return !this.respondents.includes(player)
         })
       }
     }

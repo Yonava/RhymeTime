@@ -37,17 +37,23 @@ export default {
   },
   destroyed() {
     // resets parent state for new round
-    this.$parent.promptResponses = {}
+    this.$parent.promptResponses = []
   },
   mounted() {
-    this.socketInstance.emit('candidate-list', Object.keys(this.promptResponses))
+    this.socketInstance.emit(
+      'candidate-list', 
+      this.promptResponses.map((response) => response.player)
+    )
   },
   methods: {
     countVotes(playerBallot) {
 
       // Refactor this mess when there is time!!!
 
-      Object.keys(this.promptResponses).forEach((player) => this.voteCount[player] = 0)
+      this.promptResponses
+        .map((response) => response.player)
+        .forEach((player) => this.voteCount[player] = 0)
+
       const PLAYER_NAME = Object.keys(playerBallot)[0]
       this.ballotBox[PLAYER_NAME] = playerBallot[PLAYER_NAME]
       Object.keys(this.ballotBox).forEach((ballotHolder) => {
