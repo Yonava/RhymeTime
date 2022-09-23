@@ -1,11 +1,7 @@
 <template>  
   <div class="center">   
-    <div class="text-h4 mb-5">Host View</div>
-    <v-btn text @click.stop="exit">Back</v-btn> 
-    <p>Socket Connected: {{ connectionStatus }}</p> 
-    <br>
-    Link to join this game: {{ url }}
-    <br><br>
+    <div class="text-h4 mb-2">Host View</div>
+    <v-btn text @click.stop="exit">Back</v-btn>
     <component
       :is="currentView"
       :playerList="playerList"
@@ -57,17 +53,6 @@ export default {
   },
   mounted() {
     this.connectSocket()
-  },
-  computed: {
-    url() {
-      return `
-        ${
-          window.location.href.substring(0, window.location.href.length - 5)
-        }/join?room=${
-          this.$store.state.roomid
-        }
-      `
-    }
   },
   methods: {
     connectSocket() {
