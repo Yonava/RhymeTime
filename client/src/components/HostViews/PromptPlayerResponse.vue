@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ timeRemaining }}
+    Time Left: {{ timeRemaining }}
     <br>
     <button @click="stopTimer">stop</button><button @click="startTimer">start</button>
     <br>
@@ -23,11 +23,8 @@
     <div v-for="player in respondents" :key="player.id">
       {{ player }}
     </div>
-    <br>
-    <v-btn 
-      @click.stop="$emit('change-view', 'vote')" 
-      :disabled="!!notAnswered.length"
-    >Start Voting</v-btn>
+    <br><br>
+    <v-btn @click.stop="next">Start Voting</v-btn>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ timeRemaining }}
+    Time Left: {{ timeRemaining }}
     <br>
     Your submissions:
     <br>
@@ -12,7 +12,7 @@
       {{ candidate.player }} - Votes: {{ candidate.votes }}
     </div>
     <br>
-    <v-btn @click.stop="$emit('change-view', 'recap')">Skip</v-btn>
+    <v-btn @click.stop="next">Skip</v-btn>
   </div>
 </template>
 

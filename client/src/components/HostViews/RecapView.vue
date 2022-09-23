@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ timeRemaining }}
+    Time Left: {{ timeRemaining }}
     <br>
     this is a short recap to show players how the game is going so far
   </div>

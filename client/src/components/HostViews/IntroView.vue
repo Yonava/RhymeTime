@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ timeRemaining }}
+    Time Left: {{ timeRemaining }}
     <br><br>
     HEY EVERYBODY, WELCOME TO RHYMETIME. 
     just close your eyes and imagine there is a tutorial video now playing in front of you,
