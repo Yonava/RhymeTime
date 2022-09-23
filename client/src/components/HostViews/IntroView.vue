@@ -7,7 +7,12 @@
 </template>
 
 <script>
+import HostMixin from './HostMixin'
+
 export default {
+  mixins: [
+    HostMixin
+  ],
   mounted() {
     setTimeout(() => {
       this.$emit('change-view', 'respond')

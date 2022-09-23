@@ -15,16 +15,12 @@
 </template>
 
 <script>
+import HostMixin from './HostMixin'
+
 export default {
-  props: {
-    promptResponses: {
-      type: Object,
-      required: true
-    },
-    socketInstance: {
-      required: true
-    }
-  },
+  mixins: [
+    HostMixin
+  ],
   data() {
     return {
       // tallies all the votes in ballotBox and returns object. ie { yona: 5 } yona has 5 votes

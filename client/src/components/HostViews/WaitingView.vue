@@ -14,12 +14,11 @@
 </template>
 
 <script>
+import HostMixin from './HostMixin'
+
 export default {
-  props: {
-    playerList: {
-      type: Array,
-      required: true
-    }
-  }
+  mixins: [
+    HostMixin
+  ]
 }
 </script>

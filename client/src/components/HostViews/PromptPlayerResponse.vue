@@ -28,7 +28,12 @@
 </template>
 
 <script>
+import HostMixin from './HostMixin'
+
 export default {
+  mixins: [
+    HostMixin
+  ],
   data() {
     return {
       // words in current prompt
@@ -52,18 +57,8 @@ export default {
     // this.words = ['gvvd', 'cwd', 'cw','cw','dcvv', 'sdcvfeve', 'vwsve']
     this.socketInstance.emit('new-words', this.words)
   },
-  props: {
-    promptResponses: {
-      type: Array,
-      required: true
-    },
-    playerList: {
-      type: Array,
-      require: true
-    },
-    socketInstance: {
-      required: true
-    }
+  methods: {
+
   },
   watch: {
     promptResponses: {
