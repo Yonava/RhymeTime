@@ -8,6 +8,8 @@
       :playerList="playerList"
       :promptResponses="promptResponses"
       :socketInstance="socket"
+      :winningResponse="winningResponse"
+      @round-winner="winningResponse = $event"
       @change-view="currentView = $event"
       @round-over="roundOver"
       @round-change="totalRounds = $event"
@@ -43,12 +45,14 @@ export default {
       currentView: 'waiting',
       // playerlist contains strings of every connected players nickname
       playerList: [],
-      // prompt responses each round are stored here
+      // prompt responses each round are stored here. response obj. format {player, response}
       promptResponses: [],
       // stores what round the game is on
       roundCount: 1,
       // number of rounds that are to be played
-      totalRounds: 3
+      totalRounds: 3,
+      // response that scored the most points in the voting round
+      winningResponse: { player: '', response: '' }
     }
   },
   destroyed() {
@@ -108,6 +112,10 @@ export default {
         // change currentView to the end state later
         this.$router.push('/')
       }
+
+      // resets responses for new round
+      this.promptResponses = []
+
       this.roundCount++
       this.currentView = 'respond'
       // make sessionStorage back-up of game state here

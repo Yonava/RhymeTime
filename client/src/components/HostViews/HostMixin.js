@@ -25,7 +25,7 @@ export default {
       case 'waiting': 
         return
       case 'intro':
-        this.timeRemaining = 10
+        this.timeRemaining = 3
         break
       case 'respond':
         this.timeRemaining = 90

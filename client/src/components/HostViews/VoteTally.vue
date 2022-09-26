@@ -4,7 +4,9 @@
     <br>
     Your submissions:
     <br>
-    {{ promptResponses }}
+    <div v-for="prompt in promptResponses" :key="prompt.id">
+      {{ prompt.player }} - {{ prompt.response }}
+    </div>
     <br><br><br>
     Here are the live results!
     <br>
@@ -34,8 +36,12 @@ export default {
     }
   },
   destroyed() {
-    // resets parent state for new round
-    this.$parent.promptResponses = []
+    const WINNER = this.candidates[0]?.player ?? 'Nobody'
+    const RESPONSE = this.promptResponses[this.promptResponses.findIndex((obj) => obj.player === WINNER)]?.response ?? 'A response hasnt been given'
+    this.$emit('round-winner', {
+      player: WINNER,
+      response: RESPONSE
+    })
   },
   mounted() {
     this.socketInstance.emit(
