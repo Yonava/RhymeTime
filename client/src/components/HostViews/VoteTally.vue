@@ -3,7 +3,8 @@
     Time Left: {{ timeRemaining }}
 
     <br />
-    <input type="range" min="8" max="100" v-model="height">{{height}}
+    <input type="range" min="8" max="100" v-model="candidates[0].votes">
+    <input type="range" min="8" max="100" v-model="candidates[1].votes">
     <br>
 
     <v-btn @click.stop="next">Skip</v-btn>  
@@ -22,12 +23,10 @@
     </div>
 
     <div class="bar-parent"> 
-
-        <div v-for="player in candidates" :key="player.id" class="center voter-bar" :style="`height: ${height}%;`">
-          <div class="text-p white--text name-tag">cdsi</div>
-        </div>
-        <div class="mx-5"></div>
+      <div v-for="player in candidates" :key="player.id" class="center voter-bar" :style="`height: ${player.votes}%;`">
+        <div class="text-p white--text name-tag">{{ player.player }}</div>
       </div>
+    </div>
 
   </div>
 </template>
@@ -112,6 +111,8 @@ export default {
   width: 75px;
   position: relative; 
   margin-top: auto;
+  margin-left: 1.5%;
+  transition: 500ms ease-in-out;
 }
 
 .name-tag {
@@ -126,6 +127,7 @@ export default {
   align-items: center; 
   justify-content: center;  
   height: 30vh;
+  margin: 0px 150px 0px 150px;
   border-bottom: 8px solid black;
 }
 </style>
