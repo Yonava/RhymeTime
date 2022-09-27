@@ -16,14 +16,19 @@ export default {
       type: Array,
       require: true
     },
+    song: {
+      type: Array,
+      required: true
+    },
     socketInstance: {
       required: true
     }
   },
   mounted() {
+    // could each component be represented an object
+    // with properties of sound track, timeLimit etc
+    // maybe a ts enum??? worth exploring!
     switch (this.$parent.currentView) {
-      case 'waiting': 
-        return
       case 'intro':
         this.timeRemaining = 3
         break
@@ -36,11 +41,18 @@ export default {
       case 'recap':
         this.timeRemaining = 10
         break
+      case 'waiting': 
+        return
+      case 'outro':
+        return
       default:
         return console.error('Uncaught Case Passed Down to HostMixin')
     }
 
     this.startTimer()
+  },
+  destroyed() {
+    clearInterval(this.timer)
   },
   methods: {
     startTimer() {

@@ -9,10 +9,12 @@
       :promptResponses="promptResponses"
       :socketInstance="socket"
       :winningResponse="winningResponse"
-      @round-winner="winningResponse = $event"
+      :song="song"
+      @round-winner="addWinnerToSong($event)"
       @change-view="currentView = $event"
       @round-over="roundOver"
       @round-change="totalRounds = $event"
+      @restart-game="restartGame"
       ref="hostComponents"
     ></component>
   </div>
@@ -24,6 +26,7 @@ import respond from '../components/HostViews/PromptPlayerResponse.vue'
 import vote from '../components/HostViews/VoteTally.vue'
 import intro from '../components/HostViews/IntroView.vue'
 import recap from '../components/HostViews/RecapView.vue'
+import outro from '../components/HostViews/OutroView.vue'
 
 import io from 'socket.io-client'
 
@@ -33,7 +36,8 @@ export default {
     respond,
     vote,
     intro,
-    recap
+    recap,
+    outro
   },
   data() {
     return {
@@ -52,7 +56,9 @@ export default {
       // number of rounds that are to be played
       totalRounds: 3,
       // response that scored the most points in the voting round
-      winningResponse: { player: '', response: '' }
+      winningResponse: { player: '', response: '' },
+      // song consists out of the winning response objects of each round
+      song: []
     }
   },
   destroyed() {
@@ -106,11 +112,15 @@ export default {
       this.socket.disconnect()
       this.connectionStatus = false
     },
+    addWinnerToSong(winningResponse) {
+      console.table(winningResponse)
+      this.song.push(winningResponse)
+      this.winningResponse = winningResponse
+    },
     // called by 'recap' when the round recap is over
     roundOver() {
       if (this.roundCount === this.totalRounds) {
-        // change currentView to the end state later
-        this.$router.push('/')
+        return this.currentView = 'outro'        
       }
 
       // resets responses for new round
@@ -119,6 +129,12 @@ export default {
       this.roundCount++
       this.currentView = 'respond'
       // make sessionStorage back-up of game state here
+    },
+    restartGame() {
+      this.roundCount = 1
+      this.currentView = 'waiting'
+      this.song = []
+      this.promptResponses = []
     }
   },
   watch: {
