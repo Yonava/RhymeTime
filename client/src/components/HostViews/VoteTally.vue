@@ -21,7 +21,6 @@
         <div class="text-p white--text name-tag">{{ player.player }}</div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -87,6 +86,19 @@ export default {
           votes: this.voteCount[player],
         });
       });
+
+      this.calculatePercentage()
+    },
+    calculatePercentage() {
+      const TOTAL_VOTES = this.candidates
+        .map(candidate => candidate.votes)
+        .reduce((previousValue, currentValue) => previousValue + currentValue);
+
+      this.candidates.forEach(candidate => {
+        candidate.votes = (candidate.votes / TOTAL_VOTES) * 100
+        // consolation prize 🥺 😂
+        if (candidate.votes < 8) candidate.votes = 8
+      })
     },
     next() {
       if (this.testMode) return;
