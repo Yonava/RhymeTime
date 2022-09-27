@@ -4,7 +4,13 @@ export default {
       // time remaining in seconds until view has to be changed
       timeRemaining: 30,
       // true if an interval is actively decrementing timeRemaing
-      timerRunning: false
+      timerRunning: false,
+
+
+      // for developing ui only. make sure this is set to false in prod
+      testMode: true,
+      // component that you want to test
+      testView: 'respond'
     }
   },
   props: {
@@ -25,6 +31,11 @@ export default {
     }
   },
   mounted() {
+
+    if (this.testMode && this.$parent.currentView !== this.testView) {
+      this.$emit('change-view', this.testView)
+    }
+
     // could each component be represented an object
     // with properties of sound track, timeLimit etc
     // maybe a ts enum??? worth exploring!
@@ -49,7 +60,7 @@ export default {
         return console.error('Uncaught Case Passed Down to HostMixin')
     }
 
-    this.startTimer()
+    if (!this.testMode) this.startTimer()
   },
   destroyed() {
     clearInterval(this.timer)
@@ -73,7 +84,7 @@ export default {
       // add audio controls here
     },
     unpauseGame() {
-      this.startTimer()
+      if (!this.testMode) this.startTimer()
       // add audio controls here
     }
   }

@@ -89,6 +89,7 @@ export default {
       this.candidates.sort((a, b) => b.votes - a.votes)
     },
     next() {
+      if (this.testMode) return
       this.$emit('change-view', 'recap')
     }
   }

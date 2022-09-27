@@ -55,6 +55,7 @@ export default {
   },
   methods: {
     next() {
+      if (this.testMode) return
       this.$emit('round-over')
     }
   }
