@@ -2,12 +2,19 @@
   <div>
     Time Left: {{ timeRemaining }}
     <br>
-    Your submissions:
-    <br>
-    <div v-for="prompt in promptResponses" :key="prompt.id">
-      {{ prompt.player }} - {{ prompt.response }}
+    <div class="center">
+      <div class="text-h4">Your submissions:</div>
     </div>
-    <br><br><br>
+    <v-row class="pa-5">
+      <v-col
+        v-for="response in promptResponses" :key="response.id"
+        cols="5"
+      >
+        <DisplayResponse
+          :response="response"
+        />
+      </v-col>
+    </v-row>
     Here are the live results!
     <br>
     <div v-for="candidate in candidates" :key="candidate.id">
@@ -20,11 +27,15 @@
 
 <script>
 import HostMixin from './HostMixin'
+import DisplayResponse from './HostSubComponents/ResponseDisplayCard.vue'
 
 export default {
   mixins: [
-    HostMixin
+    HostMixin,
   ],
+  components: {
+    DisplayResponse
+  },
   data() {
     return {
       // tallies all the votes in ballotBox and returns object. ie { yona: 5 } yona has 5 votes

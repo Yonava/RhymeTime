@@ -71,8 +71,7 @@ export default {
     promptResponses: {
       immediate: true,
       handler(v) {
-        this.respondents = v.map((response) => response.player)
-
+        this.respondents = v.map(response => response.player)
         if (this.respondents.length === this.playerList.length) {
           this.stopTimer()
           setTimeout(() => {
