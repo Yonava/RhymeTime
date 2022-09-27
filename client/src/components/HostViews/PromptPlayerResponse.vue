@@ -1,16 +1,8 @@
 <template>
   <div>
     Time Left: {{ timeRemaining }}
-    <br><br>
-    Find a way to put these {{ words.length }} rhyming words together!
     <br>
-    Your Words:
-    <br>
-    <span v-for="word in words" :key="word.id">
-      <span v-if="words[words.length - 1] === word">{{ ', and ' }}</span>
-      <span v-else-if="words[0] !== word">{{ ', ' }}</span>
-      <span class="word">{{ word }}</span>
-    </span>
+    {{ prompt }}
     <br>
     <b>Waiting On:</b>
     <div v-for="player in notAnswered" :key="player.id">
@@ -54,6 +46,17 @@ export default {
     // for experimental purposes
     // this.words = ['gvvd', 'cwd', 'cw','cw','dcvv', 'sdcvfeve', 'vwsve']
     this.socketInstance.emit('new-words', this.words)
+  },
+  computed: {
+    prompt() {
+      let wordsInPrompt = ''
+      for (let i = 0; i < this.words.length; i++) {
+        if (this.words.length - 1 === i) wordsInPrompt += ', and '
+        else if (i !== 0) wordsInPrompt += ', '
+        wordsInPrompt += this.words[i]
+      }
+      return `Find a way to rhyme these ${this.words.length} words together: ${wordsInPrompt}`
+    }
   },
   methods: {
     next() {

@@ -46,7 +46,7 @@ export default {
       // stores socket instance
       socket: null,
       // sets the current view of the game, emits to players
-      currentView: 'waiting',
+      currentView: 'respond',
       // playerlist contains strings of every connected players nickname
       playerList: [],
       // prompt responses each round are stored here. response obj. format {player, response}
