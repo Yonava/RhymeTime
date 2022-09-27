@@ -1,29 +1,34 @@
 <template>
   <div>
     Time Left: {{ timeRemaining }}
+
     <br />
+    <input type="range" min="8" max="100" v-model="height">{{height}}
+    <br>
+
+    <v-btn @click.stop="next">Skip</v-btn>  
     <div class="center">
       <div class="text-h4">Your Submissions</div>
     </div>
+
     <v-row justify="center" class="pa-4">
       <v-col v-for="response in promptResponses" :key="response.id" cols="2">
         <DisplayResponse :response="response" />
       </v-col>
     </v-row>
+
     <div class="center">
       <div class="text-h4">Live Voting Results</div>
     </div>
-    <center>
-      <div style="bottom: 0; position: relative;" class="bar-parent" v-for="player in candidates" :key="player.id">
-        <div class="center" style="">
-          <div class="voter-bar" :style="`height: ${height}px;`"></div>
-          {{ player.player }}
+
+    <div class="bar-parent"> 
+
+        <div v-for="player in candidates" :key="player.id" class="center voter-bar" :style="`height: ${height}%;`">
+          <div class="text-p white--text name-tag">cdsi</div>
         </div>
+        <div class="mx-5"></div>
       </div>
-    </center>
-    <input type="range" min="1" max="500" v-model="height">
-    <br>
-    <v-btn @click.stop="next">Skip</v-btn>
+
   </div>
 </template>
 
@@ -38,7 +43,7 @@ export default {
   },
   data() {
     return {
-      height: "200",
+      height: "20",
       // tallies all the votes in ballotBox and returns object. ie { yona: 5 } yona has 5 votes
       voteCount: {},
       // stores ballots submitted by players
@@ -103,13 +108,24 @@ export default {
 
 <style scoped>
 .voter-bar {
-  background-color: purple;
-  width: 50px;
-  transition: 500ms;
+  background-color: purple; 
+  width: 75px;
+  position: relative; 
+  margin-top: auto;
+}
+
+.name-tag {
+  top: 0; 
+  position: absolute; 
+  font-weight: bold;
 }
 
 .bar-parent {
-  display: inline-block;
-  margin: 0px 5px 0px 5px;
+  display: flex; 
+  flex-direction: row; 
+  align-items: center; 
+  justify-content: center;  
+  height: 30vh;
+  border-bottom: 8px solid black;
 }
 </style>
