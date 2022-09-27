@@ -48,7 +48,7 @@ export default {
       // sets the current view of the game, emits to players
       currentView: 'respond',
       // playerlist contains strings of every connected players nickname
-      playerList: [],
+      playerList: ['yona', 'bella'],
       // prompt responses each round are stored here. response obj. format {player, response}
       promptResponses: [],
       // stores what round the game is on

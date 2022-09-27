@@ -1,30 +1,32 @@
 <template>
   <div>
     Time Left: {{ timeRemaining }}
-    <br>
     {{ prompt }}
     <br>
-    <b>Waiting On:</b>
-    <div v-for="player in notAnswered" :key="player.id">
-      {{ player }}
+    <div v-for="player in playerList" :key="player.id">
+      <ResponseCard
+        :playerName="player"
+        :hasResponded="hasResponded"
+      />
     </div>
     <br>
-    <b>Players Who Have Responded:</b> 
-    <div v-for="player in respondents" :key="player.id">
-      {{ player }}
-    </div>
     <br><br>
+    <v-btn @click="hasResponded = !hasResponded">toggle</v-btn>
     <v-btn @click.stop="next">Start Voting</v-btn>
   </div>
 </template>
 
 <script>
 import HostMixin from './HostMixin'
+import ResponseCard from './HostSubComponents/PlayerResponseCard.vue'
 
 export default {
   mixins: [
     HostMixin
   ],
+  components: {
+    ResponseCard
+  },
   data() {
     return {
       // words in current prompt
@@ -32,7 +34,9 @@ export default {
       // array containing players that have answered the prompt
       respondents: [],
       // array containing players that have not answered the prompt
-      notAnswered: []
+      notAnswered: [],
+      // for testing
+      hasResponded: false
     }
   },
   mounted() {
@@ -43,8 +47,6 @@ export default {
       ['elaborate', 'vacate']
     ]
     this.words = RHYMING_PAIRS[Math.floor(Math.random() * RHYMING_PAIRS.length)]
-    // for experimental purposes
-    // this.words = ['gvvd', 'cwd', 'cw','cw','dcvv', 'sdcvfeve', 'vwsve']
     this.socketInstance.emit('new-words', this.words)
   },
   computed: {
