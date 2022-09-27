@@ -6,11 +6,10 @@ export default {
       // true if an interval is actively decrementing timeRemaing
       timerRunning: false,
 
-
       // for developing ui only. make sure this is set to false in prod
       testMode: true,
       // component that you want to test
-      testView: 'respond'
+      testView: 'vote'
     }
   },
   props: {

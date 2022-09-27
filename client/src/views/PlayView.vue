@@ -105,6 +105,7 @@ export default {
             this.socket.emit('player-join', this.$store.state.nickname)
             this.hostCountdown()
             this.socket.emit('report-to-players')
+            this.socket.emit('get-current-view')
           }
         })
       })

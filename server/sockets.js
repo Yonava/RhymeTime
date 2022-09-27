@@ -36,6 +36,10 @@ io.on('connection', socket => {
     socket.to(roomid).emit('report-to-host')
   })
 
+  socket.on('get-current-view', () => {
+    socket.to(roomid).emit('broadcast-current-view')
+  })
+
   socket.on('report-to-players', () => {
     socket.to(roomid).emit('report-to-players')
   })

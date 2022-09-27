@@ -2,7 +2,7 @@
   <div>
     <v-toolbar>
       <v-icon @click.stop="exit">mdi-chevron-left</v-icon>
-      <div class="text-h6">back to menu</div>
+      <div class="text-h6">playing in room {{ $store.state.roomid }}</div>
       <v-spacer></v-spacer>
       <div v-if="currentView != 'waiting'" class="text-p">round {{ roundCount }} out of {{ totalRounds }}</div>
     </v-toolbar>
@@ -102,6 +102,9 @@ export default {
       })
       this.socket.on('ballot-collector', (playerBallot) => {
         this.$refs.hostComponents.countVotes(playerBallot)
+      })
+      this.socket.on('broadcast-current-view', () => {
+        this.socket.emit('change-view', this.currentView)
       })
     },
     emitVisibility() {
