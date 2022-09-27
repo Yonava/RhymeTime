@@ -1,11 +1,13 @@
 <template>
   <v-card>
-    <v-card-title 
+    <div 
+      class="center" 
       style="word-break: break-word; background-color: purple"
-      class="white--text"
-    > 
-      {{ response.player }}
-    </v-card-title>
+    >
+      <v-card-title class="white--text"> 
+        {{ response.player }}
+      </v-card-title>
+    </div>
     <v-card-text>
       <div class="text-p">
         {{ response.response }}
