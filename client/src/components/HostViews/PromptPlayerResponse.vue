@@ -1,18 +1,22 @@
 <template>
   <div>
     Time Left: {{ timeRemaining }}
-    {{ prompt }}
     <br>
-    <div v-for="player in playerList" :key="player.id">
-      <ResponseCard
-        :playerName="player"
-        :hasResponded="hasResponded"
-      />
+    <div class="center mb-2">
+      Find a way to rhyme these {{ words.length }} words together: 
+      <div class="text-h4 ma-2">{{ prompt }}</div>
     </div>
-    <br>
-    <br><br>
-    <v-btn @click="hasResponded = !hasResponded">toggle</v-btn>
-    <v-btn @click.stop="next">Start Voting</v-btn>
+    <v-row>
+      <v-col
+        v-for="player in playerList" :key="player.id"
+        cols="6"
+      >
+        <ResponseCard
+          :playerName="player"
+          :hasResponded="respondents.includes(player)"
+        />
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -33,8 +37,6 @@ export default {
       words: [],
       // array containing players that have answered the prompt
       respondents: [],
-      // array containing players that have not answered the prompt
-      notAnswered: [],
       // for testing
       hasResponded: false
     }
@@ -57,7 +59,7 @@ export default {
         else if (i !== 0) wordsInPrompt += ', '
         wordsInPrompt += this.words[i]
       }
-      return `Find a way to rhyme these ${this.words.length} words together: ${wordsInPrompt}`
+      return wordsInPrompt
     }
   },
   methods: {
@@ -70,18 +72,15 @@ export default {
       immediate: true,
       handler(v) {
         this.respondents = v.map((response) => response.player)
-        this.notAnswered = this.playerList.filter((player) => {
-          return !this.respondents.includes(player)
-        })
+
+        if (this.respondents.length === this.playerList.length) {
+          this.stopTimer()
+          setTimeout(() => {
+            this.next()
+          }, 3000)
+        }
       }
     }
   }
 }
 </script>
-
-<style scoped>
-.word {
-  color: red;
-  font-style: italic;
-}
-</style>

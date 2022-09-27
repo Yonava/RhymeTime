@@ -49,7 +49,7 @@ export default {
         return console.error('Uncaught Case Passed Down to HostMixin')
     }
 
-    // this.startTimer()
+    this.startTimer()
   },
   destroyed() {
     clearInterval(this.timer)
@@ -73,7 +73,7 @@ export default {
       // add audio controls here
     },
     unpauseGame() {
-      // this.startTimer()
+      this.startTimer()
       // add audio controls here
     }
   }

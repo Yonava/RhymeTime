@@ -1,19 +1,23 @@
 <template>
   <div>
     <center>
-      Scan QR Code or Enter With RoomID {{ $store.state.roomid }} to Join
-      <v-img
-        :src="qrCodeAPI"
-        width="200"
-        class="my-4"
-      ></v-img>
-      <v-text-field
-        v-model="rounds"
-        label="How many rounds are we playing?"
-        filled
-        type="number"
-        max-width="10px"
-      ></v-text-field>
+      <div class="text-h6 mt-3">
+        Scan QR Code or Enter With RoomID {{ $store.state.roomid }} to Join
+      </div>
+      <div style="width: 50%">
+        <v-img
+          :src="qrCodeAPI"
+          width="200"
+          class="my-4"
+        ></v-img>
+        <v-text-field
+          v-model="rounds"
+          label="How many rounds are we playing?"
+          filled
+          type="number"
+          max-width="10px"
+        ></v-text-field>
+      </div>
       <div class="text-h5">Players In Room:</div>
       <div v-for="player in playerList" :key="player.id">
         <div class="text-h6">

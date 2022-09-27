@@ -1,8 +1,12 @@
 <template>  
-  <div class="center">   
-    <div class="text-h4 mb-2">Host View</div>
-    <v-btn text @click.stop="exit">Back</v-btn>
-    <p v-if="currentView != 'waiting'">Round {{ roundCount }}/{{ totalRounds }}</p>
+  <div>
+    <v-toolbar>
+      <v-icon @click.stop="exit">mdi-chevron-left</v-icon>
+      <div class="text-h6">back to menu</div>
+      <v-spacer></v-spacer>
+      <div v-if="currentView != 'waiting'" class="text-p">round {{ roundCount }} out of {{ totalRounds }}</div>
+    </v-toolbar>
+  
     <component
       :is="currentView"
       :playerList="playerList"
@@ -46,9 +50,9 @@ export default {
       // stores socket instance
       socket: null,
       // sets the current view of the game, emits to players
-      currentView: 'respond',
+      currentView: 'waiting',
       // playerlist contains strings of every connected players nickname
-      playerList: ['yona', 'bella'],
+      playerList: [],
       // prompt responses each round are stored here. response obj. format {player, response}
       promptResponses: [],
       // stores what round the game is on

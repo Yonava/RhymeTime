@@ -1,20 +1,20 @@
 <template>
   <div>
-    Time Left: {{ timeRemaining }}
-    <br>
-    This Rounds Winner Was...
-    <br>
-    <b>{{ winningResponse.player }}</b>
-    <br>
-    <b>Who Wrote:</b>
-    <br>
-    <v-row align="center" justify="center">
+    <div class="center">
+      Time Left: {{ timeRemaining }}
+      <br>
+      This Rounds Winner Was...
+      <br>
+      <b>{{ winningResponse.player }}</b>
+      <br>
+      <b>Who Wrote:</b>
+      <br>
       <div class="box">
         <i>{{ displayedResponse }}</i>
       </div>
-    </v-row>
-    <br><br><br>
-    <div>What Poetry!</div>
+      <div>What Poetry!</div>
+      <v-btn @click="next">next</v-btn>
+    </div>
   </div>
 </template>
 
@@ -63,7 +63,6 @@ export default {
 
 <style scoped>
   .box {
-    border: 1px solid black;
-    width: 20vw;
+   
   }
 </style>

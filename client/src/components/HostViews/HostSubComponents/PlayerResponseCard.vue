@@ -1,7 +1,7 @@
 <template>
   <v-card
     class="mx-auto"
-    max-width="300"
+    max-width="400"
     outlined
   >
     <v-card-title 
@@ -14,18 +14,21 @@
     <v-card-text class="pa-10">
       <div class="center">
         <div v-if="!hasResponded">
-          <div style="position: fixed" class="snippet" data-title=".dot-pulse">
+          <div style="position: absolute" class="snippet" data-title=".dot-pulse">
             <div class="stage">
               <div class="dot-pulse"></div>
             </div>
           </div>
         </div>
-        <v-icon style="position: fixed" v-else large>
+        <v-icon 
+          v-else 
+          style="position: absolute" 
+          large
+        >
           mdi-comment-check-outline
         </v-icon>
       </div>
     </v-card-text>
-    
   </v-card>
 </template>
 
@@ -53,22 +56,6 @@ export default {
 </script>
 
 <style scoped>
-.list-move /* apply transition to moving elements */ {
-  transition: all 0.5s ease;
-}
-.slide-in-enter, .slide-out-leave-to {
-  transform: translateX(-100%);
-}
-.slide-in-enter-to, .slide-in-leave-from, .slide-out-enter-to, .slide-out-leave-from {
-  transform: translateX(0);
-}
-.slide-in-enter-active, .slide-in-leave-active, .slide-out-enter-active, .slide-out-leave-active {
-  transition: all 300ms;
-  position: fixed;
-}
-.slide-in-leave-to, .slide-out-enter {
-  transform: translateX(100%);
-}
 
 .dot-pulse {
   position: relative;
