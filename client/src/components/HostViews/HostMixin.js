@@ -7,9 +7,9 @@ export default {
       timerRunning: false,
 
       // for developing ui only. make sure this is set to false in prod
-      testMode: true,
+      testMode: false,
       // component that you want to test
-      testView: 'vote'
+      testView: ''
     }
   },
   props: {
@@ -46,7 +46,7 @@ export default {
         this.timeRemaining = 90
         break
       case 'vote':
-        this.timeRemaining = 30
+        this.timeRemaining = 15
         break
       case 'recap':
         this.timeRemaining = 10

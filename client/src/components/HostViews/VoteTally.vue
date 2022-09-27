@@ -2,12 +2,6 @@
   <div>
     Time Left: {{ timeRemaining }}
 
-    <br />
-    <input type="range" min="8" max="100" v-model="candidates[0].votes">
-    <input type="range" min="8" max="100" v-model="candidates[1].votes">
-    <br>
-
-    <v-btn @click.stop="next">Skip</v-btn>  
     <div class="center">
       <div class="text-h4">Your Submissions</div>
     </div>
@@ -48,10 +42,7 @@ export default {
       // stores ballots submitted by players
       ballotBox: {},
       // candidate = { player: playerName, votes: totalVotes }
-      candidates: [
-        { player: "bella", votes: "15" },
-        { player: "yona", votes: "12" },
-      ],
+      candidates: [],
     };
   },
   destroyed() {
@@ -126,8 +117,8 @@ export default {
   flex-direction: row; 
   align-items: center; 
   justify-content: center;  
-  height: 30vh;
-  margin: 0px 150px 0px 150px;
+  height: 37vh;
+  margin: 0px 300px 0px 300px;
   border-bottom: 8px solid black;
 }
 </style>

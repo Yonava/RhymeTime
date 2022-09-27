@@ -53,13 +53,7 @@ export default {
       // playerlist contains strings of every connected players nickname
       playerList: [],
       // prompt responses each round are stored here. response obj. format {player, response}
-      promptResponses: [{player: 'yona', response: `Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-       Dolorem quibusdam distinctio itaque fuga obcaecati labore. Aperiam repellendus id vel autem adipisci
-       molestiae consequatur. Ratione ob`}, 
-       {player: 'bella', response: `ellendus id vel autem adipisci molestiae consequatur. Ratione obcaecati quibusdam ipsa 
-       excepturi delectus? Earum omnis sapiente sint doloremque quasi ipsam adipisci 
-       blanditiis ad praesentium ab, necessitatibus, 
-       officiis dignissimos rerum eos fa`}],
+      promptResponses: [],
       // stores what round the game is on
       roundCount: 1,
       // number of rounds that are to be played
