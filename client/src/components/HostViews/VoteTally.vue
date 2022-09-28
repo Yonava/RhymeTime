@@ -17,8 +17,15 @@
     </div>
 
     <div class="bar-parent"> 
-      <div v-for="player in candidates" :key="player.id" class="center voter-bar" :style="`height: ${player.votes}%;`">
-        <div class="text-p white--text name-tag">{{ player.player }}</div>
+      <div 
+        v-for="player in candidates" 
+        :key="player.id" 
+        class="center voter-bar" 
+        :style="`height: ${player.votes}%;`"
+      >
+        <div class="text-p white--text name-tag">
+          {{ player.player }}
+        </div>
       </div>
     </div>
   </div>
@@ -35,7 +42,6 @@ export default {
   },
   data() {
     return {
-      height: "20",
       // tallies all the votes in ballotBox and returns object. ie { yona: 5 } yona has 5 votes
       voteCount: {},
       // stores ballots submitted by players
@@ -57,6 +63,13 @@ export default {
     });
   },
   mounted() {
+    this.promptResponses.forEach((response) => {
+      this.candidates.push({
+        player: response.player,
+        votes: 100
+      })
+    })
+    this.calculatePercentage()
     this.socketInstance.emit(
       "candidate-list",
       this.promptResponses.map((response) => response.player)
@@ -64,8 +77,6 @@ export default {
   },
   methods: {
     countVotes(playerBallot) {
-      // Refactor this mess when there is time!!!
-
       this.promptResponses
         .map((response) => response.player)
         .forEach((player) => (this.voteCount[player] = 0));
@@ -95,8 +106,9 @@ export default {
         .reduce((previousValue, currentValue) => previousValue + currentValue);
 
       this.candidates.forEach(candidate => {
-        candidate.votes = (candidate.votes / TOTAL_VOTES) * 100
-        // consolation prize 🥺 😂
+        // gets players' percentage share of the votes cast
+        candidate.votes = Math.round((candidate.votes / TOTAL_VOTES) * 100)
+        // consolation prize for fewer than 8% of votes 🥺 😂
         if (candidate.votes < 8) candidate.votes = 8
       })
     },

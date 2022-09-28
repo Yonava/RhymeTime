@@ -14,7 +14,11 @@
     <v-card-text class="pa-10">
       <div class="center">
         <div v-if="!hasResponded">
-          <div style="position: absolute" class="snippet" data-title=".dot-pulse">
+          <div 
+            style="position: absolute" 
+            class="snippet" 
+            data-title=".dot-pulse"
+          >
             <div class="stage">
               <div class="dot-pulse"></div>
             </div>
@@ -46,7 +50,7 @@ export default {
   },
   computed: {
     suffix() {
-      return this.hasResponded ? ' is ready!' : ' is still thinking...'
+      return this.hasResponded ? ' is ready!' : ' is thinking...'
     },
     cardTitleColor() {
       return this.hasResponded ? '#228B22' : '#D2042D'

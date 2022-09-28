@@ -1,7 +1,9 @@
 <template>
-  <div>
-    Time Left: {{ timeRemaining }}
-    <br>
+  <div>  
+    <Clock
+      :timeLeft="timeRemaining"
+      :totalTime="totalTime"
+    />
     <div class="center mb-2">
       Find a way to rhyme these {{ words.length }} words together: 
       <div class="text-h4 ma-2">{{ prompt }}</div>
@@ -23,13 +25,15 @@
 <script>
 import HostMixin from './HostMixin'
 import ResponseCard from './HostSubComponents/PlayerResponseCard.vue'
+import Clock from './HostSubComponents/ClockDisplay.vue'
 
 export default {
   mixins: [
     HostMixin
   ],
   components: {
-    ResponseCard
+    ResponseCard,
+    Clock
   },
   data() {
     return {

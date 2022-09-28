@@ -1,6 +1,8 @@
 export default {
   data() {
     return {
+      // total time in seconds that the component stays active for
+      totalTime: 30,
       // time remaining in seconds until view has to be changed
       timeRemaining: 30,
       // true if an interval is actively decrementing timeRemaing
@@ -46,7 +48,7 @@ export default {
         this.timeRemaining = 90
         break
       case 'vote':
-        this.timeRemaining = 15
+        this.timeRemaining = 20
         break
       case 'recap':
         this.timeRemaining = 10
@@ -59,6 +61,7 @@ export default {
         return console.error('Uncaught Case Passed Down to HostMixin')
     }
 
+    this.totalTime = this.timeRemaining
     if (!this.testMode) this.startTimer()
   },
   destroyed() {
