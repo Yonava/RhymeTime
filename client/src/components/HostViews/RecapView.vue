@@ -15,8 +15,6 @@
       />
     </div> 
     <div class="center">
-      Time Left: {{ timeRemaining }}
-      <br>
       This Rounds Winner Was...
       <br>
       <b>{{ winningResponse.player }}</b>

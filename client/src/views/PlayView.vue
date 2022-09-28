@@ -114,6 +114,7 @@ export default {
       })
       this.socket.on('change-view', newView => {
         this.currentView = newView
+        window.scrollTo(0, 0)
       })
       this.socket.on('roll-call', () => {
         this.socket.emit('player-join', this.$store.state.nickname)

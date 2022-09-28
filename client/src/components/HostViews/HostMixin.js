@@ -53,7 +53,7 @@ export default {
     // maybe a ts enum??? worth exploring!
     switch (this.$parent.currentView) {
       case 'respond':
-        this.timeRemaining = 10
+        this.timeRemaining = 90
         this.audio = new Audio(require('../../../assets/respond.mp3'))
         break
       case 'vote':
@@ -61,7 +61,7 @@ export default {
         this.audio = new Audio(require('../../../assets/vote.mp3'))
         break
       case 'recap':
-        this.timeRemaining = 90
+        this.timeRemaining = 15
         this.audio = undefined
         break
       case 'waiting': 
