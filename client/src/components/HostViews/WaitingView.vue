@@ -18,6 +18,17 @@
           max-width="10px"
         ></v-text-field>
       </div>
+      <v-btn
+        @click.stop="next"
+        color="green"
+        class="white--text mb-3"
+        rounded
+        large
+        :disabled="!playerList.length"
+      >
+        <v-icon class="mr-2">mdi-play</v-icon>
+        Start Game
+      </v-btn>
       <div class="text-h5">Players In Room:</div>
       <div v-for="player in playerList" :key="player.id">
         <div class="text-h6">
@@ -28,12 +39,6 @@
         v-if="!playerList.length" 
         class="text-h6 red--text"
       >No Players Have Joined Yet</div>
-      <v-btn
-        @click.stop="next"
-        color="green"
-        class="mt-4"
-        text
-      >Start Game</v-btn>
     </center>
   </div>
 </template>

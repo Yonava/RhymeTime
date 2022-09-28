@@ -18,7 +18,7 @@ export default {
       // for developing ui only. make sure this is set to false in prod
       testMode: false,
       // component that you want to test
-      testView: 'intro'
+      testView: ''
     }
   },
   components: {
@@ -45,6 +45,7 @@ export default {
 
     if (this.testMode && this.$parent.currentView !== this.testView) {
       this.$emit('change-view', this.testView)
+      this.timerDisabled = true
     }
 
     // could each component be represented an object
@@ -65,12 +66,15 @@ export default {
         break
       case 'waiting': 
         this.audio = new Audio(require('../../../assets/waiting.mp3'))
+        this.timerDisabled = true
         break
       case 'intro':
         this.audio = undefined
+        this.timerDisabled = true
         break
       case 'outro':
         this.audio = undefined
+        this.timerDisabled = true
         break
       default:
         return console.error('Uncaught Case Passed Down to HostMixin')
@@ -78,7 +82,7 @@ export default {
 
     this.totalTime = this.timeRemaining
     if (this.audio?.play()) this.audio.play()
-    if (!this.testMode) this.startTimer()
+    this.startTimer()
   },
   destroyed() {
     clearInterval(this.timer)
@@ -112,10 +116,10 @@ export default {
     },
     playEffect(soundEffect) {
       switch (soundEffect) {
-        case 'beep': {
+        case 'beep':
           this.beepSound.currentTime = 0
           this.beepSound.play()
-        }
+          break
       }
     }
   }

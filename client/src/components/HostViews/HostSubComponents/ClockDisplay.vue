@@ -1,5 +1,8 @@
 <template>
-  <div class="center pa-4 clock-parent">
+  <div 
+    class="center pa-4 clock-parent"
+    :style="`background-color: ${backgroundColor}`"
+  >
     <div class="text-h6 mb-2">
       {{ title }}
     </div>
@@ -33,6 +36,11 @@ export default {
       default: 'Moving On In'
     }
   },
+  data() {
+    return {
+      backgroundColor: 'rgb(245, 245, 245)'
+    }
+  },
   computed: {
     progress() {
       return (this.timeLeft / this.totalTime) * 100
@@ -45,15 +53,24 @@ export default {
 
       return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
     }
+  },
+  watch: {
+    timeLeft(v) {
+      if (v < 5) {
+        this.backgroundColor = 'rgb(255, 225, 225)'
+        setTimeout(() => {
+          this.backgroundColor = 'rgb(245, 245, 245)'
+        }, 250)
+      }
+    }
   }
 }
-  
 </script>
 
 <style scoped>
   .clock-parent {
     border: 2px solid black; 
     border-radius: 10px;
-    background-color: #f7f7f7
+    transition: 250ms; 
   }
 </style>

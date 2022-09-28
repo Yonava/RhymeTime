@@ -4,7 +4,10 @@
       <v-icon @click.stop="exit">mdi-chevron-left</v-icon>
       <div class="text-h6">playing in room {{ $store.state.roomid }}</div>
       <v-spacer></v-spacer>
-      <div v-if="currentView != 'waiting'" class="text-p">round {{ roundCount }} out of {{ totalRounds }}</div>
+      <div 
+        v-if="currentView != 'waiting'" 
+        class="text-p"
+      >round {{ roundCount }} out of {{ totalRounds }}</div>
     </v-toolbar>
     <component
       :is="currentView"
@@ -51,18 +54,9 @@ export default {
       // sets the current view of the game, emits to players
       currentView: 'waiting',
       // playerlist contains strings of every connected players nickname
-      playerList: ['Thomas', 'Yona', 'Josh'],
+      playerList: [],
       // prompt responses each round are stored here. response obj. format {player, response}
-      promptResponses: [{player: 'Thomas', response: `
-      fsivvfodfnsgipnisgdonvddfbi
-      dfvbinpsfbdsipofvbndsinvdounverw
-      sfginpevwe[ponvwevpnewvnwou[
-        fvwipnvewwpinvewpvbtinewvbp[entvbe[pn`},
-        {player: 'Yona', response: `
-      fsivvfodfnsgipnisgdonvddfbi
-      dfvbinpsfbdsipofvbndsinvdounverw
-      sfginpevwe[ponvwevpnewvnwou[
-        fvwipnvewwpinvewpvbtinewvbp[entvbe[pn`}],
+      promptResponses: [],
       // stores what round the game is on
       roundCount: 1,
       // number of rounds that are to be played

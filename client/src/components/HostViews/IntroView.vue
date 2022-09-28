@@ -4,8 +4,8 @@
       just close your eyes and imagine there is a tutorial video now playing in front of you,
       if you really set your mind on it, you may manifest it into reality. 
     </div>
-    <v-btn 
-      @click="next" 
+    <v-btn
+      @click.stop="next" 
       class="white--text mt-8" 
       color="red"
     >Skip intro</v-btn>
