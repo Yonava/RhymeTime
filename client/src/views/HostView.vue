@@ -54,9 +54,48 @@ export default {
       // sets the current view of the game, emits to players
       currentView: 'waiting',
       // playerlist contains strings of every connected players nickname
-      playerList: [],
+      playerList: ['yona', 'shannon', 'bella', 'sds', 'IEatAss'],
       // prompt responses each round are stored here. response obj. format {player, response}
-      promptResponses: [],
+      promptResponses: [{
+        player: 'dummy',
+        response: `I write this email announcing our second SNHU Buddies Event of the semester! We are all very excited to see you all Wednesday, October 5th from 6 p.m. to 7:30 p.m. In the lobby of Belknap Hall.
+There will be drinks and popcorn provided. We cannot wait to see you all there!`
+      }, {
+        player: 'dummy',
+        response: `dsnipsfnvioniofnfivpofevienfveionv
+        fsvinpefvpienwpineviunovepinvefpivne
+        fvqopfbhqubvgnfou;vblnwfv'ebufvewoub;euobv;
+        qfiblf;bdw'l;fgnqu;bfqnbvodf;bnver'oivnasfouv'nsavs
+        fvi;qdbfnqpobvnf;vnvdfoinfbvwe;i`
+      },{
+        player: 'dummy',
+        response: `dsnipsfnvioniofnfivpofevienfveionv
+        fsvinpefvpienwpineviunovepinvefpivne
+        fvqopfbhqubvgnfou;vblnwfv'ebufvewoub;euobv;
+        qfiblf;bdw'l;fgnqu;bfqnbvodf;bnver'oivnasfouv'nsavs
+        fvi;qdbfnqpobvnf;vnvdfoinfbvwe;i`
+      },{
+        player: 'dummy',
+        response: `dsnipsfnvioniofnfivpofevienfveionv
+        fsvinpefvpienwpineviunovepinvefpivne
+        fvqopfbhqubvgnfou;vblnwfv'ebufvewoub;euobv;
+        qfiblf;bdw'l;fgnqu;bfqnbvodf;bnver'oivnasfouv'nsavs
+        fvi;qdbfnqpobvnf;vnvdfoinfbvwe;i`
+      },{
+        player: 'dummy',
+        response: `dsnipsfnvioniofnfivpofevienfveionv
+        fsvinpefvpienwpineviunovepinvefpivne
+        fvqopfbhqubvgnfou;vblnwfv'ebufvewoub;euobv;
+        qfiblf;bdw'l;fgnqu;bfqnbvodf;bnver'oivnasfouv'nsavs
+        fvi;qdbfnqpobvnf;vnvdfoinfbvwe;i`
+      },{
+        player: 'dummy',
+        response: `dsnipsfnvioniofnfivpofevienfveionv
+        fsvinpefvpienwpineviunovepinvefpivne
+        fvqopfbhqubvgnfou;vblnwfv'ebufvewoub;euobv;
+        qfiblf;bdw'l;fgnqu;bfqnbvodf;bnver'oivnasfouv'nsavs
+        fvi;qdbfnqpobvnf;vnvdfoinfbvwe;i`
+      }],
       // stores what round the game is on
       roundCount: 1,
       // number of rounds that are to be played

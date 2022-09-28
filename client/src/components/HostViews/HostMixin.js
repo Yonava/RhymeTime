@@ -16,9 +16,9 @@ export default {
       beepSound: new Audio(require('../../../assets/beep.mp3')),
 
       // for developing ui only. make sure this is set to false in prod
-      testMode: false,
+      testMode: true,
       // component that you want to test
-      testView: ''
+      testView: 'respond'
     }
   },
   components: {
@@ -43,11 +43,9 @@ export default {
   },
   mounted() {
 
-    if (this.testMode && this.$parent.currentView !== this.testView) {
-      this.$emit('change-view', this.testView)
-      this.timerDisabled = true
-    }
-
+    if (this.testMode && this.$parent.currentView !== this.testView) this.$emit('change-view', this.testView)
+    if (this.testMode) this.timerDisabled = true
+    
     // could each component be represented an object
     // with properties of sound track, timeLimit etc
     // maybe a ts enum??? worth exploring!

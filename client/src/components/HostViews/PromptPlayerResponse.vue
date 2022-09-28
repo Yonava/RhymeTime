@@ -12,12 +12,12 @@
         :totalTime="totalTime"
       />
     </div> 
-    <div class="center mt-5 mb-8" >
-      Find a way to rhyme these {{ words.length }} words together: 
-      <div class="text-h3">{{ prompt }}</div>
-    </div>
+    <Prompt 
+      :words="words"
+      @prompt-intro-over="preIntroResponseStyles = ''"
+    />
     <div class="center">
-      <div style="width: 60%">
+      <div :style="`transition: 3s; width: 60%; ${preIntroResponseStyles}`">
         <v-row align="center" justify="center">
           <v-col
             v-for="player in playerList" :key="player.id"
@@ -37,13 +37,15 @@
 <script>
 import HostMixin from './HostMixin'
 import ResponseCard from './HostSubComponents/PlayerResponseCard.vue'
+import Prompt from './HostSubComponents/ResponseHeading.vue'
 
 export default {
   mixins: [
     HostMixin
   ],
   components: {
-    ResponseCard
+    ResponseCard,
+    Prompt
   },
   data() {
     return {
@@ -52,7 +54,9 @@ export default {
       // array containing players that have answered the prompt
       respondents: [],
       // for testing
-      hasResponded: false
+      hasResponded: false,
+      // these styles are applied until prompt finishes its intro
+      preIntroResponseStyles: 'opacity: 0; transform: translateY(-10%); width: 50%; height: 100%'
     }
   },
   mounted() {
@@ -64,17 +68,6 @@ export default {
     ]
     this.words = RHYMING_PAIRS[Math.floor(Math.random() * RHYMING_PAIRS.length)]
     this.socketInstance.emit('new-words', this.words)
-  },
-  computed: {
-    prompt() {
-      let wordsInPrompt = ''
-      for (let i = 0; i < this.words.length; i++) {
-        if (this.words.length - 1 === i) wordsInPrompt += ', and '
-        else if (i !== 0) wordsInPrompt += ', '
-        wordsInPrompt += this.words[i]
-      }
-      return wordsInPrompt
-    }
   },
   methods: {
     next() {

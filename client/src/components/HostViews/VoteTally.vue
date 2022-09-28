@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div style="position: absolute; top: 10%; left: 2%">
+    <div style="position: absolute; top: 10%; left: 2%; z-index: 2">
       <Clock
         :timeLeft="timeRemaining"
         :totalTime="totalTime"
         title="Polls Close In"
       />
     </div> 
-    <div style="position: absolute; top: 10%; right: 2%">
+    <div style="position: absolute; top: 10%; right: 2%; z-index: 2">
       <Clock
         :timeLeft="timeRemaining"
         :totalTime="totalTime"
@@ -18,11 +18,15 @@
       <div class="text-h4">Your Submissions</div>
     </div>
 
-    <v-row justify="center" class="pa-4">
-      <v-col v-for="response in promptResponses" :key="response.id" cols="2">
-        <DisplayResponse :response="response" />
-      </v-col>
-    </v-row>
+    <div class="center">
+      <div style="width: 75%;">
+        <v-row class="pa-4">
+          <v-col v-for="response in promptResponses" :key="response.id">
+            <DisplayResponse :response="response" />
+          </v-col>
+        </v-row>
+      </div>
+    </div>
 
     <div class="center">
       <div class="text-h4 mt-5">Live Voting Results</div>
@@ -79,7 +83,7 @@ export default {
       "candidate-list",
       this.promptResponses.map((response) => response.player)
     )
-    
+
     this.promptResponses.forEach((response) => {
       this.candidates.push({
         player: response.player,
