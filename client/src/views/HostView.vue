@@ -51,9 +51,18 @@ export default {
       // sets the current view of the game, emits to players
       currentView: 'waiting',
       // playerlist contains strings of every connected players nickname
-      playerList: [],
+      playerList: ['Thomas', 'Yona', 'Josh'],
       // prompt responses each round are stored here. response obj. format {player, response}
-      promptResponses: [],
+      promptResponses: [{player: 'Thomas', response: `
+      fsivvfodfnsgipnisgdonvddfbi
+      dfvbinpsfbdsipofvbndsinvdounverw
+      sfginpevwe[ponvwevpnewvnwou[
+        fvwipnvewwpinvewpvbtinewvbp[entvbe[pn`},
+        {player: 'Yona', response: `
+      fsivvfodfnsgipnisgdonvddfbi
+      dfvbinpsfbdsipofvbndsinvdounverw
+      sfginpevwe[ponvwevpnewvnwou[
+        fvwipnvewwpinvewpvbtinewvbp[entvbe[pn`}],
       // stores what round the game is on
       roundCount: 1,
       // number of rounds that are to be played

@@ -1,6 +1,6 @@
 <template>
-  <div class="center">
-    <div class="text-h6">Time Remaining</div>
+  <div class="center pa-4 clock-parent">
+    <div class="text-h6 mb-2">Moving On In</div>
     <v-progress-circular
       :value="progress"
       class="mr-2 pa-12"
@@ -33,7 +33,7 @@ export default {
     color() {
       const RANGE = [0, this.totalTime / 2, this.totalTime]
       let rgb = [0, 0, 0]
-      rgb[0] = ((RANGE[2]-this.timeLeft)/(RANGE[2]-RANGE[1])) * 255;
+      rgb[0] = ((RANGE[2] - this.timeLeft) / (RANGE[2] - RANGE[1])) * 255;
       rgb[1] = (this.timeLeft/RANGE[1]) * 255; 
 
       return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
@@ -42,3 +42,11 @@ export default {
 }
   
 </script>
+
+<style scoped>
+  .clock-parent {
+    border: 2px solid black; 
+    border-radius: 10px;
+    background-color: #f7f7f7
+  }
+</style>

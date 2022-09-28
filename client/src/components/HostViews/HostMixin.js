@@ -9,9 +9,9 @@ export default {
       timerRunning: false,
 
       // for developing ui only. make sure this is set to false in prod
-      testMode: false,
+      testMode: true,
       // component that you want to test
-      testView: ''
+      testView: 'respond'
     }
   },
   props: {

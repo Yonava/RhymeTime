@@ -1,24 +1,36 @@
 <template>
-  <div>  
-    <Clock
-      :timeLeft="timeRemaining"
-      :totalTime="totalTime"
-    />
-    <div class="center mb-2">
+  <div> 
+    <div style="position: absolute; top: 10%; left: 2%">
+      <Clock
+        :timeLeft="timeRemaining"
+        :totalTime="totalTime"
+      />
+    </div> 
+    <div style="position: absolute; top: 10%; right: 2%">
+      <Clock
+        :timeLeft="timeRemaining"
+        :totalTime="totalTime"
+      />
+    </div> 
+    <div class="center mt-5 mb-8" >
       Find a way to rhyme these {{ words.length }} words together: 
-      <div class="text-h4 ma-2">{{ prompt }}</div>
+      <div class="text-h3">{{ prompt }}</div>
     </div>
-    <v-row>
-      <v-col
-        v-for="player in playerList" :key="player.id"
-        cols="6"
-      >
-        <ResponseCard
-          :playerName="player"
-          :hasResponded="respondents.includes(player)"
-        />
-      </v-col>
-    </v-row>
+    <div class="center">
+      <div style="width: 60%">
+        <v-row align="center" justify="center">
+          <v-col
+            v-for="player in playerList" :key="player.id"
+            cols="6"
+          >
+            <ResponseCard
+              :playerName="player"
+              :hasResponded="respondents.includes(player)"
+            />
+          </v-col>
+        </v-row>
+      </div>
+    </div>
   </div>
 </template>
 
