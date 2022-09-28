@@ -57,11 +57,11 @@ export default {
         this.audio = new Audio(require('../../../assets/respond.mp3'))
         break
       case 'vote':
-        this.timeRemaining = 20
+        this.timeRemaining = 30
         this.audio = new Audio(require('../../../assets/vote.mp3'))
         break
       case 'recap':
-        this.timeRemaining = 10
+        this.timeRemaining = 90
         this.audio = undefined
         break
       case 'waiting': 
