@@ -75,6 +75,11 @@ export default {
     });
   },
   mounted() {
+    this.socketInstance.emit(
+      "candidate-list",
+      this.promptResponses.map((response) => response.player)
+    )
+    
     this.promptResponses.forEach((response) => {
       this.candidates.push({
         player: response.player,
@@ -82,10 +87,6 @@ export default {
       })
     })
     this.calculatePercentage()
-    this.socketInstance.emit(
-      "candidate-list",
-      this.promptResponses.map((response) => response.player)
-    );
   },
   methods: {
     countVotes(playerBallot) {
@@ -113,6 +114,7 @@ export default {
       this.calculatePercentage()
     },
     calculatePercentage() {
+      if (!this.candidates.length) return
       const TOTAL_VOTES = this.candidates
         .map(candidate => candidate.votes)
         .reduce((previousValue, currentValue) => previousValue + currentValue);
