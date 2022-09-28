@@ -1,3 +1,5 @@
+import Clock from './HostSubComponents/ClockDisplay.vue'
+
 export default {
   data() {
     return {
@@ -9,10 +11,13 @@ export default {
       timerRunning: false,
 
       // for developing ui only. make sure this is set to false in prod
-      testMode: true,
+      testMode: false,
       // component that you want to test
-      testView: 'respond'
+      testView: 'intro'
     }
+  },
+  components: {
+    Clock
   },
   props: {
     promptResponses: {
@@ -41,9 +46,6 @@ export default {
     // with properties of sound track, timeLimit etc
     // maybe a ts enum??? worth exploring!
     switch (this.$parent.currentView) {
-      case 'intro':
-        this.timeRemaining = 3
-        break
       case 'respond':
         this.timeRemaining = 90
         break
@@ -54,6 +56,8 @@ export default {
         this.timeRemaining = 10
         break
       case 'waiting': 
+        return
+      case 'intro':
         return
       case 'outro':
         return
@@ -72,7 +76,7 @@ export default {
       if (this.timerRunning) return
       this.timer = setInterval(() => {
         this.timeRemaining--
-        if (this.timeRemaining < 1) this.next()
+        if (this.timeRemaining < 0) this.next()
       }, 1000)
       this.timerRunning = true
     },

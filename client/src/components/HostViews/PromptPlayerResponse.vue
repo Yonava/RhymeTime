@@ -37,15 +37,13 @@
 <script>
 import HostMixin from './HostMixin'
 import ResponseCard from './HostSubComponents/PlayerResponseCard.vue'
-import Clock from './HostSubComponents/ClockDisplay.vue'
 
 export default {
   mixins: [
     HostMixin
   ],
   components: {
-    ResponseCard,
-    Clock
+    ResponseCard
   },
   data() {
     return {

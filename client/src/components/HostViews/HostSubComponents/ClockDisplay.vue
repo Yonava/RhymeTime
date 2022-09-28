@@ -1,6 +1,8 @@
 <template>
   <div class="center pa-4 clock-parent">
-    <div class="text-h6 mb-2">Moving On In</div>
+    <div class="text-h6 mb-2">
+      {{ title }}
+    </div>
     <v-progress-circular
       :value="progress"
       class="mr-2 pa-12"
@@ -24,6 +26,11 @@ export default {
     timeLeft: {
       type: Number,
       required: true
+    },
+    title: {
+      type: String,
+      required: false,
+      default: 'Moving On In'
     }
   },
   computed: {

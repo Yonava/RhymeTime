@@ -1,8 +1,20 @@
 <template>
   <div>
-    Time Left: {{ timeRemaining }}
-
-    <div class="center">
+    <div style="position: absolute; top: 10%; left: 2%">
+      <Clock
+        :timeLeft="timeRemaining"
+        :totalTime="totalTime"
+        title="Polls Close In"
+      />
+    </div> 
+    <div style="position: absolute; top: 10%; right: 2%">
+      <Clock
+        :timeLeft="timeRemaining"
+        :totalTime="totalTime"
+        title="Polls Close In"
+      />
+    </div>
+    <div class="center mt-5">
       <div class="text-h4">Your Submissions</div>
     </div>
 
@@ -13,7 +25,7 @@
     </v-row>
 
     <div class="center">
-      <div class="text-h4">Live Voting Results</div>
+      <div class="text-h4 mt-5">Live Voting Results</div>
     </div>
 
     <div class="bar-parent"> 
