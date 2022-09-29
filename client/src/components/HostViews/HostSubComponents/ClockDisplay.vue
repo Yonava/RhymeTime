@@ -56,7 +56,8 @@ export default {
   },
   watch: {
     timeLeft(v) {
-      if (v < 5) {
+      const FLASH_RED_POINT = 5
+      if (v <= FLASH_RED_POINT) {
         this.backgroundColor = 'rgb(255, 225, 225)'
         setTimeout(() => {
           this.backgroundColor = 'rgb(245, 245, 245)'

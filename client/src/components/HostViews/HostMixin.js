@@ -16,7 +16,7 @@ export default {
       beepSound: new Audio(require('../../../assets/beep.mp3')),
 
       // for developing ui only. make sure this is set to false in prod
-      testMode: true,
+      testMode: false,
       // component that you want to test
       testView: 'respond'
     }
@@ -51,7 +51,7 @@ export default {
     // maybe a ts enum??? worth exploring!
     switch (this.$parent.currentView) {
       case 'respond':
-        this.timeRemaining = 90
+        this.timeRemaining = 20
         this.audio = new Audio(require('../../../assets/respond.mp3'))
         break
       case 'vote':
@@ -93,9 +93,18 @@ export default {
     startTimer() {
       if (this.timerRunning || this.timerDisabled) return
       this.timer = setInterval(() => {
+
         this.timeRemaining--
-        if (this.timeRemaining < 0) this.next()
-        else if (this.timeRemaining < 6) this.playEffect('beep')
+
+        if (this.timeRemaining === 0) {
+          this.stopTimer()
+          setTimeout(() => this.next(), 500)
+        } 
+        
+        if (this.timeRemaining <= 5) {
+          this.playEffect('beep')
+        }
+
       }, 1000)
       this.timerRunning = true
     },

@@ -8,7 +8,9 @@
     :style="outroStyles"
   >
     <v-row align="center" justify="center">
-      <v-card-title class="text-h3 white--text">Responses Have Closed</v-card-title>
+      <v-card-title class="text-h3 white--text">
+        Responses Have Closed
+      </v-card-title>
     </v-row>
   </v-card>
 </template>
@@ -25,16 +27,19 @@ export default {
     return {
       width: 800,
       height: 150,
-      outroStyles: 'top: -20%;'
+      outroStyles: 'top: -100%;'
     }
   },
   watch: {
     show(v) {
       if (v) {
         this.outroStyles = ''
+        // setTimeout(() => {
+        //   }, )
         setTimeout(() => {
-          this.width = 5000
-          this.height = 5000
+          this.outroStyles = 'transition: 4s'
+          this.width = 3000
+          this.height = 3000
         }, 2000)
       } else {
         this.width = 800,
@@ -53,6 +58,6 @@ export default {
     left: 50%;
     transform: translate(-50%, 0);
     border-radius: 0px 0px 25px 25px;
-    transition: 3s;
+    transition: 250ms
   }
 </style>

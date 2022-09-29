@@ -84,10 +84,13 @@ export default {
   },
   methods: {
     next() {
+      const OUTRO_DUR = 6000
       this.acceptingSubmissions = false
-      
+      this.playOutro = true
       if (this.testMode) return
-      this.$emit('change-view', 'vote')
+      setTimeout(() => {
+        this.$emit('change-view', 'vote')
+      }, OUTRO_DUR)
     }
   },
   watch: {

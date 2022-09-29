@@ -29,6 +29,7 @@ export default {
 
 <style>
   @import url('@/styles.css');
+  
   .input-box {
     position: fixed;
     bottom: 10%;

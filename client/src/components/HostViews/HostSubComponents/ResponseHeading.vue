@@ -5,9 +5,10 @@
     </span>
     <div
       :style="transformEffect"
-      class="text-h3 prompt" 
+      class="text-h3 prompt center"
     >
-      {{ prompt }}
+        {{ prompt }}
+      <div class="mt-2" :style="`transition: width 2s; ${borderBottom}`"></div>
     </div>
   </div>
 </template>
@@ -24,6 +25,7 @@ export default {
     return {
       transformEffect: 'transform: translateY(22vw) scale(2.2);',
       subHeadingOpacity: 0,
+      borderBottom: 'width: 0' 
     }
   },
   mounted() {
@@ -45,6 +47,10 @@ export default {
       const MS_BEFORE_TRANSFORMATION = 2000
       const CSS_TRANSITION_DUR = 3000
 
+      setTimeout(() => {
+        this.borderBottom = 'width: 150%; height: 5px; background-color: #000'
+      }, 50)
+
       // pre transformation
       setTimeout(() => {
         this.transformEffect = ''
@@ -63,5 +69,6 @@ export default {
 <style scoped>
   .prompt {
     transition: 3s ease-out;
+    position: relative;
   }
 </style>
