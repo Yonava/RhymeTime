@@ -54,7 +54,7 @@ export default {
       // sets the current view of the game, emits to players
       currentView: 'waiting',
       // playerlist contains strings of every connected players nickname
-      playerList: ['yona', 'shannon', 'bella', 'sds', 'IEatAss'],
+      playerList: ['Yona', 'Josh', 'Jack'],
       // prompt responses each round are stored here. response obj. format {player, response}
       promptResponses: [{
         player: 'dummy',
@@ -137,9 +137,6 @@ There will be drinks and popcorn provided. We cannot wait to see you all there!`
       this.socket.on('roll-call', () => {
         this.playerList = []
         this.socket.emit('host-present')
-      })
-      this.socket.on('player-prompt-submission', (playerResponse) => {
-        this.promptResponses.push(playerResponse)
       })
       this.socket.on('ballot-collector', (playerBallot) => {
         this.$refs.hostComponents.countVotes(playerBallot)

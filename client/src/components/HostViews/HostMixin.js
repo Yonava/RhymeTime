@@ -95,7 +95,7 @@ export default {
       this.timer = setInterval(() => {
         this.timeRemaining--
         if (this.timeRemaining < 0) this.next()
-        else if (this.timeRemaining < 5) this.playEffect('beep')
+        else if (this.timeRemaining < 6) this.playEffect('beep')
       }, 1000)
       this.timerRunning = true
     },

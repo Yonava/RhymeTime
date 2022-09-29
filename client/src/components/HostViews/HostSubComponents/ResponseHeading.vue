@@ -27,9 +27,7 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      this.startUpSequence()
-    })
+    this.startUpSequence()
   },
   computed: {
     prompt() {
@@ -44,7 +42,7 @@ export default {
   },
   methods: {
     startUpSequence() {
-      const MS_BEFORE_TRANSFORMATION = 3000
+      const MS_BEFORE_TRANSFORMATION = 2000
       const CSS_TRANSITION_DUR = 3000
 
       // pre transformation
@@ -65,6 +63,5 @@ export default {
 <style scoped>
   .prompt {
     transition: 3s ease-out;
-  
   }
 </style>

@@ -31,6 +31,8 @@
         </v-row>
       </div>
     </div>
+    <v-btn @click="playOutro = !playOutro" style="z-index: 99">outro</v-btn>
+    <Outro :show="playOutro" />
   </div>
 </template>
 
@@ -38,6 +40,7 @@
 import HostMixin from './HostMixin'
 import ResponseCard from './HostSubComponents/PlayerResponseCard.vue'
 import Prompt from './HostSubComponents/ResponseHeading.vue'
+import Outro from './HostSubComponents/ResponseOutro.vue'
 
 export default {
   mixins: [
@@ -45,7 +48,8 @@ export default {
   ],
   components: {
     ResponseCard,
-    Prompt
+    Prompt,
+    Outro
   },
   data() {
     return {
@@ -56,7 +60,11 @@ export default {
       // for testing
       hasResponded: false,
       // these styles are applied until prompt finishes its intro
-      preIntroResponseStyles: 'opacity: 0; transform: translateY(-10%); width: 50%; height: 100%'
+      preIntroResponseStyles: 'opacity: 0; transform: translateY(-10%); width: 50%; height: 100%',
+      // if false, players responses wont be pushed to promptResponses array
+      acceptingSubmissions: true,
+      // starts outro
+      playOutro: false
     }
   },
   mounted() {
@@ -68,9 +76,16 @@ export default {
     ]
     this.words = RHYMING_PAIRS[Math.floor(Math.random() * RHYMING_PAIRS.length)]
     this.socketInstance.emit('new-words', this.words)
+
+    this.socketInstance.on('player-prompt-submission', (playerResponse) => {
+      if (!this.acceptingSubmissions) return
+      this.$parent.promptResponses.push(playerResponse)
+    })
   },
   methods: {
     next() {
+      this.acceptingSubmissions = false
+      
       if (this.testMode) return
       this.$emit('change-view', 'vote')
     }
