@@ -3,10 +3,6 @@ import Clock from './HostSubComponents/ClockDisplay.vue'
 export default {
   data() {
     return {
-      // total time in seconds that the component stays active for
-      totalTime: 30,
-      // time remaining in seconds until view has to be changed
-      timeRemaining: 30,
       // if false, timer will never be run on that component
       timerDisabled: false,
       // true if an interval is actively decrementing timeRemaing
@@ -42,7 +38,7 @@ export default {
     }
   },
   mounted() {
-
+    
     if (this.testMode && this.$parent.currentView !== this.testView) this.$emit('change-view', this.testView)
     if (this.testMode) this.timerDisabled = true
     
@@ -51,15 +47,15 @@ export default {
     // maybe a ts enum??? worth exploring!
     switch (this.$parent.currentView) {
       case 'respond':
-        this.timeRemaining = 20
+        this.$store.state.timeRemaining = 20
         this.audio = new Audio(require('../../../assets/respond.mp3'))
         break
       case 'vote':
-        this.timeRemaining = 30
+        this.$store.state.timeRemaining = 30
         this.audio = new Audio(require('../../../assets/vote.mp3'))
         break
       case 'recap':
-        this.timeRemaining = 15
+        this.$store.state.timeRemaining = 15
         this.audio = undefined
         break
       case 'waiting': 
@@ -78,7 +74,7 @@ export default {
         return console.error('Uncaught Case Passed Down to HostMixin')
     }
 
-    this.totalTime = this.timeRemaining
+    this.$store.state.totalTime = this.$store.state.timeRemaining
     if (this.audio?.play()) this.audio.play()
     this.startTimer()
   },
@@ -91,17 +87,17 @@ export default {
   },
   methods: {
     startTimer() {
-      if (this.timerRunning || this.timerDisabled) return
+      if (this.$store.state.timerRunning || this.timerDisabled) return
       this.timer = setInterval(() => {
 
-        this.timeRemaining--
+        this.$store.state.timeRemaining--
 
-        if (this.timeRemaining === 0) {
+        if (this.$store.state.timeRemaining === 0) {
           this.stopTimer()
           setTimeout(() => this.next(), 500)
         } 
         
-        if (this.timeRemaining <= 5) {
+        if (this.$store.state.timeRemaining <= this.$store.state.almostOutOfTime) {
           this.playEffect('beep')
         }
 

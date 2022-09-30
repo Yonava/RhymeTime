@@ -6,7 +6,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     nickname: '',
-    roomid: ''
+    roomid: '',
+
+    // host view clock state
+    timeRemaining: 30,
+    totalTime: 30,
+    almostOutOfTime: 5
   },
   getters: {
   },

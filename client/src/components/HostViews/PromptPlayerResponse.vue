@@ -1,16 +1,10 @@
 <template>
   <div> 
     <div style="position: absolute; top: 10%; left: 2%">
-      <Clock
-        :timeLeft="timeRemaining"
-        :totalTime="totalTime"
-      />
+      <Clock />
     </div> 
     <div style="position: absolute; top: 10%; right: 2%">
-      <Clock
-        :timeLeft="timeRemaining"
-        :totalTime="totalTime"
-      />
+      <Clock />
     </div> 
     <Prompt 
       :words="words"

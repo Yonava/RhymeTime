@@ -1,18 +1,10 @@
 <template>
   <div>
     <div style="position: absolute; top: 10%; left: 2%; z-index: 2">
-      <Clock
-        :timeLeft="timeRemaining"
-        :totalTime="totalTime"
-        title="Polls Close In"
-      />
-    </div> 
+      <Clock title="Polls Close In" />
+    </div>
     <div style="position: absolute; top: 10%; right: 2%; z-index: 2">
-      <Clock
-        :timeLeft="timeRemaining"
-        :totalTime="totalTime"
-        title="Polls Close In"
-      />
+      <Clock title="Polls Close In" />
     </div>
     <div class="center mt-5">
       <div class="text-h4">Your Submissions</div>
@@ -48,11 +40,13 @@
 </template>
 
 <script>
-import HostMixin from "./HostMixin";
-import DisplayResponse from "./HostSubComponents/ResponseDisplayCard.vue";
+import HostMixin from "./HostMixin"
+import DisplayResponse from "./HostSubComponents/ResponseDisplayCard.vue"
 
 export default {
-  mixins: [HostMixin],
+  mixins: [
+    HostMixin
+  ],
   components: {
     DisplayResponse,
   },

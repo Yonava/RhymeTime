@@ -1,18 +1,10 @@
 <template>
   <div>
     <div style="position: absolute; top: 10%; left: 2%">
-      <Clock
-        :timeLeft="timeRemaining"
-        :totalTime="totalTime"
-        title="Next Round Starting In"
-      />
+      <Clock title="Next Round Starting In" />
     </div> 
     <div style="position: absolute; top: 10%; right: 2%">
-      <Clock
-        :timeLeft="timeRemaining"
-        :totalTime="totalTime"
-        title="Next Round Starting In"
-      />
+      <Clock title="Next Round Starting In" />
     </div> 
     <div class="center">
       This Rounds Winner Was...
