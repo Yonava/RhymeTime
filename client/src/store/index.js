@@ -8,7 +8,7 @@ export default new Vuex.Store({
     nickname: '',
     roomid: '',
 
-    // host view clock state
+    // clock state used by mixin parent(s) and read by ClockDisplay
     timeRemaining: 30,
     totalTime: 30,
     almostOutOfTime: 5
