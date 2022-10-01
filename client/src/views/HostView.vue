@@ -1,14 +1,17 @@
 <template>  
   <div>
-    <v-toolbar>
-      <v-icon @click.stop="exit">mdi-chevron-left</v-icon>
-      <div class="text-h6">playing in room {{ $store.state.roomid }}</div>
-      <v-spacer></v-spacer>
-      <div 
-        v-if="currentView != 'waiting'" 
-        class="text-p"
-      >round {{ roundCount }} out of {{ totalRounds }}</div>
-    </v-toolbar>
+    <v-icon 
+      @click.stop="isPaused = !isPaused"
+      large
+    >{{ pausePlayIcon }}</v-icon>
+    <!-- <v-icon @click.stop="exit">mdi-chevron-left</v-icon> -->
+    <!-- <div class="text-h6">playing in room {{ $store.state.roomid }}</div> -->
+    <v-spacer></v-spacer>
+    <div 
+      v-if="currentView != 'waiting'" 
+      class="text-p"
+    >round {{ roundCount }} out of {{ totalRounds }}</div>
+  
     <component
       :is="currentView"
       :playerList="playerList"
@@ -16,6 +19,7 @@
       :socketInstance="socket"
       :winningResponse="winningResponse"
       :song="song"
+      :isPaused="isPaused"
       @round-winner="addWinnerToSong($event)"
       @change-view="currentView = $event"
       @round-over="roundOver"
@@ -103,7 +107,9 @@ There will be drinks and popcorn provided. We cannot wait to see you all there!`
       // response that scored the most points in the voting round
       winningResponse: { player: '', response: '' },
       // song consists out of the winning response objects of each round
-      song: []
+      song: [],
+      // true if game is paused by user or otherwise
+      isPaused: false
     }
   },
   destroyed() {
@@ -113,6 +119,11 @@ There will be drinks and popcorn provided. We cannot wait to see you all there!`
   mounted() {
     this.connectSocket()
     document.addEventListener('visibilitychange', this.emitVisibility)
+  },
+  computed: {
+    pausePlayIcon() {
+      return this.isPaused ? 'mdi-play' : 'mdi-pause'
+    }
   },
   methods: {
     connectSocket() {
@@ -138,15 +149,12 @@ There will be drinks and popcorn provided. We cannot wait to see you all there!`
         this.playerList = []
         this.socket.emit('host-present')
       })
-      this.socket.on('ballot-collector', (playerBallot) => {
-        this.$refs.hostComponents.countVotes(playerBallot)
-      })
       this.socket.on('broadcast-current-view', () => {
         this.socket.emit('change-view', this.currentView)
       })
     },
     emitVisibility() {
-      document.visibilityState === 'hidden' ? this.$refs.hostComponents.pauseGame() : this.$refs.hostComponents.unpauseGame()
+      this.isPaused = document.visibilityState === 'hidden'
       this.socket.emit('visibility-handler', document.visibilityState)
     },
     exit() {

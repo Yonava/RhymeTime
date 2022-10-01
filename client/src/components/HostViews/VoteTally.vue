@@ -75,8 +75,9 @@ export default {
   mounted() {
     this.socketInstance.emit(
       "candidate-list",
-      this.promptResponses.map((response) => response.player)
-    )
+      this.promptResponses.map((response) => {
+        return response.player
+    }))
 
     this.promptResponses.forEach((response) => {
       this.candidates.push({
@@ -85,6 +86,10 @@ export default {
       })
     })
     this.calculatePercentage()
+
+    this.socketInstance.on('ballot-collector', (playerBallot) => {
+      this.countVotes(playerBallot)
+    })
   },
   methods: {
     countVotes(playerBallot) {

@@ -5,7 +5,7 @@ export default {
     return {
       // if false, timer will never be run on that component
       timerDisabled: false,
-      // true if an interval is actively decrementing timeRemaing
+      // for interval idempotence
       timerRunning: false,
       // stores audio instance for gameplay music
       audio: undefined,
@@ -33,6 +33,10 @@ export default {
       type: Array,
       required: true
     },
+    isPaused: {
+      type: Boolean,
+      required: true
+    },
     socketInstance: {
       required: true
     }
@@ -42,9 +46,13 @@ export default {
     if (this.testMode && this.$parent.currentView !== this.testView) this.$emit('change-view', this.testView)
     if (this.testMode) this.timerDisabled = true
     
-    // could each component be represented an object
-    // with properties of sound track, timeLimit etc
-    // maybe a ts enum??? worth exploring!
+    /*
+      TODO:
+      could each component be represented an object
+      with properties of sound track, timeLimit etc
+      maybe a ts enum??? worth exploring!
+    */
+
     switch (this.$parent.currentView) {
       case 'respond':
         this.$store.state.timeRemaining = 20
@@ -87,7 +95,7 @@ export default {
   },
   methods: {
     startTimer() {
-      if (this.$store.state.timerRunning || this.timerDisabled) return
+      if (this.timerRunning || this.timerDisabled) return
       this.timer = setInterval(() => {
 
         this.$store.state.timeRemaining--
@@ -123,6 +131,14 @@ export default {
           this.beepSound.currentTime = 0
           this.beepSound.play()
           break
+      }
+    }
+  },
+  watch: {
+    isPaused: {
+      immediate: true,
+      handler(v) {
+        v ? this.pauseGame() : this.unpauseGame()
       }
     }
   }
