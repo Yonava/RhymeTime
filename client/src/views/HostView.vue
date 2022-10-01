@@ -1,16 +1,20 @@
 <template>  
   <div>
-    <v-icon 
-      @click.stop="isPaused = !isPaused"
-      large
-    >{{ pausePlayIcon }}</v-icon>
+    <div>
+      <v-icon 
+        @click.stop="isPaused = !isPaused"
+        large
+        class="mx-7 my-5"
+      >{{ pausePlayIcon }}</v-icon>
+      <span>{{ isPaused ? 'Pause' : 'Paused' }}</span>
+    </div>
     <!-- <v-icon @click.stop="exit">mdi-chevron-left</v-icon> -->
     <!-- <div class="text-h6">playing in room {{ $store.state.roomid }}</div> -->
-    <v-spacer></v-spacer>
-    <div 
+    <!-- <v-spacer></v-spacer> -->
+    <!-- <div 
       v-if="currentView != 'waiting'" 
       class="text-p"
-    >round {{ roundCount }} out of {{ totalRounds }}</div>
+    >round {{ roundCount }} out of {{ totalRounds }}</div> -->
   
     <component
       :is="currentView"
