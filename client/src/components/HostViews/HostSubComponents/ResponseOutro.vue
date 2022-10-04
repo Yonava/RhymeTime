@@ -21,6 +21,10 @@ export default {
     show: {
       type: Boolean,
       required: true
+    },
+    outroDur: {
+      type: Number,
+      required: true
     }
   },
   data() {
@@ -33,14 +37,13 @@ export default {
   watch: {
     show(v) {
       if (v) {
+        const COVER_SCREEN_IN = 2000
         this.outroStyles = ''
-        // setTimeout(() => {
-        //   }, )
         setTimeout(() => {
-          this.outroStyles = 'transition: 4s'
+          this.outroStyles = `transition: ${this.outroDur - COVER_SCREEN_IN}ms`
           this.width = 3000
           this.height = 3000
-        }, 2000)
+        }, COVER_SCREEN_IN)
       } else {
         this.width = 800,
         this.height = 150,

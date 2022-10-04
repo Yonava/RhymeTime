@@ -5,7 +5,7 @@ store.getters.config
 export function playEffect(effect, fileExtension = '.mp3') {
 
   if (!store.state.sfxEnabled) {
-    return "Client has sound effects disabled"
+    return "Client has disabled sound effects"
   }
 
   try {

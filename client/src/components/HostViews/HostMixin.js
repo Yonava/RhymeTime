@@ -55,7 +55,7 @@ export default {
 
     switch (this.$parent.currentView) {
       case 'respond':
-        this.$store.state.timeRemaining = 20
+        this.$store.state.timeRemaining = 90
         this.audio = new Audio(require('../../../assets/respond.mp3'))
         break
       case 'vote':

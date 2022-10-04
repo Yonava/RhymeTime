@@ -26,7 +26,10 @@
       </div>
     </div>
     <v-btn @click="playOutro = !playOutro" style="z-index: 99">outro</v-btn>
-    <Outro :show="playOutro" />
+    <Outro 
+      :show="playOutro" 
+      :outroDur="outroDur"
+    />
   </div>
 </template>
 
@@ -35,6 +38,7 @@ import HostMixin from './HostMixin'
 import ResponseCard from './HostSubComponents/PlayerResponseCard.vue'
 import Prompt from './HostSubComponents/ResponseHeading.vue'
 import Outro from './HostSubComponents/ResponseOutro.vue'
+import { playEffect } from '@/utils/Soundboard'
 
 export default {
   mixins: [
@@ -58,7 +62,9 @@ export default {
       // if false, players responses wont be pushed to promptResponses array
       acceptingSubmissions: true,
       // starts outro
-      playOutro: false
+      playOutro: false,
+      // how long the outro takes to play
+      outroDur: 6000
     }
   },
   mounted() {
@@ -73,18 +79,28 @@ export default {
 
     this.socketInstance.on('player-prompt-submission', (playerResponse) => {
       if (!this.acceptingSubmissions) return
-      this.$parent.promptResponses.push(playerResponse)
+      playEffect('responseReceived')
+      setTimeout(() => {
+        this.promptResponses.push(playerResponse)
+      }, 350)
     })
+
+    // for offline testing
+    setTimeout(() => {
+      playEffect('responseReceived')
+      setTimeout(() => {
+        this.promptResponses.push({player: 'Jack', response: 'hi'})
+      }, 350)
+    }, 5000)
   },
   methods: {
     next() {
-      const OUTRO_DUR = 6000
       this.acceptingSubmissions = false
       this.playOutro = true
       if (this.testMode) return
       setTimeout(() => {
         this.$emit('change-view', 'vote')
-      }, OUTRO_DUR)
+      }, this.outroDur)
     }
   },
   watch: {
