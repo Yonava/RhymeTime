@@ -6,7 +6,7 @@
         large
         class="mx-7 my-5"
       >{{ pausePlayIcon }}</v-icon>
-      <span>{{ isPaused ? 'Pause' : 'Paused' }}</span>
+      <span>{{ isPaused ? 'Paused' : 'Playing' }}</span>
     </div>
     <!-- <v-icon @click.stop="exit">mdi-chevron-left</v-icon> -->
     <!-- <div class="text-h6">playing in room {{ $store.state.roomid }}</div> -->
@@ -29,7 +29,6 @@
       @round-over="roundOver"
       @round-change="totalRounds = $event"
       @restart-game="restartGame"
-      ref="hostComponents"
     ></component>
   </div>
 </template>
@@ -153,11 +152,12 @@ There will be drinks and popcorn provided. We cannot wait to see you all there!`
         this.playerList = []
         this.socket.emit('host-present')
       })
-      this.socket.on('broadcast-current-view', () => {
+      this.socket.on('broadcast-game-state', () => {
         this.socket.emit('change-view', this.currentView)
       })
     },
     emitVisibility() {
+      if (this.isPaused) return
       this.isPaused = document.visibilityState === 'hidden'
       this.socket.emit('visibility-handler', document.visibilityState)
     },

@@ -1,4 +1,5 @@
 import Clock from './HostSubComponents/ClockDisplay.vue'
+import { playEffect } from '@/utils/Soundboard'
 
 export default {
   data() {
@@ -9,7 +10,6 @@ export default {
       timerRunning: false,
       // stores audio instance for gameplay music
       audio: undefined,
-      beepSound: new Audio(require('../../../assets/beep.mp3')),
 
       // for developing ui only. make sure this is set to false in prod
       testMode: false,
@@ -106,7 +106,7 @@ export default {
         } 
         
         if (this.$store.state.timeRemaining <= this.$store.state.almostOutOfTime) {
-          this.playEffect('beep')
+          playEffect('beep')
         }
 
       }, 1000)
@@ -124,14 +124,6 @@ export default {
     unpauseGame() {
       if (!this.testMode) this.startTimer()
       if (this.audio?.play()) this.audio.play()
-    },
-    playEffect(soundEffect) {
-      switch (soundEffect) {
-        case 'beep':
-          this.beepSound.currentTime = 0
-          this.beepSound.play()
-          break
-      }
     }
   },
   watch: {

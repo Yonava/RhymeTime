@@ -35,7 +35,7 @@ export default {
     }
   },
   mounted() {
-    // engages watcher to play red flashing effect
+    // engages watcher to play red flashing and beep effect
     this.$watch(() => this.$store.state.timeRemaining, (v) => {
       if (v <= this.$store.state.almostOutOfTime) {
         this.backgroundColor = 'rgb(255, 225, 225)'
