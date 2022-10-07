@@ -25,7 +25,7 @@
         </v-row>
       </div>
     </div>
-    <v-btn @click="playOutro = !playOutro" style="z-index: 99">outro</v-btn>
+    <!-- <v-btn @click="playOutro = !playOutro" style="z-index: 99">outro</v-btn> -->
     <Outro 
       :show="playOutro" 
       :outroDur="outroDur"
@@ -86,12 +86,12 @@ export default {
     })
 
     // for offline testing
-    setTimeout(() => {
-      playEffect('responseReceived')
-      setTimeout(() => {
-        this.promptResponses.push({player: 'Jack', response: 'hi'})
-      }, 350)
-    }, 5000)
+    // setTimeout(() => {
+    //   playEffect('responseReceived')
+    //   setTimeout(() => {
+    //     this.promptResponses.push({player: 'Jack', response: 'hi'})
+    //   }, 350)
+    // }, 5000)
   },
   methods: {
     next() {
