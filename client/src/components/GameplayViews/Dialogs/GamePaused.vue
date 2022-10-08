@@ -2,13 +2,13 @@
   <v-dialog
     v-model="show"
     persistent
-    max-width="290"
+    max-width="400"
   >
     <v-card>
-      <v-card-title class="text-h5">
+      <v-card-title style="word-break: break-word" class="text-h5">
         {{ display.title }}
       </v-card-title>
-      <v-card-text>
+      <v-card-text style="word-break: break-word">
         {{ display.text }}
       </v-card-text>
     </v-card>

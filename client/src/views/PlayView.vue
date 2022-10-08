@@ -8,7 +8,7 @@
 
     <!-- Dialog Boxes -->
     <host-left :visible="hostLeft" />
-    <game-paused :visible="showPauseDialog" :reason="'not-visible'" />
+    <game-paused :visible="pauseData.show" :reason="pauseData.reason" />
   </div>
 </template>
 
@@ -43,8 +43,8 @@ export default {
       connectionStatus: false,
       // stores socket instance
       socket: null,
-      // true when host has paused the game
-      showPauseDialog: false,
+      // contains data passed down to GamePaused component
+      pauseData: { show: false, reason: '' },
       // used for host to control which view the player is on
       currentView: 'waiting',
       // false if no host can be found in room, is set to false every rollcall
@@ -80,8 +80,17 @@ export default {
           }
         })
       })
-      this.socket.on('visibility-handler', hostVisibility => {
-        this.showPauseDialog = hostVisibility === 'hidden'
+      this.socket.on('visibility-handler', isHostHidden => {
+        this.pauseData = {
+          show: isHostHidden,
+          reason: 'not-visible'
+        }
+      })
+      this.socket.on('game-paused', pausedState => {
+        this.pauseData = {
+          show: pausedState,
+          reason: 'paused'
+        }
       })
       this.socket.on('change-view', newView => {
         this.currentView = newView

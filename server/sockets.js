@@ -75,4 +75,9 @@ io.on('connection', socket => {
     socket.to(roomid).emit('ballot-collector', ballot)
   })
 
+  // takes pause state from host and broadcasts to players
+  socket.on('pause-state', (pauseState) => {
+    socket.to(roomid).emit('game-paused', pauseState)
+  })
+
 })

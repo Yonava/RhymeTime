@@ -2,7 +2,7 @@
   <div>
     <div>
       <v-icon 
-        @click.stop="isPaused = !isPaused"
+        @click.stop="manuallyPaused = !manuallyPaused"
         large
         class="mx-7 my-5"
       >{{ pausePlayIcon }}</v-icon>
@@ -72,8 +72,10 @@ export default {
       winningResponse: { player: '', response: '' },
       // song consists out of the winning response objects of each round
       song: [],
-      // true if game is paused by user or otherwise
-      isPaused: false
+      // true if page is not visible (using visibilitychange event listener)
+      isPageHidden: false,
+      // if host selects to pause game
+      manuallyPaused: false
     }
   },
   destroyed() {
@@ -85,8 +87,11 @@ export default {
     document.addEventListener('visibilitychange', this.emitVisibility)
   },
   computed: {
+    isPaused() {
+      return this.isPageHidden || this.manuallyPaused
+    },
     pausePlayIcon() {
-      return this.isPaused ? 'mdi-play' : 'mdi-pause'
+      return this.manuallyPaused ? 'mdi-play' : 'mdi-pause'
     }
   },
   methods: {
@@ -118,9 +123,9 @@ export default {
       })
     },
     emitVisibility() {
-      if (this.isPaused) return
-      this.isPaused = document.visibilityState === 'hidden'
-      this.socket.emit('visibility-handler', document.visibilityState)
+      if (this.manuallyPaused) return
+      this.isPageHidden = document.visibilityState === 'hidden'
+      this.socket.emit('visibility-handler', this.isPageHidden)
     },
     exit() {
       this.forceDisconnect()
@@ -159,7 +164,12 @@ export default {
       // only emits view down to player if v is a registered and valid component
       if (Object.keys(this.$options.components).includes(v)) {
         this.socket.emit('change-view', v)
+      } else {
+        console.error(`${v} is not a valid components: host refused socket emit`)
       }
+    },
+    manuallyPaused(v) {
+      this.socket.emit('pause-state', v)
     }
   }
 }
