@@ -1,49 +1,14 @@
 <template>
-  <div class="center">   
-    <div class="text-h4 mb-5">Player View</div>
-    <v-btn text @click="forceDisconnect(); $router.push('/')">Back</v-btn>  
+  <div class="center"> 
     <component
       :is="currentView"
       :wordsInPrompt="wordsInPrompt"
       :socketInstance="socket"
     ></component>
 
-    <v-dialog
-      v-model="showPauseDialog"
-      persistent
-      max-width="290"
-    >
-      <v-card>
-        <v-card-title class="text-h5">
-          Game Paused!
-        </v-card-title>
-        <v-card-text>
-          Host screen is currently not visible. Once host screen becomes visible again, the game may resume.
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-
-    <v-dialog
-      v-model="hostLeft"
-      persistent
-      max-width="290"
-    >
-      <v-card>
-        <v-card-title class="text-h5">
-          Host Jumped Ship!
-        </v-card-title>
-        <v-card-text>
-          It looks like the host of your session left. Ask your host to create a new session to keep playing.
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            @click.stop="forceDisconnect(); $router.push('/')"
-            color="red white--text"
-            block
-          >Leave session</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <!-- Dialog Boxes -->
+    <host-left :visible="hostLeft" />
+    <game-paused :visible="showPauseDialog" :reason="'not-visible'" />
   </div>
 </template>
 
@@ -55,6 +20,10 @@ import intro from '../components/GameplayViews/IntroView.vue'
 import recap from '../components/GameplayViews/RecapView.vue'
 import outro from '../components/GameplayViews/OutroView.vue'
 
+// dialogs
+import HostLeft from '../components/GameplayViews/Dialogs/HostLeft.vue'
+import GamePaused from '../components/GameplayViews/Dialogs/GamePaused.vue'
+
 import io from 'socket.io-client'
 
 export default {
@@ -64,7 +33,9 @@ export default {
     waiting,
     intro,
     recap,
-    outro
+    outro,
+    HostLeft,
+    GamePaused
   },
   data() {
     return {
@@ -143,6 +114,13 @@ export default {
       setTimeout(() => {
         this.hostLeft = !this.hostPresent
       }, 3000)
+    }
+  },
+  watch: {
+    hostLeft(v) {
+      if (v) {
+        this.forceDisconnect()
+      }
     }
   }
 }

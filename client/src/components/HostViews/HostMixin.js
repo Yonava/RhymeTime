@@ -130,7 +130,10 @@ export default {
     isPaused: {
       immediate: true,
       handler(v) {
-        v ? this.pauseGame() : this.unpauseGame()
+        // lets mounted hook finish executing
+        this.$nextTick(() => {
+          v ? this.pauseGame() : this.unpauseGame()
+        })
       }
     }
   }
