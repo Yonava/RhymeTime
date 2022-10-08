@@ -8,6 +8,7 @@ import Join from '@/views/JoinView.vue'
 
 Vue.use(VueRouter)
 
+// routes
 const routes = [
   {
     path: '/',
