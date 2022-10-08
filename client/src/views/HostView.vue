@@ -8,13 +8,6 @@
       >{{ pausePlayIcon }}</v-icon>
       <span>{{ isPaused ? 'Paused' : 'Playing' }}</span>
     </div>
-    <!-- <v-icon @click.stop="exit">mdi-chevron-left</v-icon> -->
-    <!-- <div class="text-h6">playing in room {{ $store.state.roomid }}</div> -->
-    <!-- <v-spacer></v-spacer> -->
-    <!-- <div 
-      v-if="currentView != 'waiting'" 
-      class="text-p"
-    >round {{ roundCount }} out of {{ totalRounds }}</div> -->
   
     <component
       :is="currentView"
@@ -30,6 +23,17 @@
       @round-change="totalRounds = $event"
       @restart-game="restartGame"
     ></component>
+
+    <!-- KeepAlive may lead to potential bugginess -->
+    <KeepAlive>
+      <PauseMenu 
+        :visible="manuallyPaused" 
+        :roundCount="roundCount"
+        :totalRounds="totalRounds"
+        :playerList="playerList"
+        @unpause="manuallyPaused = false"
+      />
+    </KeepAlive>
   </div>
 </template>
 
@@ -41,6 +45,8 @@ import intro from '../components/HostViews/IntroView.vue'
 import recap from '../components/HostViews/RecapView.vue'
 import outro from '../components/HostViews/OutroView.vue'
 
+import PauseMenu from '../components/HostViews/HostSubComponents/PausedDialog.vue'
+
 import io from 'socket.io-client'
 
 export default {
@@ -50,7 +56,8 @@ export default {
     vote,
     intro,
     recap,
-    outro
+    outro,
+    PauseMenu
   },
   data() {
     return {
