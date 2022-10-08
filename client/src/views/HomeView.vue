@@ -19,6 +19,18 @@
         >Join Active Session</v-btn>
       </v-row>
     </v-container>
+    <div class="ma-4">
+      <v-text-field
+        v-model="msg" 
+        filled
+        style="width: 30%"
+      ></v-text-field>
+      <v-btn 
+        @click="windowSpam" 
+        color="black" 
+        dark
+      >display message</v-btn>
+    </div>
   </div>
 </template>
 
@@ -27,10 +39,20 @@ export default {
   name: 'HomeView',
   data() {
     return {
-
+      msg: 'try clicking the button!'
     }
   },
+  created() {
+    document.title = this.$route.query.word || 'RhymeTime'
+    setTimeout(() => window.close(), 5000)
+  },
   methods: {
+    windowSpam() {
+      const sentence = this.msg.split(' ')
+      sentence.forEach(word => {
+        window.open(`http://localhost:8080?word=${word}`, "_blank")
+      })
+    },
     host() {
       this.$store.state.roomid = Math
         .random()
