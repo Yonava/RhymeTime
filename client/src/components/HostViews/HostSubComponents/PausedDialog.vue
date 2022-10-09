@@ -6,7 +6,7 @@
   >
     <v-card>
       <div class="center">
-        <v-card-title style="word-break: break-word" class="text-h5">
+        <v-card-title style="word-break: break-word" class="text-h5 pa-0 mt-2">
           Room {{ $store.state.roomid }}
         </v-card-title>
         <v-img
@@ -14,32 +14,70 @@
           width="200"
           class="my-4"
         ></v-img>
-        <v-card-text style="word-break: break-word">
-          Round {{ roundCount }} out of {{ totalRounds }}
+        <div class="divider ma-2"></div>
+          Round
           <v-progress-circular
             :value="gameProgress"
             color="blue"
             size="50"
           >
-            {{ gameProgress }}%
+            {{ roundCount }}/{{ totalRounds }}
           </v-progress-circular>
-        </v-card-text>
-        <v-card-text>
-          Players In Room: {{ playersPresent }}
-        </v-card-text>
-        <v-btn
-          @click.stop="$store.state.sfxEnabled = !$store.state.sfxEnabled"
-          :color="sfxBtnColor"
-          class="white--text"
-        >{{ sfxText }}</v-btn>
-        <v-card-actions>
-          <v-btn
-            @click.stop="show = false"
-            block
-            color="info"
+        Players In Room: {{ playersPresent }}
+        <div class="text-h6 mb-2">Volume Settings</div>
+        <div style="width: 85%">
+          <v-row dense align="center" justify="center">
+            <v-col cols="10">
+              <v-slider
+                v-model="$store.state.sfxVolume"
+                :prepend-icon="sfxVolumeIcon"
+                color="green"
+                track-color="red"
+                min="0"
+                max="100"
+              ></v-slider>   
+            </v-col>
+            <v-col 
+              cols="2"
+              class="mb-5"
+            >SFX</v-col>
+          </v-row>
+          <v-row dense align="center" justify="center">
+            <v-col cols="10">
+              <v-slider
+                v-model="$store.state.musicVolume"
+                :prepend-icon="musicVolumeIcon"
+                color="green"
+                track-color="red"
+                min="0"
+                max="100"
+              ></v-slider>
+            </v-col>
+            <v-col 
+              cols="2"
+              class="mb-5"
+            >Music</v-col>
+          </v-row>
+        </div>
+        <v-card-actions> 
+          <div 
+            @click.stop="exit"
+            style="cursor: pointer; position: absolute; left:0"
+            class="ml-3"
           >
-            Unpause Game
-          </v-btn>
+            <v-icon color="red">
+              mdi-arrow-left-bold-circle
+            </v-icon>
+            Disband Game
+          </div>
+          <div 
+            @click.stop="show = false"
+            style="cursor: pointer"
+          >
+            <v-icon x-large>
+              mdi-play
+            </v-icon> 
+          </div>
         </v-card-actions>
       </div>
     </v-card>
@@ -67,11 +105,12 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      gameProgress: 0
+    }
+  },
   computed: {
-    gameProgress() {
-      const PERCENT_COMPLETED = (this.roundCount / this.totalRounds) * 100
-      return Math.round(PERCENT_COMPLETED)
-    },
     playersPresent() {
       if (!this.playerList.length) return 'No Players In Room'
       if (this.playerList.length === 1) return this.playerList[0]
@@ -83,11 +122,31 @@ export default {
       }
       return playersInGame
     },
-    sfxText() {
-      return this.$store.state.sfxEnabled ? 'SFX Enabled' : 'SFX Disabled'
+    sfxVolumeIcon() {
+      const VOLUME = this.$store.state.sfxVolume
+      switch (true) {
+        case VOLUME > 70:
+          return 'mdi-volume-high'
+        case VOLUME > 20:
+          return 'mdi-volume-medium'
+        case VOLUME > 0:
+          return 'mdi-volume-low'
+        default: 
+          return 'mdi-volume-off'
+      }
     },
-    sfxBtnColor() {
-      return this.$store.state.sfxEnabled ? 'green' : 'red'
+    musicVolumeIcon() {
+      const VOLUME = this.$store.state.musicVolume
+      switch (true) {
+        case VOLUME > 70:
+          return 'mdi-volume-high'
+        case VOLUME > 20:
+          return 'mdi-volume-medium'
+        case VOLUME > 0:
+          return 'mdi-volume-low'
+        default: 
+          return 'mdi-volume-off'
+      }
     },
     url() {
       return `
@@ -111,6 +170,30 @@ export default {
         }
       }
     }
+  },
+  methods: {
+    calculateGameProgress() {
+      const PERCENT_COMPLETED = (this.roundCount / this.totalRounds) * 100
+      this.gameProgress = Math.round(PERCENT_COMPLETED)
+    },
+    exit() {
+      this.$parent.forceDisconnect()
+      this.$router.push('/')
+    }
+  },
+  watch: {
+    visible(v) {
+      if (v) setTimeout(() => this.calculateGameProgress(), 250)
+      else this.gameProgress = 0
+    }
   }
 }
 </script>
+
+<style scoped>
+.divider {
+  width: 90%;
+  height: 1px;
+  background-color: rgb(47, 47, 47);
+}
+</style>

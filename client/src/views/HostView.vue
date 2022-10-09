@@ -24,16 +24,13 @@
       @restart-game="restartGame"
     ></component>
 
-    <!-- KeepAlive may lead to potential bugginess -->
-    <KeepAlive>
-      <PauseMenu 
-        :visible="manuallyPaused" 
-        :roundCount="roundCount"
-        :totalRounds="totalRounds"
-        :playerList="playerList"
-        @unpause="manuallyPaused = false"
-      />
-    </KeepAlive>
+    <PauseMenu
+      :visible="manuallyPaused" 
+      :roundCount="roundCount"
+      :totalRounds="totalRounds"
+      :playerList="playerList"
+      @unpause="manuallyPaused = false"
+    />
   </div>
 </template>
 
@@ -133,10 +130,6 @@ export default {
       if (this.manuallyPaused) return
       this.isPageHidden = document.visibilityState === 'hidden'
       this.socket.emit('visibility-handler', this.isPageHidden)
-    },
-    exit() {
-      this.forceDisconnect()
-      this.$router.push('/')
     },
     forceDisconnect() {
       this.socket.disconnect()

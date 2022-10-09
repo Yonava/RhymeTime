@@ -10,7 +10,8 @@ export default new Vuex.Store({
     roomid: '',
 
     // client settings
-    sfxEnabled: true,
+    sfxVolume: 100,
+    musicVolume: 100,
 
     // clock state used by mixin parent(s) and read by ClockDisplay
     timeRemaining: 30,
