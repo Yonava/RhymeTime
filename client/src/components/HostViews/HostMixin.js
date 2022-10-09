@@ -1,5 +1,5 @@
 import Clock from './HostSubComponents/ClockDisplay.vue'
-import { playEffect } from '@/utils/Soundboard'
+import { playEffect, playSong } from '@/utils/Soundboard'
 
 export default {
   data() {
@@ -8,7 +8,7 @@ export default {
       timerDisabled: false,
       // for interval idempotence
       timerRunning: false,
-      // stores audio instance for gameplay music
+      // contains audio obj for music track
       audio: undefined,
 
       // for developing ui only. make sure this is set to false in prod
@@ -56,35 +56,34 @@ export default {
     switch (this.$parent.currentView) {
       case 'respond':
         this.$store.state.timeRemaining = 90
-        this.audio = new Audio(require('../../../assets/respond.mp3'))
+        this.audio = playSong('respond')
         break
       case 'vote':
         this.$store.state.timeRemaining = 30
-        this.audio = new Audio(require('../../../assets/vote.mp3'))
+        this.audio = playSong('vote')
         break
       case 'recap':
         this.$store.state.timeRemaining = 15
-        this.audio = undefined
         break
-      case 'waiting': 
-        this.audio = new Audio(require('../../../assets/waiting.mp3'))
+      case 'waiting':
+        this.audio = playSong('waiting')
         this.timerDisabled = true
         break
       case 'intro':
-        this.audio = undefined
         this.timerDisabled = true
         break
       case 'outro':
-        this.audio = undefined
         this.timerDisabled = true
         break
       default:
         return console.error('Uncaught Case Passed Down to HostMixin')
     }
 
+    
     this.$store.state.totalTime = this.$store.state.timeRemaining
-    if (this.audio?.play()) this.audio.play()
     this.startTimer()
+
+    this.createMusicVolumeWatcher()
   },
   destroyed() {
     clearInterval(this.timer)
@@ -124,6 +123,11 @@ export default {
     unpauseGame() {
       if (!this.testMode) this.startTimer()
       if (this.audio?.play()) this.audio.play()
+    },
+    createMusicVolumeWatcher() {
+      this.$watch(() => this.$store.state.musicVolume, (v) => {
+        this.audio.volume = parseInt(v) / 100
+      })
     }
   },
   watch: {

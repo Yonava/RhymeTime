@@ -15,15 +15,18 @@
           class="my-4"
         ></v-img>
         <div class="divider ma-2"></div>
-          Round
-          <v-progress-circular
-            :value="gameProgress"
-            color="blue"
-            size="50"
-          >
-            {{ roundCount }}/{{ totalRounds }}
-          </v-progress-circular>
-        Players In Room: {{ playersPresent }}
+        Round
+        <v-progress-circular
+          :value="gameProgress"
+          color="blue"
+          size="50"
+        >
+          {{ roundCount }}/{{ totalRounds }}
+        </v-progress-circular>
+        <div class="ma-2">
+          Players In Room: {{ playersPresent }}
+        </div>
+        <div class="divider ma-2"></div>
         <div class="text-h6 mb-2">Volume Settings</div>
         <div style="width: 85%">
           <v-row dense align="center" justify="center">
