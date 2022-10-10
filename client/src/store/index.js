@@ -9,6 +9,10 @@ export default new Vuex.Store({
     nickname: '',
     roomid: '',
 
+    // for audio state
+    blockedAudio: undefined,
+    track: '',
+
     // client settings
     sfxVolume: 100,
     musicVolume: 100,

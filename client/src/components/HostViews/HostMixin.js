@@ -1,14 +1,11 @@
 import Clock from './HostSubComponents/ClockDisplay.vue'
-import { playEffect, playSong } from '@/utils/Soundboard'
+import { playEffect, SoundTrack } from '@/utils/Soundboard'
 
 export default {
   data() {
     return {
       // for interval idempotence
       timerRunning: false,
-      // contains audio obj for music track
-      audio: undefined,
-
       // for developing ui only. make sure this is set to false in prod
       testMode: false,
       // component that you want to test
@@ -55,17 +52,17 @@ export default {
     switch (this.$parent.currentView) {
       case 'respond':
         this.$store.state.timeRemaining = 90
-        this.audio = playSong('respond')
+        SoundTrack.playNew('respond')
         break
       case 'vote':
         this.$store.state.timeRemaining = 30
-        this.audio = playSong('vote')
+        SoundTrack.playNew('vote')
         break
       case 'recap':
         this.$store.state.timeRemaining = 15
         break
       case 'waiting':
-        this.audio = playSong('waiting')
+        SoundTrack.playNew('waiting')
         break
       case 'intro':
         break
@@ -78,15 +75,11 @@ export default {
     
     this.$store.state.totalTime = this.$store.state.timeRemaining
     this.startTimer()
-
     this.createMusicVolumeWatcher()
   },
   destroyed() {
     clearInterval(this.timer)
-    if (this.audio?.pause()) {
-      this.audio.pause()
-      this.audio = undefined
-    }
+    SoundTrack.pause()
   },
   methods: {
     startTimer() {
@@ -115,15 +108,15 @@ export default {
     },
     pauseGame() {
       this.stopTimer()
-      if (this.audio?.pause()) this.audio.pause()
+      SoundTrack.pause()
     },
     unpauseGame() {
       if (!this.testMode) this.startTimer()
-      if (this.audio?.play()) this.audio.play()
+      SoundTrack.play()
     },
     createMusicVolumeWatcher() {
-      this.$watch(() => this.$store.state.musicVolume, (v) => {
-        this.audio.volume = parseInt(v) / 100
+      this.$watch(() => this.$store.state.musicVolume, () => {
+        SoundTrack.adjustVolume()
       })
     }
   },
