@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { SoundTrack } from '@/utils/Soundboard'
 
 Vue.use(Vuex)
 
@@ -26,10 +25,6 @@ export default new Vuex.Store({
   getters: {
   },
   mutations: {
-    adjustMusicVolume: (state, newVolume) => {
-      state.musicVolume = newVolume
-      SoundTrack.setVolume()
-    }
   },
   actions: {
   },

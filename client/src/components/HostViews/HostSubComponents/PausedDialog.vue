@@ -119,7 +119,7 @@ export default {
         return this.$store.state.musicVolume
       },
       set(newVolume) {
-        this.$store.commit('adjustMusicVolume', newVolume)
+        this.$store.state.musicVolume = newVolume
       }
     },
     sfxVolume: {

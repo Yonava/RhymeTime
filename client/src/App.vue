@@ -42,7 +42,10 @@ export default {
   mounted() {
     this.$watch(() => this.$store.state.blockedAudio, (v) => {
       this.showAudioSnackbar = !!v;
-    });
+    })
+    this.$watch(() => this.$store.state.musicVolume, () => {
+      SoundTrack.setVolume()
+    })
   },
   methods: {
     playBlockedAudio() {
