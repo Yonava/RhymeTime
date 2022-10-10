@@ -32,8 +32,8 @@
           <v-row dense align="center" justify="center">
             <v-col cols="10">
               <v-slider
-                v-model="$store.state.sfxVolume"
-                :prepend-icon="sfxVolumeIcon"
+                v-model="sfxVolume"
+                :prepend-icon="volumeIcon(sfxVolume)"
                 color="green"
                 track-color="red"
                 min="0"
@@ -48,8 +48,8 @@
           <v-row dense align="center" justify="center">
             <v-col cols="10">
               <v-slider
-                v-model="$store.state.musicVolume"
-                :prepend-icon="musicVolumeIcon"
+                v-model="musicVolume"
+                :prepend-icon="volumeIcon(musicVolume)"
                 color="green"
                 track-color="red"
                 min="0"
@@ -114,6 +114,22 @@ export default {
     }
   },
   computed: {
+    musicVolume: {
+      get() {
+        return this.$store.state.musicVolume
+      },
+      set(newVolume) {
+        this.$store.commit('adjustMusicVolume', newVolume)
+      }
+    },
+    sfxVolume: {
+      get() {
+        return this.$store.state.sfxVolume
+      },
+      set(newVolume) {
+        this.$store.state.sfxVolume = newVolume
+      }
+    },
     playersPresent() {
       if (!this.playerList.length) return 'No Players In Room'
       if (this.playerList.length === 1) return this.playerList[0]
@@ -124,32 +140,6 @@ export default {
         playersInGame += this.playerList[i]
       }
       return playersInGame
-    },
-    sfxVolumeIcon() {
-      const VOLUME = this.$store.state.sfxVolume
-      switch (true) {
-        case VOLUME > 70:
-          return 'mdi-volume-high'
-        case VOLUME > 20:
-          return 'mdi-volume-medium'
-        case VOLUME > 0:
-          return 'mdi-volume-low'
-        default: 
-          return 'mdi-volume-off'
-      }
-    },
-    musicVolumeIcon() {
-      const VOLUME = this.$store.state.musicVolume
-      switch (true) {
-        case VOLUME > 70:
-          return 'mdi-volume-high'
-        case VOLUME > 20:
-          return 'mdi-volume-medium'
-        case VOLUME > 0:
-          return 'mdi-volume-low'
-        default: 
-          return 'mdi-volume-off'
-      }
     },
     url() {
       return `
@@ -178,6 +168,12 @@ export default {
     calculateGameProgress() {
       const PERCENT_COMPLETED = (this.roundCount / this.totalRounds) * 100
       this.gameProgress = Math.round(PERCENT_COMPLETED)
+    },
+    volumeIcon(volume) {
+      if (volume > 70) return 'mdi-volume-high'
+      if (volume > 20) return 'mdi-volume-medium'
+      if (volume > 0) return 'mdi-volume-low'
+      return 'mdi-volume-off'
     },
     exit() {
       this.$parent.forceDisconnect()

@@ -75,7 +75,6 @@ export default {
     
     this.$store.state.totalTime = this.$store.state.timeRemaining
     this.startTimer()
-    this.createMusicVolumeWatcher()
   },
   destroyed() {
     clearInterval(this.timer)
@@ -113,11 +112,6 @@ export default {
     unpauseGame() {
       if (!this.testMode) this.startTimer()
       SoundTrack.play()
-    },
-    createMusicVolumeWatcher() {
-      this.$watch(() => this.$store.state.musicVolume, () => {
-        SoundTrack.adjustVolume()
-      })
     }
   },
   watch: {

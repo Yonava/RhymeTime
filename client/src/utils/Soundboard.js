@@ -32,7 +32,7 @@ export class SoundTrack {
     if (!store.state.track?.pause()) return
     store.state.track.pause()
   }
-  static adjustVolume() {
+  static setVolume() {
     if (!store.state.track?.volume) return
     store.state.track.volume = parseInt(store.state.musicVolume) / 100
   }
