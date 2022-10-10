@@ -14,7 +14,7 @@ export default new Vuex.Store({
     musicVolume: 100,
 
     // clock state used by mixin parent(s) and read by ClockDisplay
-    timeRemaining: 30,
+    timeRemaining: 0,
     totalTime: 30,
     almostOutOfTime: 5
   },

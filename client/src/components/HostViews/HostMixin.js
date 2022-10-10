@@ -4,8 +4,6 @@ import { playEffect, playSong } from '@/utils/Soundboard'
 export default {
   data() {
     return {
-      // if false, timer will never be run on that component
-      timerDisabled: false,
       // for interval idempotence
       timerRunning: false,
       // contains audio obj for music track
@@ -44,7 +42,6 @@ export default {
   mounted() {
     
     if (this.testMode && this.$parent.currentView !== this.testView) this.$emit('change-view', this.testView)
-    if (this.testMode) this.timerDisabled = true
     
     /*
       TODO:
@@ -52,6 +49,8 @@ export default {
       with properties of sound track, timeLimit etc
       maybe a ts enum??? worth exploring!
     */
+
+    this.$store.state.timeRemaining = 0
 
     switch (this.$parent.currentView) {
       case 'respond':
@@ -67,13 +66,10 @@ export default {
         break
       case 'waiting':
         this.audio = playSong('waiting')
-        this.timerDisabled = true
         break
       case 'intro':
-        this.timerDisabled = true
         break
       case 'outro':
-        this.timerDisabled = true
         break
       default:
         return console.error('Uncaught Case Passed Down to HostMixin')
@@ -94,7 +90,8 @@ export default {
   },
   methods: {
     startTimer() {
-      if (this.timerRunning || this.timerDisabled) return
+      if (this.timerRunning) return
+      if (!this.$store.state.timeRemaining) return
       this.timer = setInterval(() => {
 
         this.$store.state.timeRemaining--
