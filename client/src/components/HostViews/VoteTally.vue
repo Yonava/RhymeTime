@@ -13,7 +13,7 @@
     <div class="center">
       <div style="width: 75%;">
         <v-row class="pa-4">
-          <v-col v-for="response in promptResponses" :key="response.id">
+          <v-col v-for="response in responses" :key="response.id">
             <DisplayResponse :response="response" />
           </v-col>
         </v-row>
@@ -52,20 +52,21 @@ export default {
   },
   data() {
     return {
-      // tallies all the votes in ballotBox and returns object. ie { yona: 5 } yona has 5 votes
-      voteCount: {},
       // stores ballots submitted by players
       ballotBox: {},
       // candidate = { player: playerName, votes: totalVotes }
       candidates: [],
+      // if true, no ballots are accepted
+      pollsClosed: false,
+      // is set to promptResponses then widdled down in case of a tiebreaker event
+      responses: []
     };
   },
   destroyed() {
-    this.candidates.sort((a, b) => b.votes - a.votes);
     const WINNER = this.candidates[0]?.player ?? "Nobody";
     const THEIR_RESPONSE =
-      this.promptResponses[
-        this.promptResponses.findIndex((obj) => obj.player === WINNER)
+      this.responses[
+        this.responses.findIndex((obj) => obj.player === WINNER)
       ]?.response ?? "A response hasnt been given";
     this.$emit("round-winner", {
       player: WINNER,
@@ -73,13 +74,8 @@ export default {
     });
   },
   mounted() {
-    this.emitCandidateList()
-
-    this.socketInstance.on('broadcast-game-state', () => {
-      this.emitCandidateList()
-    })
-
-    this.promptResponses.forEach((response) => {
+    this.responses = this.promptResponses
+    this.responses.forEach((response) => {
       this.candidates.push({
         player: response.player,
         votes: 100
@@ -87,37 +83,40 @@ export default {
     })
     this.calculatePercentage()
 
+    this.emitCandidateList()
+    this.socketInstance.on('broadcast-game-state', () => {
+      this.emitCandidateList()
+    })
     this.socketInstance.on('ballot-collector', (playerBallot) => {
+      if (this.pollsClosed) return
       this.countVotes(playerBallot)
     })
   },
   methods: {
     emitCandidateList() {
-      this.socketInstance.emit(
-        "candidate-list",
-        this.promptResponses.map((response) => {
-          return response.player
-      }))
+      this.socketInstance.emit("candidate-list", this.candidates
+        .map((candidate) => candidate.player))
     },
     countVotes(playerBallot) {
-      this.promptResponses
+      let voteCount = {}
+      this.responses
         .map((response) => response.player)
-        .forEach((player) => (this.voteCount[player] = 0));
+        .forEach((player) => (voteCount[player] = 0));
 
       const PLAYER_NAME = Object.keys(playerBallot)[0];
       this.ballotBox[PLAYER_NAME] = playerBallot[PLAYER_NAME];
       Object.keys(this.ballotBox).forEach((ballotHolder) => {
         const REORDERED_BALLOT = [...this.ballotBox[ballotHolder]].reverse();
         for (let i = 0; i < REORDERED_BALLOT.length; i++) {
-          this.voteCount[REORDERED_BALLOT[i]] += i;
+          voteCount[REORDERED_BALLOT[i]] += i;
         }
       });
 
       this.candidates = [];
-      Object.keys(this.voteCount).forEach((player) => {
+      Object.keys(voteCount).forEach((player) => {
         this.candidates.push({
           player,
-          votes: this.voteCount[player],
+          votes: voteCount[player],
         });
       });
 
@@ -136,9 +135,41 @@ export default {
         if (candidate.votes < 8) candidate.votes = 8
       })
     },
+    runTiebreaker() {
+      const FIRST_PLACE_VOTES = this.candidates[0].votes
+      this.candidates = this.candidates.filter((candidate) => {
+        return candidate.votes === FIRST_PLACE_VOTES
+      })
+      this.responses = this.responses.filter((response) => {
+        return this.candidates.map((i) => i.player).includes(response.player)
+      })
+      this.ballotBox = {}
+      this.pollsClosed = true
+      setTimeout(() => this.pollsClosed = false, 500)
+      this.emitCandidateList()
+      this.tackOnTime()
+    },
+    tackOnTime() {
+      this.$store.state.timeRemaining = 10
+      this.startTimer()
+    },
     next() {
-      if (this.testMode) return;
-      this.$emit("change-view", "recap");
+      // no candidate edge case
+      if (!this.candidates.length) {
+        return this.tackOnTime()
+      }
+
+      // tie edge case
+      this.candidates.sort((a, b) => b.votes - a.votes);
+      if (this.candidates.length > 1) {
+        if (this.candidates[0].votes === this.candidates[1].votes) {
+          return this.runTiebreaker()
+        }
+      }
+
+      // no edge case allows game to continue :)
+      if (this.testMode) return
+      this.$emit("change-view", "recap")
     },
   },
 };
