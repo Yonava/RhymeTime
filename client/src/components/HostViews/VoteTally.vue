@@ -63,15 +63,16 @@ export default {
     };
   },
   destroyed() {
-    const WINNER = this.candidates[0]?.player ?? "Nobody";
-    const THEIR_RESPONSE =
-      this.responses[
-        this.responses.findIndex((obj) => obj.player === WINNER)
-      ]?.response ?? "A response hasnt been given";
+    // get winner data
+    const WINNER = this.candidates[0].player
+    const WINNERS_RESPONSE = this.responses[this.responses
+      .findIndex(obj => obj.player === WINNER)].response
+    
+    // give it to parent for round to round tracking
     this.$emit("round-winner", {
       player: WINNER,
-      response: THEIR_RESPONSE,
-    });
+      response: WINNERS_RESPONSE,
+    })
   },
   mounted() {
     this.responses = this.promptResponses
