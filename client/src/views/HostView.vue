@@ -123,6 +123,7 @@ export default {
         this.socket.emit('host-present')
         this.socket.emit('change-view', this.currentView)
         this.emitPausePackage()
+        // figure out best way to send over new-words, and candidate-list
       })
     },
     modelVisibility() {

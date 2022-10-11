@@ -77,6 +77,10 @@ export default {
     this.words = RHYMING_PAIRS[Math.floor(Math.random() * RHYMING_PAIRS.length)]
     this.socketInstance.emit('new-words', this.words)
 
+    this.socketInstance.on('broadcast-game-state', () => {
+      this.socketInstance.emit('new-words', this.words)
+    })
+
     this.socketInstance.on('player-prompt-submission', (playerResponse) => {
       if (!this.acceptingSubmissions) return
       playEffect('responseReceived')

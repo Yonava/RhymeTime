@@ -73,11 +73,11 @@ export default {
     });
   },
   mounted() {
-    this.socketInstance.emit(
-      "candidate-list",
-      this.promptResponses.map((response) => {
-        return response.player
-    }))
+    this.emitCandidateList()
+
+    this.socketInstance.on('broadcast-game-state', () => {
+      this.emitCandidateList()
+    })
 
     this.promptResponses.forEach((response) => {
       this.candidates.push({
@@ -92,6 +92,13 @@ export default {
     })
   },
   methods: {
+    emitCandidateList() {
+      this.socketInstance.emit(
+        "candidate-list",
+        this.promptResponses.map((response) => {
+          return response.player
+      }))
+    },
     countVotes(playerBallot) {
       this.promptResponses
         .map((response) => response.player)
