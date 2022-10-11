@@ -8,7 +8,10 @@
 
     <!-- Dialog Boxes -->
     <host-left :visible="hostLeft" />
-    <game-paused :visible="pauseData.show" :reason="pauseData.reason" />
+    <game-paused 
+      :visible="pauseData.gamePaused" 
+      :reason="pauseData.reason" 
+    />
   </div>
 </template>
 
@@ -43,8 +46,8 @@ export default {
       connectionStatus: false,
       // stores socket instance
       socket: null,
-      // contains data passed down to GamePaused component
-      pauseData: { show: false, reason: '' },
+      // contains data received from host through pause-state socket endpt
+      pauseData: { gamePaused: false, reason: 'not-paused' },
       // used for host to control which view the player is on
       currentView: 'waiting',
       // false if no host can be found in room, is set to false every rollcall
@@ -75,22 +78,12 @@ export default {
             this.connectionStatus = true
             this.socket.emit('player-join', this.$store.state.nickname)
             this.hostCountdown()
-            this.socket.emit('report-to-players')
-            this.socket.emit('get-current-view')
+            this.socket.emit('get-game-state')
           }
         })
       })
-      this.socket.on('visibility-handler', isHostHidden => {
-        this.pauseData = {
-          show: isHostHidden,
-          reason: 'not-visible'
-        }
-      })
-      this.socket.on('game-paused', pausedState => {
-        this.pauseData = {
-          show: pausedState,
-          reason: 'paused'
-        }
+      this.socket.on('pause-state', pausedState => {
+        this.pauseData = pausedState
       })
       this.socket.on('change-view', newView => {
         this.currentView = newView
@@ -134,7 +127,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

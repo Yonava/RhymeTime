@@ -35,7 +35,7 @@ export default {
             title: 'Host Not Visible',
             text: 'Gameplay will resume once the hosts screen becomes visible.'
           }
-        case 'paused': 
+        case 'manual-pause': 
           return {
             title: 'Host Paused The Game',
             text: 'Gameplay will resume once host unpauses.'

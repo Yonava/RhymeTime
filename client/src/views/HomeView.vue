@@ -10,6 +10,8 @@
           color="blue"
           class="ma-3"
           dark
+          @mouseover="playTune('StereoHearts')"
+          @mouseleave="pauseTune"
         >Host A Game</v-btn>
         <v-btn
           @click.once="join"
@@ -30,12 +32,27 @@
         color="black" 
         dark
       >display message</v-btn>
+      <br><br>
+      <div 
+        class="white--text text-p pa-5" 
+        style="background-color: red; height: 75px; width: 75px; cursor: crosshair"
+        @mouseover="playTune('Kahoot')"
+        @mouseleave="pauseTune"
+      >music box</div>
+      <br>
+      <v-btn
+        @click="$store.state.blockedAudio = undefined"
+        color="red"
+        class="white--text"
+      >clear blocked Audio from state</v-btn>
     </div>
 
   </div>
 </template>
 
 <script>
+import { SoundTrack } from '../utils/Soundboard'
+
 export default {
   name: 'HomeView',
   data() {
@@ -48,6 +65,12 @@ export default {
     setTimeout(() => window.close(), 5000)
   },
   methods: {
+    playTune(track) {
+      SoundTrack.playNew(track)
+    },
+    pauseTune() {
+      SoundTrack.pause()
+    },
     windowSpam() {
       const sentence = this.msg.split(' ')
       sentence.forEach(word => {

@@ -84,18 +84,18 @@ export default {
   },
   destroyed() {
     if (this.socket?.connected) this.socket.disconnect()
-    document.removeEventListener('visibilitychange', this.emitVisibility)
+    document.removeEventListener('visibilitychange', this.modelVisibility)
   },
   mounted() {
     this.connectSocket()
-    document.addEventListener('visibilitychange', this.emitVisibility)
+    document.addEventListener('visibilitychange', this.modelVisibility)
   },
   computed: {
     isPaused() {
       return this.isPageHidden || this.manuallyPaused
     },
     pausePlayIcon() {
-      return this.manuallyPaused ? 'mdi-play' : 'mdi-pause'
+      return this.isPaused ? 'mdi-play' : 'mdi-pause'
     }
   },
   methods: {
@@ -115,21 +115,18 @@ export default {
       this.socket.on('player-join', (playerName) => {
         this.playerList.push(playerName)
       })
-      this.socket.on('report-to-players', () => {
-        this.socket.emit('host-present')
-      })
       this.socket.on('roll-call', () => {
         this.playerList = []
         this.socket.emit('host-present')
       })
       this.socket.on('broadcast-game-state', () => {
+        this.socket.emit('host-present')
         this.socket.emit('change-view', this.currentView)
+        this.emitPausePackage()
       })
     },
-    emitVisibility() {
-      if (this.manuallyPaused) return
+    modelVisibility() {
       this.isPageHidden = document.visibilityState === 'hidden'
-      this.socket.emit('visibility-handler', this.isPageHidden)
     },
     forceDisconnect() {
       this.socket.disconnect()
@@ -157,6 +154,13 @@ export default {
       this.currentView = 'waiting'
       this.song = []
       this.promptResponses = []
+    },
+    emitPausePackage() {
+      let pausePackage = { gamePaused: this.isPaused }
+      if (this.manuallyPaused) pausePackage.reason = 'manual-pause'
+      else if (this.isPageHidden) pausePackage.reason = 'not-visible'
+      else pausePackage.reason = 'not-paused'
+      this.socket.emit('pause-state', pausePackage)
     }
   },
   watch: {
@@ -168,8 +172,8 @@ export default {
         console.error(`${v} is not a valid components: host refused socket emit`)
       }
     },
-    manuallyPaused(v) {
-      this.socket.emit('pause-state', v)
+    isPaused() {
+      this.emitPausePackage()
     }
   }
 }

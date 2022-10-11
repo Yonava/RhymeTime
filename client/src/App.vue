@@ -11,7 +11,7 @@
 
     <!-- audio disabled alert -->
     <v-snackbar
-      v-model="showAudioSnackbar"
+      v-model="blockedAudio"
       :multi-line="true"
     >
       Browser Has Block Audio From Playing, Click To Re-Enable Audio
@@ -35,27 +35,28 @@ export default {
   data() {
     return {
       password: localStorage.password,
-      key: "open sesame",
-      showAudioSnackbar: false
+      key: "open sesame"
     };
   },
-  mounted() {
-    this.$watch(() => this.$store.state.blockedAudio, (v) => {
-      this.showAudioSnackbar = !!v;
-    })
+  computed: {
+    blockedAudio: {
+      get() {
+        return this.$store.state.blockedAudio
+      },
+      set(v) {
+        if (!v) this.$store.state.blockedAudio = v
+      }
+    }
   },
   methods: {
     playBlockedAudio() {
-      SoundTrack.playNew(this.$store.state.blockedAudio)
-      this.showAudioSnackbar = false
+      SoundTrack.playNew(this.blockedAudio)
+      this.blockedAudio = undefined
     }
   },
   watch: {
     password(v) {
       localStorage.setItem("password", v);
-    },
-    showAudioSnackbar(v) {
-      if (!v) this.$store.state.blockedAudio = undefined;
     }
   }
 }

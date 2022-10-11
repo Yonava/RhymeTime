@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!submitted">
-      Respond To The Prompt On Screen:
+      Come up with a rhyme using these {{ wordsInPrompt.length }} words {{ wordsInPrompt }}:
       <v-textarea
         v-model="response"
         label="Your Response"
