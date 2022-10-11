@@ -34,6 +34,7 @@
               <v-slider
                 v-model="sfxVolume"
                 :prepend-icon="volumeIcon(sfxVolume)"
+                @click:prepend="sfxVolume ? sfxVolume = 0 : sfxVolume = 100"
                 color="green"
                 track-color="red"
                 min="0"
@@ -50,6 +51,7 @@
               <v-slider
                 v-model="musicVolume"
                 :prepend-icon="volumeIcon(musicVolume)"
+                @click:prepend="musicVolume ? musicVolume = 0 : musicVolume = 100"
                 color="green"
                 track-color="red"
                 min="0"
@@ -89,6 +91,8 @@
 </template>
 
 <script>
+import { SoundTrack } from '../../../utils/Soundboard'
+
 export default {
   props: {
     visible: {
@@ -119,7 +123,7 @@ export default {
         return this.$store.state.musicVolume
       },
       set(newVolume) {
-        this.$store.state.musicVolume = newVolume
+        SoundTrack.setVolume(newVolume)
       }
     },
     sfxVolume: {
