@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Tiebreaker :visible="showTiebreaker" />
     <div style="position: absolute; top: 10%; left: 2%; z-index: 2">
       <Clock title="Polls Close In" />
     </div>
@@ -42,6 +43,7 @@
 <script>
 import HostMixin from "./HostMixin"
 import DisplayResponse from "./HostSubComponents/ResponseDisplayCard.vue"
+import Tiebreaker from "./HostSubComponents/TiebreakerCard.vue"
 
 export default {
   mixins: [
@@ -49,6 +51,7 @@ export default {
   ],
   components: {
     DisplayResponse,
+    Tiebreaker
   },
   data() {
     return {
@@ -59,7 +62,9 @@ export default {
       // if true, no ballots are accepted
       pollsClosed: false,
       // is set to promptResponses then widdled down in case of a tiebreaker event
-      responses: []
+      responses: [],
+      // true if tiebreaker card is showing
+      showTiebreaker: false
     };
   },
   destroyed() {
@@ -151,8 +156,11 @@ export default {
       this.tackOnTime()
     },
     tackOnTime() {
-      this.$store.state.timeRemaining = 10
-      this.startTimer()
+      this.showTiebreaker = true
+      setTimeout(() => {
+        this.$store.state.timeRemaining = 10
+        this.startTimer()
+      }, 2000)
     },
     next() {
       // no candidate edge case
@@ -171,9 +179,15 @@ export default {
       // no edge case allows game to continue :)
       if (this.testMode) return
       this.$emit("change-view", "recap")
-    },
+    }
   },
-};
+  watch: {
+    showTiebreaker(v) {
+      if (!v) return
+      setTimeout(() => this.showTiebreaker = false, 3000)
+    } 
+  }
+}
 </script>
 
 <style scoped>
