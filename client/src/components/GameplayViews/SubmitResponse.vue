@@ -4,6 +4,7 @@
       Come up with a rhyme using these {{ wordsInPrompt.length }} words {{ wordsInPrompt }}:
       <v-textarea
         v-model="response"
+        :rules="[includesPrompt]"
         label="Your Response"
         no-resize
         maxlength="1000"
@@ -38,7 +39,9 @@ export default {
       // true when player submits on their end
       submitted: false,
       // true when server verifies it has received the submission
-      submissionReceived: undefined
+      submissionReceived: undefined,
+      // used for vuetify text-field validation
+      includesPrompt: v => this.wordsInPrompt.every(word => v.toLowerCase().indexOf(word) !== -1) || "Include Every Word Given In Prompt"
     }
   },
   props: {
