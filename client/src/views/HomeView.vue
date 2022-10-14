@@ -21,7 +21,7 @@
         >Join Active Session</v-btn>
       </v-row>
     </v-container>
-    <div class="ma-4">
+    <!-- <div class="ma-4">
       <v-text-field
         v-model="msg" 
         filled
@@ -45,7 +45,7 @@
         color="red"
         class="white--text"
       >clear blocked Audio from state</v-btn>
-    </div>
+    </div> -->
 
   </div>
 </template>
@@ -62,7 +62,7 @@ export default {
   },
   created() {
     document.title = this.$route.query.word || 'RhymeTime'
-    setTimeout(() => window.close(), 5000)
+    // setTimeout(() => window.close(), 5000)
   },
   methods: {
     playTune(track) {
