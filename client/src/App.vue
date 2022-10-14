@@ -1,13 +1,8 @@
 <template>
   <v-app>
-    <div v-if="password === key">
+    <div>
       <router-view />
-      <button class="close-sesame" @click="password = ''">close sesame</button>
     </div>
-    <center v-else>
-      <h1>RhymeTime Coming Soon</h1>
-      <input class="input-box" type="text" v-model="password" />
-    </center>
 
     <!-- audio disabled alert -->
     <v-snackbar
@@ -52,11 +47,6 @@ export default {
     playBlockedAudio() {
       SoundTrack.playNew(this.blockedAudio)
       this.blockedAudio = undefined
-    }
-  },
-  watch: {
-    password(v) {
-      localStorage.setItem("password", v);
     }
   }
 }
