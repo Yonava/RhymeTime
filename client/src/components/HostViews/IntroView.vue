@@ -60,7 +60,7 @@ export default {
       this.votesForSkip = votesForSkip
     
       // check if everyone is on board to skip
-      if (this.players.every(player => player.wantsToSkip)) {
+      if (this.players.length === this.votesForSkip) {
         setTimeout(() => this.next(), 1500)
       }
     },
