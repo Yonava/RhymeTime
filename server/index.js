@@ -2,16 +2,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
+const db = require('mysql');
 
-const server = require('http').Server(app)
-exports.server = server
+const server = require('http').Server(app);
+exports.server = server;
 
-require('./sockets')
+require('./sockets');
 
 app.use(bodyParser.json());
 app.use(cors());
 
-const PORT = process.env.PORT || 1010
+const PORT = process.env.PORT || 1010;
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(__dirname + '/public/'));
@@ -20,4 +21,4 @@ if (process.env.NODE_ENV === 'production') {
 
 server.listen(PORT, () => {
   console.log(`Listening on localhost:${PORT}`);
-})
+});

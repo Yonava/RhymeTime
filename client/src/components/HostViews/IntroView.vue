@@ -9,6 +9,10 @@
       class="white--text mt-8" 
       color="red"
     >Skip intro</v-btn>
+    <br>
+    Votes for: {{ votesForSkip }}
+    <br>
+    Votes aganst: {{ votesAgainstSkip }}
   </div>
 </template>
 
@@ -19,7 +23,47 @@ export default {
   mixins: [
     HostMixin
   ],
+  data() {
+    return {
+      players: [],
+      votesForSkip: 0
+    }
+  },
+  mounted() {
+    this.playerList.forEach(player => {
+      this.players.push({
+        playerName: player,
+        wantsToSkip: false
+      })
+    })
+    this.$watch(() => this.players, (v) => reComputeSkipCount(v))
+    this.socketInstance.on('skip-vote', (vote) => {
+      for (let i = 0; i < this.players.length; i++) {
+        if (players[i].playerName === vote.playerName) {
+          players[i].wantsToSkip = vote.wantsToSkip
+          break
+        }
+      }
+    })
+  },
+  computed: {
+    votesAgainstSkip() {
+      return this.players.length - this.votesForSkip
+    }
+  },
   methods: {
+    reComputeSkipCount(newPlayerVotes) {
+      let votesForSkip = 0
+      newPlayerVotes.forEach(player => {
+        if (player.wantsToSkip) votesForSkip++
+      })
+      this.votesForSkip = votesForSkip
+    
+      // check if everyone is on board to skip
+      if (newPlayerVotes.every(player => player.wantsToSkip)) {
+        setTimeout(() => this.next(), 1500)
+      }
+    },
     next() {
       if (this.testMode) return
       this.$emit('change-view', 'respond')
