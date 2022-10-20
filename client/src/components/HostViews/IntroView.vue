@@ -36,11 +36,11 @@ export default {
         wantsToSkip: false
       })
     })
-    this.$watch(() => this.players, (v) => reComputeSkipCount(v))
     this.socketInstance.on('skip-vote', (vote) => {
       for (let i = 0; i < this.players.length; i++) {
-        if (players[i].playerName === vote.playerName) {
-          players[i].wantsToSkip = vote.wantsToSkip
+        if (this.players[i].playerName === vote.playerName) {
+          this.players[i].wantsToSkip = vote.wantsToSkip
+          this.reComputeSkipCount()
           break
         }
       }
@@ -52,15 +52,15 @@ export default {
     }
   },
   methods: {
-    reComputeSkipCount(newPlayerVotes) {
+    reComputeSkipCount() {
       let votesForSkip = 0
-      newPlayerVotes.forEach(player => {
+      this.players.forEach(player => {
         if (player.wantsToSkip) votesForSkip++
       })
       this.votesForSkip = votesForSkip
     
       // check if everyone is on board to skip
-      if (newPlayerVotes.every(player => player.wantsToSkip)) {
+      if (this.players.every(player => player.wantsToSkip)) {
         setTimeout(() => this.next(), 1500)
       }
     },

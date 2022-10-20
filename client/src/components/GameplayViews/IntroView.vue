@@ -3,6 +3,7 @@
     <v-btn 
       @click.stop="wantsToSkip = !wantsToSkip"
       :color="skipBtnColor"
+      class="white--text"
     >{{ skipBtnText }}</v-btn>
   </div>
 </template>
