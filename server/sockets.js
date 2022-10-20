@@ -86,5 +86,10 @@ io.on('connection', socket => {
   socket.on('pause-state', (pauseState) => {
     socket.to(roomid).emit('pause-state', pauseState)
   })
+
+  // emitted by player to tell host if player wants to skip tutorial
+  socket.on('skip-vote', (vote) => {
+    socket.to(roomid).emit('skip-vote', vote)
+  })
   
 })
