@@ -37,7 +37,7 @@ io.on('connection', socket => {
     socket.to(roomid).emit('player-join', username)
   })
 
-  // emitted by host when to control the view that the player sees
+  // emitted by host to control the view that the player sees
   socket.on('change-view', (view) => {
     socket.to(roomid).emit('change-view', view)
   })
