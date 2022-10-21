@@ -46,3 +46,48 @@ Used by host to probe for which players are still connected
 <br>
 Used for players to tell the host that they need the current state of the game to stay in sync. Called when player joins mid-game or player has disconnected breifly before reconnecting again
 
+### pause-state
+<b>Sender</b> `Host Client` -> <b>Recipient</b> `Player Client`
+<br>
+<b>Data in Payload</b> pauseState: { gamePaused: boolean, reason: string }
+<br>
+Used by host to tell player clients if they need to go into a pause state and why
+
+<div id="gameplay"></div>
+
+## Gameplay Endpoints
+
+### player-prompt-response
+<b>Sender</b> `Player Client` -> <b>Recipient</b> `Host Client`
+<br>
+<b>Data in Payload</b> playerResponse: { player: string, response: string }
+<br>
+Used by player to send their submitted prompt response to host
+
+### new-words
+<b>Sender</b> `Host Client` -> <b>Recipient</b> `Player Client`
+<br>
+<b>Data in Payload</b> newWords: []string
+<br>
+Used by host to send a new prompt to players
+
+### candidate-list
+<b>Sender</b> `Host Client` -> <b>Recipient</b> `Player Client`
+<br>
+<b>Data in Payload</b> list: []string
+<br>
+Used by host to tell players who they can vote for
+
+### submit-ballot
+<b>Sender</b> `Player Client` -> <b>Recipient</b> `Host Client`
+<br>
+<b>Data in Payload</b> ballot: { "nickname of sender client" : []string }
+<br>
+Used by player to send their "ballot" to the host. Ballot contains information on who the player voted for
+
+### skip-vote
+<b>Sender</b> `Player Client` -> <b>Recipient</b> `Host Client`
+<br>
+<b>Data in Payload</b> pauseState: { playerName: string, wantsToSkip: boolean }
+<br>
+Used by players to vote on whether to skip the tutorial playing on host screen

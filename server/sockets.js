@@ -58,6 +58,12 @@ io.on('connection', socket => {
     socket.to(roomid).emit('broadcast-game-state')
   })
 
+  // emitted by host to tell players if the game is paused, 
+  // and what the reason for the pause is
+  socket.on('pause-state', (pauseState) => {
+    socket.to(roomid).emit('pause-state', pauseState)
+  })
+
   // GAMEPLAY ENDPOINTS
 
   // emitted by player when they submit a prompt response to host
@@ -79,12 +85,6 @@ io.on('connection', socket => {
   // emitted by player so host can update the vote tallies
   socket.on('submit-ballot', (ballot) => {
     socket.to(roomid).emit('ballot-collector', ballot)
-  })
-
-  // emitted by host to tell players if the game is paused, 
-  // and what the reason for the pause is
-  socket.on('pause-state', (pauseState) => {
-    socket.to(roomid).emit('pause-state', pauseState)
   })
 
   // emitted by player to tell host if player wants to skip tutorial
