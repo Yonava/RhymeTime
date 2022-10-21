@@ -1,6 +1,11 @@
 # Web Socket Documentation
 Find the code for all socket endpoints here: [server/sockets.js](https://github.com/Yonava/RhymeTime/blob/main/server/sockets.js)
 
+Our project utilizes tooling build by [Socket.io](https://socket.io/docs/v4/) for implementing sockets that use the websocket protocol integrated with http for automatic reconnection
+
+```npm install socket.io```
+[npm](https://www.npmjs.com/package/socket.io)
+
 Socket endpoints are split into 2 categories: <a href="#connection">Connection Endpoints</a> & <a href="#gameplay">Gameplay Endpoints</a>
 <br><br>
 Connection endpoints are endpoints that exist solely to facilitate the function of connecting clients together for the purpose of making gameplay possible
@@ -90,4 +95,4 @@ Used by player to send their "ballot" to the host. Ballot contains information o
 <br>
 <b>Data in Payload</b> pauseState: { playerName: string, wantsToSkip: boolean }
 <br>
-Used by players to vote on whether to skip the tutorial playing on host screen
+Used by players to vote on whether to skip the tutorial playing on host
