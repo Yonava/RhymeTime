@@ -56,7 +56,7 @@ Used for players to tell the host that they need the current state of the game t
 <br>
 <b>Data in Payload</b> pauseState: { gamePaused: boolean, reason: string }
 <br>
-Used by host to tell player clients if they need to go into a pause state and why
+Allows host to send a confirmation to players in room to confirm that the host is connected
 
 <div id="gameplay"></div>
 
