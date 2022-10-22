@@ -10,6 +10,7 @@
 
 <script>
 export default {
+  name: 'intro',
   props: {
     socketInstance: {
       required: true,
@@ -31,9 +32,6 @@ export default {
     skipBtnColor() {
       return this.wantsToSkip ? 'green' : 'red'
     }
-  },
-  methods: {
-    
   },
   watch: {
     wantsToSkip(v) {
