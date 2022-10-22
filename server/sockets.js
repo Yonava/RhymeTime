@@ -37,7 +37,7 @@ io.on('connection', socket => {
     socket.to(roomid).emit('player-join', username)
   })
 
-  // emitted by host when to control the view that the player sees
+  // emitted by host to control the view that the player sees
   socket.on('change-view', (view) => {
     socket.to(roomid).emit('change-view', view)
   })
@@ -56,6 +56,12 @@ io.on('connection', socket => {
   // tells host to send critical game-state to sync-up player
   socket.on('get-game-state', () => {
     socket.to(roomid).emit('broadcast-game-state')
+  })
+
+  // emitted by host to tell players if the game is paused, 
+  // and what the reason for the pause is
+  socket.on('pause-state', (pauseState) => {
+    socket.to(roomid).emit('pause-state', pauseState)
   })
 
   // GAMEPLAY ENDPOINTS
@@ -79,12 +85,6 @@ io.on('connection', socket => {
   // emitted by player so host can update the vote tallies
   socket.on('submit-ballot', (ballot) => {
     socket.to(roomid).emit('ballot-collector', ballot)
-  })
-
-  // emitted by host to tell players if the game is paused, 
-  // and what the reason for the pause is
-  socket.on('pause-state', (pauseState) => {
-    socket.to(roomid).emit('pause-state', pauseState)
   })
 
   // emitted by player to tell host if player wants to skip tutorial
