@@ -135,13 +135,16 @@ export default {
       }
     },
     playersPresent() {
-      if (!this.playerList.length) return 'No Players In Room'
-      if (this.playerList.length === 1) return this.playerList[0]
+      const PLAYER_NAMES = this.playerList
+        .filter(player => player.occupied)
+        .map(player => player.name)
+      if (!PLAYER_NAMES.length) return 'No Players In Room'
+      if (PLAYER_NAMES.length === 1) return PLAYER_NAMES[0]
       let playersInGame = ''
-      for (let i = 0; i < this.playerList.length; i++) {
-        if (this.playerList.length - 1 === i) playersInGame += ', and '
+      for (let i = 0; i < PLAYER_NAMES.length; i++) {
+        if (PLAYER_NAMES.length - 1 === i) playersInGame += ', and '
         else if (i !== 0) playersInGame += ', '
-        playersInGame += this.playerList[i]
+        playersInGame += PLAYER_NAMES[i]
       }
       return playersInGame
     },

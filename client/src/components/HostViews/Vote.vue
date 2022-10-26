@@ -124,7 +124,7 @@ export default {
       Object.keys(voteCount).forEach((playerName) => {
         this.candidates.push({
           playerName,
-          votes: voteCount[player],
+          votes: voteCount[playerName],
         });
       });
 

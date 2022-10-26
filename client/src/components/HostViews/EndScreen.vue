@@ -42,7 +42,7 @@ export default {
   mounted() {
     const PLAYERS = this.song.map((response) => response.playerName);
     PLAYERS.forEach((playerName) => {
-      const INDEX = this.scoreCard.findIndex((obj) => obj.player === player);
+      const INDEX = this.scoreCard.findIndex((obj) => obj.playerName === playerName);
       if (INDEX === -1) {
         this.scoreCard.push({
           playerName,

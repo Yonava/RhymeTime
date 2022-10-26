@@ -19,7 +19,7 @@
 import vote from '../components/PlayerViews/Vote.vue'
 import respond from '../components/PlayerViews/Respond.vue'
 import waiting from '../components/PlayerViews/Waiting.vue'
-import intro from '../components/PlayerViews/Intro.vue'
+import intro from '../components/PlayerViews/Tutorial.vue'
 import recap from '../components/PlayerViews/Recap.vue'
 import outro from '../components/PlayerViews/EndScreen.vue'
 

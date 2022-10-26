@@ -31,8 +31,9 @@ export default {
   },
   mounted() {
     this.playerList.forEach(player => {
+      if (!player.occupied) return
       this.players.push({
-        playerName: player,
+        playerName: player.name,
         wantsToSkip: false
       })
     })

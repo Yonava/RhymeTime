@@ -14,7 +14,8 @@
       <div :style="`transition: 3s; width: 60%; ${preIntroResponseStyles}`">
         <v-row align="center" justify="center">
           <v-col
-            v-for="player in playerList" :key="player.id"
+            v-for="player in playerList.filter(player => player.occupied)" 
+            :key="player.id"
             cols="6"
           >
             <ResponseCard
@@ -113,7 +114,7 @@ export default {
       immediate: true,
       handler(v) {
         const NUM_OF_PLAYERS = this.playerList
-          .filter(player => player.name !== 'Open Spot')
+          .filter(player => player.occupied)
           .length
         this.respondents = v.map(response => response.playerName)
         if (this.respondents.length === NUM_OF_PLAYERS) {
