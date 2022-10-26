@@ -27,7 +27,7 @@ io.on('connection', socket => {
   // if anyone connected to the socket disconnects. May get messy with audience
   // when that gets implemented
   socket.on('disconnect', () => {
-    socket.to(roomid).emit('roll-call')
+    socket.to(roomid).emit('disconnect-event')
   })
 
   // CONNECTION ENDPOINTS

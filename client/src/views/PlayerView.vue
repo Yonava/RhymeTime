@@ -89,8 +89,7 @@ export default {
         this.currentView = newView
         window.scrollTo(0, 0)
       })
-      this.socket.on('roll-call', () => {
-        this.socket.emit('player-join', this.$store.state.nickname)
+      this.socket.on('disconnect-event', () => {
         this.hostCountdown()
       })
       this.socket.on('host-present', () => {

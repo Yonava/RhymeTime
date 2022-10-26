@@ -33,7 +33,7 @@
         :style="`height: ${player.votes}%;`"
       >
         <div class="text-p white--text name-tag">
-          {{ player.player }}
+          {{ player.playerName }}
         </div>
       </div>
     </div>
@@ -75,7 +75,7 @@ export default {
     
     // give it to parent for round to round tracking
     this.$emit("round-winner", {
-      player: WINNER,
+      playerName: WINNER,
       response: WINNERS_RESPONSE,
     })
   },
@@ -83,7 +83,7 @@ export default {
     this.responses = this.promptResponses
     this.responses.forEach((response) => {
       this.candidates.push({
-        player: response.player,
+        playerName: response.playerName,
         votes: 100
       })
     })
@@ -101,12 +101,14 @@ export default {
   methods: {
     emitCandidateList() {
       this.socketInstance.emit("candidate-list", this.candidates
-        .map((candidate) => candidate.player))
+        .map((candidate) => candidate.playerName))
     },
     countVotes(playerBallot) {
+      // refactoring this cluster fuck of a method
+      // should go up as a task on the backlog
       let voteCount = {}
       this.responses
-        .map((response) => response.player)
+        .map((response) => response.playerName)
         .forEach((player) => (voteCount[player] = 0));
 
       const PLAYER_NAME = Object.keys(playerBallot)[0];
@@ -119,9 +121,9 @@ export default {
       });
 
       this.candidates = [];
-      Object.keys(voteCount).forEach((player) => {
+      Object.keys(voteCount).forEach((playerName) => {
         this.candidates.push({
-          player,
+          playerName,
           votes: voteCount[player],
         });
       });
@@ -147,7 +149,7 @@ export default {
         return candidate.votes === FIRST_PLACE_VOTES
       })
       this.responses = this.responses.filter((response) => {
-        return this.candidates.map((i) => i.player).includes(response.player)
+        return this.candidates.map((i) => i.playerName).includes(response.playerName)
       })
       this.ballotBox = {}
       this.pollsClosed = true

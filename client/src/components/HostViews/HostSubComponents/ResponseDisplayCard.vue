@@ -5,7 +5,7 @@
       style="word-break: break-word; background-color: purple"
     >
       <v-card-title class="white--text"> 
-        {{ response.player }}
+        {{ response.playerName }}
       </v-card-title>
     </div>
     <v-card-text>

@@ -66,7 +66,7 @@ export default {
       currentView: 'waiting',
       // playerlist contains player objects for every connected player
       playerList: [],
-      // prompt responses each round are stored here. response obj. format {player, response}
+      // prompt responses each round are stored here. response obj format { playerName, response }
       promptResponses: [],
       // stores what round the game is on
       roundCount: 1,
@@ -130,8 +130,7 @@ export default {
           pfp: 'default'
         }
       })
-      this.socket.on('roll-call', () => {
-        this.playerList = []
+      this.socket.on('disconnect-event', () => {
         this.socket.emit('host-present')
       })
       this.socket.on('broadcast-game-state', () => {
