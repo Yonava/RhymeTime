@@ -104,33 +104,37 @@ export default {
         .map((candidate) => candidate.playerName))
     },
     countVotes(playerBallot) {
-      // refactoring this cluster fuck of a method
-      // should go up as a task on the backlog
-      let voteCount = {}
-      this.responses
-        .map((response) => response.playerName)
-        .forEach((player) => (voteCount[player] = 0));
+      // this function servers to recount all votes in ballotBox
+      // playerBallot obj format: { "nickname of sender client" : []string }
 
-      const PLAYER_NAME = Object.keys(playerBallot)[0];
-      this.ballotBox[PLAYER_NAME] = playerBallot[PLAYER_NAME];
-      Object.keys(this.ballotBox).forEach((ballotHolder) => {
-        const REORDERED_BALLOT = [...this.ballotBox[ballotHolder]].reverse();
-        for (let i = 0; i < REORDERED_BALLOT.length; i++) {
-          voteCount[REORDERED_BALLOT[i]] += i;
+      // reset candidate votes for recount
+      for (let i = 0; i < this.candidates.length; i++) {
+        this.candidates[i].votes = 0
+      }
+
+      // stores name of player that the submitted ballot belongs to
+      const PLAYER_NAME = Object.keys(playerBallot)[0]
+
+      // replaces their old ballot with their new one, or creates their own
+      // entry inside ballotBox if this is first ballot
+      this.ballotBox[PLAYER_NAME] = playerBallot[PLAYER_NAME]
+
+      // gets the names of all players who have a ballot on file
+      Object.keys(this.ballotBox).forEach(playerName => {
+        // counts up the votes on each ballot
+        const BALLOT = this.ballotBox[playerName]
+        for (let i = 0; i < BALLOT.length; i++) {
+          const CAND_INX = this.candidates.findIndex(c => c.playerName === BALLOT[i])
+          console.log(CAND_INX, this.candidates[CAND_INX].playerName)
+          this.candidates[CAND_INX].votes += (BALLOT.length - 1) - i
         }
-      });
-
-      this.candidates = [];
-      Object.keys(voteCount).forEach((playerName) => {
-        this.candidates.push({
-          playerName,
-          votes: voteCount[playerName],
-        });
-      });
+      })
 
       this.calculatePercentage()
     },
     calculatePercentage() {
+      // turns candidate votes into percentages so votes can be neatly displayed in css
+      // 10, 20, 30 -> 16.6, 33.3, 50
       if (!this.candidates.length) return
       const TOTAL_VOTES = this.candidates
         .map(candidate => candidate.votes)

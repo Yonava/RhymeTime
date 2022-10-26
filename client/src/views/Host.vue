@@ -95,7 +95,7 @@ export default {
       this.playerList.push({
         name: 'Open Spot',
         color: 'white',
-        pfp: undefined,
+        pfp: null,
         occupied: false,
         id: i
       })
@@ -135,8 +135,9 @@ export default {
         // as a player. If something doesn't
         // check out, we can also tell the sender client to return to
         // the home page or redirect them into the audience
-        if (this.currentView !== 'waiting') return console.warn('no more mid game joins allowed!')
         const OPEN_SPOT_INX = this.playerList.findIndex(player => !player.occupied)
+        // check for duplicate names for joining client here
+        if (this.currentView !== 'waiting') return console.warn('no more mid game joins allowed!')
         if (OPEN_SPOT_INX === -1) return console.warn('player limit exceeded!')
         this.playerList[OPEN_SPOT_INX] = {
           name: playerName,
