@@ -62,8 +62,6 @@ export default {
     return {
       // toggle to tell view to re-render the child component
       reloadComponents: false,
-      // true if sockets have successfully connected to the server
-      connectionStatus: false,
       // stores socket instance
       socket: null,
       // sets the current view of the game, emits to players
@@ -121,12 +119,22 @@ export default {
       this.socket.on('connect', () => { 
         this.socket.emit('join-room', this.$store.state.roomid, (response) => {
           if (response === 'connected') {
-            this.connectionStatus = true
             this.socket.emit('host-present')
           }
         })
       })
       this.socket.on('player-join', (playerName) => {
+        // add some sort of return to sender thing.
+        // when a player attempts to join, they should give
+        // this function an object with 
+        // { proposedName: string, senderID: string } instead of playerName
+        // this way we can do a validation to make sure the proposed
+        // name is not taken and that there is an empty spot.
+        // If everything checks out, we send a confirmation over socket
+        // with the senderID that the sender client can join 
+        // as a player. If something doesn't
+        // check out, we can also tell the sender client to return to
+        // the home page or redirect them into the audience
         if (this.currentView !== 'waiting') return console.warn('no more mid game joins allowed!')
         const OPEN_SPOT_INX = this.playerList.findIndex(player => !player.occupied)
         if (OPEN_SPOT_INX === -1) return console.warn('player limit exceeded!')
@@ -154,7 +162,6 @@ export default {
     },
     forceDisconnect() {
       this.socket.disconnect()
-      this.connectionStatus = false
     },
     addWinnerToSong(winningResponse) {
       this.song.push(winningResponse)

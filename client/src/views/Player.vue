@@ -42,8 +42,6 @@ export default {
   },
   data() {
     return {
-      // true if sockets have successfully connected to the server
-      connectionStatus: false,
       // stores socket instance
       socket: null,
       // contains data received from host through pause-state socket endpt
@@ -75,7 +73,6 @@ export default {
       this.socket.on('connect', () => {
         this.socket.emit('join-room', this.$store.state.roomid, (response) => {
           if (response === 'connected') {
-            this.connectionStatus = true
             this.socket.emit('player-join', this.$store.state.nickname)
             this.hostCountdown()
             this.socket.emit('get-game-state')
@@ -104,7 +101,6 @@ export default {
     },
     forceDisconnect() {
       this.socket.disconnect()
-      this.connectionStatus = false
     },
     hostCountdown() {
       this.hostPresent = false
