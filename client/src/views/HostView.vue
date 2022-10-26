@@ -35,12 +35,12 @@
 </template>
 
 <script>
-import waiting from '../components/HostViews/WaitingView.vue'
-import respond from '../components/HostViews/PromptPlayerResponse.vue'
-import vote from '../components/HostViews/VoteTally.vue'
-import intro from '../components/HostViews/IntroView.vue'
-import recap from '../components/HostViews/RecapView.vue'
-import outro from '../components/HostViews/OutroView.vue'
+import waiting from '../components/HostViews/Waiting.vue'
+import respond from '../components/HostViews/Respond.vue'
+import vote from '../components/HostViews/Vote.vue'
+import intro from '../components/HostViews/Tutorial.vue'
+import recap from '../components/HostViews/Recap.vue'
+import outro from '../components/HostViews/EndScreen.vue'
 
 import PauseMenu from '../components/HostViews/HostSubComponents/PausedDialog.vue'
 

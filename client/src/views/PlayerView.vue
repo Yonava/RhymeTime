@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import vote from '../components/GameplayViews/VotingView.vue'
-import respond from '../components/GameplayViews/SubmitResponse.vue'
-import waiting from '../components/GameplayViews/WaitingView.vue'
-import intro from '../components/GameplayViews/IntroView.vue'
-import recap from '../components/GameplayViews/RecapView.vue'
-import outro from '../components/GameplayViews/OutroView.vue'
+import vote from '../components/GameplayViews/Vote.vue'
+import respond from '../components/GameplayViews/Respond.vue'
+import waiting from '../components/GameplayViews/Waiting.vue'
+import intro from '../components/GameplayViews/Intro.vue'
+import recap from '../components/GameplayViews/Recap.vue'
+import outro from '../components/GameplayViews/EndScreen.vue'
 
 // dialogs
 import HostLeft from '../components/GameplayViews/Dialogs/HostLeft.vue'

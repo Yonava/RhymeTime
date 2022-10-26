@@ -13,12 +13,14 @@
       <br />
       <i>{{ bar.response }}</i>
     </div>
-    <v-btn @click.stop="$emit('restart-game')" color="green white--text"
-      >Play again</v-btn
-    >
-    <v-btn @click.stop="$router.push('/')" color="red white--text"
-      >end the party</v-btn
-    >
+    <v-btn 
+      @click.stop="$emit('restart-game')" 
+      color="green white--text"
+    >Play again</v-btn>
+    <v-btn 
+      @click.stop="$router.push('/')" 
+      color="red white--text"
+    >end the party</v-btn>
   </div>
 </template>
 
@@ -26,7 +28,9 @@
 import HostMixin from "./HostMixin";
 
 export default {
-  mixins: [HostMixin],
+  mixins: [
+    HostMixin
+  ],
   data() {
     return {
       // player with the most appearances in 'song' aka song credits
