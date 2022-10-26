@@ -95,9 +95,6 @@ export default {
       this.socket.on('host-present', () => {
         this.hostPresent = true
       })
-      this.socket.on('report-to-host', () => {
-        this.socket.emit('player-join', this.$store.state.nickname)
-      })
       this.socket.on('new-words', (newWords) => {
         this.wordsInPrompt = newWords
       })

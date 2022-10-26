@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Home from '@/views/HomeView.vue'
-import Host from '@/views/HostView.vue'
-import Player from '@/views/PlayerView.vue'
-import Join from '@/views/JoinView.vue'
+import Home from '@/views/Home.vue'
+import Host from '@/views/Host.vue'
+import Player from '@/views/Player.vue'
+import Join from '@/views/Join.vue'
+import Audience from '@/views/Audience.vue'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,11 @@ const routes = [
     path: '/join',
     name: 'join',
     component: Join
+  },
+  {
+    path: '/audience',
+    name: 'audience',
+    component: Audience
   }
 ]
 

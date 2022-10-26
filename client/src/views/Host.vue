@@ -77,7 +77,7 @@ export default {
       // number of rounds that are to be played
       totalRounds: 3,
       // response that scored the most points in the voting round
-      winningResponse: { player: '', response: '' },
+      winningResponse: { playerName: '', response: '' },
       // song consists out of the winning response objects of each round
       song: [],
       // true if page is not visible (using visibilitychange event listener)
@@ -123,7 +123,6 @@ export default {
           if (response === 'connected') {
             this.connectionStatus = true
             this.socket.emit('host-present')
-            this.socket.emit('report-to-host')
           }
         })
       })

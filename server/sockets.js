@@ -47,11 +47,6 @@ io.on('connection', socket => {
     socket.to(roomid).emit('host-present')
   })
 
-  // emitted by host to notify players that they want to see who is still connected 
-  socket.on('report-to-host', () => {
-    socket.to(roomid).emit('report-to-host')
-  })
-
   // emitted by player when they first connect, 
   // tells host to send critical game-state to sync-up player
   socket.on('get-game-state', () => {

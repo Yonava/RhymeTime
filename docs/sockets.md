@@ -37,13 +37,6 @@ Used by host to tell that players and audience what component they should render
 <br>
 Allows host to send a confirmation to players in room to confirm that the host is connected
 
-### report-to-host
-<b>Sender</b> `Host Client` -> <b>Recipient</b> `Player Client`
-<br>
-<b>Data in Payload</b> none
-<br>
-Used by host to probe for which players are still connected
-
 ### get-game-state
 <b>Sender</b> `Player Client` -> <b>Recipient</b> `Host Client`
 <br>
