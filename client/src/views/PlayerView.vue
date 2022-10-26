@@ -16,16 +16,16 @@
 </template>
 
 <script>
-import vote from '../components/GameplayViews/Vote.vue'
-import respond from '../components/GameplayViews/Respond.vue'
-import waiting from '../components/GameplayViews/Waiting.vue'
-import intro from '../components/GameplayViews/Intro.vue'
-import recap from '../components/GameplayViews/Recap.vue'
-import outro from '../components/GameplayViews/EndScreen.vue'
+import vote from '../components/PlayerViews/Vote.vue'
+import respond from '../components/PlayerViews/Respond.vue'
+import waiting from '../components/PlayerViews/Waiting.vue'
+import intro from '../components/PlayerViews/Intro.vue'
+import recap from '../components/PlayerViews/Recap.vue'
+import outro from '../components/PlayerViews/EndScreen.vue'
 
 // dialogs
-import HostLeft from '../components/GameplayViews/Dialogs/HostLeft.vue'
-import GamePaused from '../components/GameplayViews/Dialogs/GamePaused.vue'
+import HostLeft from '../components/PlayerViews/Dialogs/HostLeft.vue'
+import GamePaused from '../components/PlayerViews/Dialogs/GamePaused.vue'
 
 import io from 'socket.io-client'
 
