@@ -64,7 +64,7 @@ export default {
       socket: null,
       // sets the current view of the game, emits to players
       currentView: 'waiting',
-      // playerlist contains strings of every connected players nickname
+      // playerlist contains player objects for every connected player
       playerList: [],
       // prompt responses each round are stored here. response obj. format {player, response}
       promptResponses: [],
@@ -87,6 +87,16 @@ export default {
     document.removeEventListener('visibilitychange', this.modelVisibility)
   },
   mounted() {
+    // initializes playerList with open spots
+    const NUM_OF_SPOTS = 6
+    for (let i = 0; i < NUM_OF_SPOTS; i++) {
+      this.playerList.push({
+        name: 'Open Spot',
+        color: 'white',
+        pfp: undefined
+      })
+    }
+
     this.connectSocket()
     document.addEventListener('visibilitychange', this.modelVisibility)
   },
@@ -113,7 +123,12 @@ export default {
         })
       })
       this.socket.on('player-join', (playerName) => {
-        this.playerList.push(playerName)
+        const OPEN_SPOT_INX = this.playerList.findIndex(player => player.name === 'Open Spot')
+        this.playerList[OPEN_SPOT_INX] = {
+          name: playerName,
+          color: 'black',
+          pfp: 'default'
+        }
       })
       this.socket.on('roll-call', () => {
         this.playerList = []

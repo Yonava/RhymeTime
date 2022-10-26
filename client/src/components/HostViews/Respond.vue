@@ -18,8 +18,8 @@
             cols="6"
           >
             <ResponseCard
-              :playerName="player"
-              :hasResponded="respondents.includes(player)"
+              :playerName="player.name"
+              :hasResponded="respondents.includes(player.name)"
             />
           </v-col>
         </v-row>
@@ -82,6 +82,7 @@ export default {
     })
 
     this.socketInstance.on('player-prompt-submission', (playerResponse) => {
+      // playerResponse obj { playerName: string, response: string }
       if (!this.acceptingSubmissions) return
       playEffect('responseReceived')
       setTimeout(() => {
@@ -111,8 +112,11 @@ export default {
     promptResponses: {
       immediate: true,
       handler(v) {
-        this.respondents = v.map(response => response.player)
-        if (this.respondents.length === this.playerList.length) {
+        const NUM_OF_PLAYERS = this.playerList
+          .filter(player => player.name !== 'Open Spot')
+          .length
+        this.respondents = v.map(response => response.playerName)
+        if (this.respondents.length === NUM_OF_PLAYERS) {
           this.stopTimer()
           setTimeout(() => {
             this.next()

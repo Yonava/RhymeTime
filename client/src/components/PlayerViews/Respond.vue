@@ -62,7 +62,7 @@ export default {
     },
     sendResponseToHost() {
       const RESPONSE_OBJ = {
-        player: this.$store.state.nickname,
+        playerName: this.$store.state.nickname,
         response: this.response
       }
 
