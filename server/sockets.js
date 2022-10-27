@@ -4,7 +4,6 @@
 
 const { server } = require('./index')
 
-console.log('Sockets Live!')
 
 const SOCKET_SERVER = process.env.NODE_ENV === 'production' ? server : 3000
 const io = module.exports.io = require('socket.io')(SOCKET_SERVER, {
@@ -12,6 +11,8 @@ const io = module.exports.io = require('socket.io')(SOCKET_SERVER, {
     origin: "*"
   }
 })
+
+console.log('Sockets Live!')
 
 io.on('connection', socket => {
   let roomid;

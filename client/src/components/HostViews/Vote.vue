@@ -125,7 +125,6 @@ export default {
         const BALLOT = this.ballotBox[playerName]
         for (let i = 0; i < BALLOT.length; i++) {
           const CAND_INX = this.candidates.findIndex(c => c.playerName === BALLOT[i])
-          console.log(CAND_INX, this.candidates[CAND_INX].playerName)
           this.candidates[CAND_INX].votes += (BALLOT.length - 1) - i
         }
       })

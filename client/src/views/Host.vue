@@ -17,7 +17,6 @@
       :winningResponse="winningResponse"
       :song="song"
       :isPaused="isPaused"
-      :key="reloadComponents"
       @round-winner="addWinnerToSong($event)"
       @change-view="currentView = $event"
       @round-over="roundOver"
@@ -30,7 +29,6 @@
       :roundCount="roundCount"
       :totalRounds="totalRounds"
       :playerList="playerList"
-      :key="reloadComponents"
       @unpause="manuallyPaused = false"
     />
   </div>
@@ -60,8 +58,6 @@ export default {
   },
   data() {
     return {
-      // toggle to tell view to re-render the child component
-      reloadComponents: false,
       // stores socket instance
       socket: null,
       // sets the current view of the game, emits to players
@@ -139,14 +135,13 @@ export default {
         // check for duplicate names for joining client here
         if (this.currentView !== 'waiting') return console.warn('no more mid game joins allowed!')
         if (OPEN_SPOT_INX === -1) return console.warn('player limit exceeded!')
-        this.playerList[OPEN_SPOT_INX] = {
+        this.playerList.splice(OPEN_SPOT_INX, 1, {
           name: playerName,
           color: 'black',
           pfp: 'default',
           occupied: true,
           id: Math.floor(Math.random() * 1000000)
-        }
-        this.reloadComponents = !this.reloadComponents
+        })
       })
       this.socket.on('disconnect-event', () => {
         this.socket.emit('host-present')
