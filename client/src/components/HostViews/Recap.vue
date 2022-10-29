@@ -9,7 +9,7 @@
     <div class="center">
       This Rounds Winner Was...
       <br>
-      <b>{{ winningResponse.player }}</b>
+      <b>{{ winningResponse.playerName }}</b>
       <br>
       <b>Who Wrote:</b>
       <br>
@@ -67,7 +67,4 @@ export default {
 </script>
 
 <style scoped>
-  .box {
-   
-  }
 </style>

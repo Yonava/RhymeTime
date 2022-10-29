@@ -4,7 +4,6 @@
 
 const { server } = require('./index')
 
-console.log('Sockets Live!')
 
 const SOCKET_SERVER = process.env.NODE_ENV === 'production' ? server : 3000
 const io = module.exports.io = require('socket.io')(SOCKET_SERVER, {
@@ -12,6 +11,8 @@ const io = module.exports.io = require('socket.io')(SOCKET_SERVER, {
     origin: "*"
   }
 })
+
+console.log('Sockets Live!')
 
 io.on('connection', socket => {
   let roomid;
@@ -27,7 +28,7 @@ io.on('connection', socket => {
   // if anyone connected to the socket disconnects. May get messy with audience
   // when that gets implemented
   socket.on('disconnect', () => {
-    socket.to(roomid).emit('roll-call')
+    socket.to(roomid).emit('disconnect-event')
   })
 
   // CONNECTION ENDPOINTS
@@ -45,11 +46,6 @@ io.on('connection', socket => {
   // emitted by host to let the players know that the host is present
   socket.on('host-present', () => {
     socket.to(roomid).emit('host-present')
-  })
-
-  // emitted by host to notify players that they want to see who is still connected 
-  socket.on('report-to-host', () => {
-    socket.to(roomid).emit('report-to-host')
   })
 
   // emitted by player when they first connect, 

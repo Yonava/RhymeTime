@@ -33,7 +33,7 @@
         :style="`height: ${player.votes}%;`"
       >
         <div class="text-p white--text name-tag">
-          {{ player.player }}
+          {{ player.playerName }}
         </div>
       </div>
     </div>
@@ -75,7 +75,7 @@ export default {
     
     // give it to parent for round to round tracking
     this.$emit("round-winner", {
-      player: WINNER,
+      playerName: WINNER,
       response: WINNERS_RESPONSE,
     })
   },
@@ -83,7 +83,7 @@ export default {
     this.responses = this.promptResponses
     this.responses.forEach((response) => {
       this.candidates.push({
-        player: response.player,
+        playerName: response.playerName,
         votes: 100
       })
     })
@@ -101,34 +101,39 @@ export default {
   methods: {
     emitCandidateList() {
       this.socketInstance.emit("candidate-list", this.candidates
-        .map((candidate) => candidate.player))
+        .map((candidate) => candidate.playerName))
     },
     countVotes(playerBallot) {
-      let voteCount = {}
-      this.responses
-        .map((response) => response.player)
-        .forEach((player) => (voteCount[player] = 0));
+      // this function servers to recount all votes in ballotBox
+      // playerBallot obj format: { "nickname of sender client" : []string }
 
-      const PLAYER_NAME = Object.keys(playerBallot)[0];
-      this.ballotBox[PLAYER_NAME] = playerBallot[PLAYER_NAME];
-      Object.keys(this.ballotBox).forEach((ballotHolder) => {
-        const REORDERED_BALLOT = [...this.ballotBox[ballotHolder]].reverse();
-        for (let i = 0; i < REORDERED_BALLOT.length; i++) {
-          voteCount[REORDERED_BALLOT[i]] += i;
+      // reset candidate votes for recount
+      for (let i = 0; i < this.candidates.length; i++) {
+        this.candidates[i].votes = 0
+      }
+
+      // stores name of player that the submitted ballot belongs to
+      const PLAYER_NAME = Object.keys(playerBallot)[0]
+
+      // replaces their old ballot with their new one, or creates their own
+      // entry inside ballotBox if this is first ballot
+      this.ballotBox[PLAYER_NAME] = playerBallot[PLAYER_NAME]
+
+      // gets the names of all players who have a ballot on file
+      Object.keys(this.ballotBox).forEach(playerName => {
+        // counts up the votes on each ballot
+        const BALLOT = this.ballotBox[playerName]
+        for (let i = 0; i < BALLOT.length; i++) {
+          const CAND_INX = this.candidates.findIndex(c => c.playerName === BALLOT[i])
+          this.candidates[CAND_INX].votes += (BALLOT.length - 1) - i
         }
-      });
-
-      this.candidates = [];
-      Object.keys(voteCount).forEach((player) => {
-        this.candidates.push({
-          player,
-          votes: voteCount[player],
-        });
-      });
+      })
 
       this.calculatePercentage()
     },
     calculatePercentage() {
+      // turns candidate votes into percentages so votes can be neatly displayed in css
+      // 10, 20, 30 -> 16.6, 33.3, 50
       if (!this.candidates.length) return
       const TOTAL_VOTES = this.candidates
         .map(candidate => candidate.votes)
@@ -147,7 +152,7 @@ export default {
         return candidate.votes === FIRST_PLACE_VOTES
       })
       this.responses = this.responses.filter((response) => {
-        return this.candidates.map((i) => i.player).includes(response.player)
+        return this.candidates.map((i) => i.playerName).includes(response.playerName)
       })
       this.ballotBox = {}
       this.pollsClosed = true

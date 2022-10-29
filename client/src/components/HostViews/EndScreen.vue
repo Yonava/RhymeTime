@@ -1,15 +1,15 @@
 <template>
   <div class="center">
     <v-card>
-      <v-card-title>{{ scoreCard[0].player }} Won!</v-card-title>
+      <v-card-title>{{ scoreCard[0].playerName }} Won!</v-card-title>
       <v-card-text>
-        {{ scoreCard[0].player }} managed to win a whopping
+        {{ scoreCard[0].playerName }} managed to win a whopping
         {{ scoreCard[0].score }} rounds!
       </v-card-text>
     </v-card>
 
     <div v-for="bar in song" :key="bar.id">
-      <b>{{ bar.player }}</b>
+      <b>{{ bar.playerName }}</b>
       <br />
       <i>{{ bar.response }}</i>
     </div>
@@ -40,12 +40,12 @@ export default {
     };
   },
   mounted() {
-    const PLAYERS = this.song.map((response) => response.player);
-    PLAYERS.forEach((player) => {
-      const INDEX = this.scoreCard.findIndex((obj) => obj.player === player);
+    const PLAYERS = this.song.map((response) => response.playerName);
+    PLAYERS.forEach((playerName) => {
+      const INDEX = this.scoreCard.findIndex((obj) => obj.playerName === playerName);
       if (INDEX === -1) {
         this.scoreCard.push({
-          player,
+          playerName,
           score: 1,
         });
       } else {

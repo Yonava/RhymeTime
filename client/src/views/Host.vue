@@ -58,22 +58,20 @@ export default {
   },
   data() {
     return {
-      // true if sockets have successfully connected to the server
-      connectionStatus: false,
       // stores socket instance
       socket: null,
       // sets the current view of the game, emits to players
       currentView: 'waiting',
-      // playerlist contains strings of every connected players nickname
+      // playerlist contains player objects for every connected player
       playerList: [],
-      // prompt responses each round are stored here. response obj. format {player, response}
+      // prompt responses each round are stored here. response obj format { playerName, response }
       promptResponses: [],
       // stores what round the game is on
       roundCount: 1,
       // number of rounds that are to be played
       totalRounds: 3,
       // response that scored the most points in the voting round
-      winningResponse: { player: '', response: '' },
+      winningResponse: { playerName: '', response: '' },
       // song consists out of the winning response objects of each round
       song: [],
       // true if page is not visible (using visibilitychange event listener)
@@ -87,6 +85,17 @@ export default {
     document.removeEventListener('visibilitychange', this.modelVisibility)
   },
   mounted() {
+    // initializes playerList with open spots
+    const NUM_OF_SPOTS = 6
+    for (let i = 0; i < NUM_OF_SPOTS; i++) {
+      this.playerList.push({
+        name: 'Open Spot',
+        color: 'white',
+        pfp: null,
+        occupied: false,
+        id: i
+      })
+    }
     this.connectSocket()
     document.addEventListener('visibilitychange', this.modelVisibility)
   },
@@ -106,17 +115,35 @@ export default {
       this.socket.on('connect', () => { 
         this.socket.emit('join-room', this.$store.state.roomid, (response) => {
           if (response === 'connected') {
-            this.connectionStatus = true
             this.socket.emit('host-present')
-            this.socket.emit('report-to-host')
           }
         })
       })
       this.socket.on('player-join', (playerName) => {
-        this.playerList.push(playerName)
+        // add some sort of return to sender thing.
+        // when a player attempts to join, they should give
+        // this function an object with 
+        // { proposedName: string, senderID: string } instead of playerName
+        // this way we can do a validation to make sure the proposed
+        // name is not taken and that there is an empty spot.
+        // If everything checks out, we send a confirmation over socket
+        // with the senderID that the sender client can join 
+        // as a player. If something doesn't
+        // check out, we can also tell the sender client to return to
+        // the home page or redirect them into the audience
+        const OPEN_SPOT_INX = this.playerList.findIndex(player => !player.occupied)
+        // check for duplicate names for joining client here
+        if (this.currentView !== 'waiting') return console.warn('no more mid game joins allowed!')
+        if (OPEN_SPOT_INX === -1) return console.warn('player limit exceeded!')
+        this.playerList.splice(OPEN_SPOT_INX, 1, {
+          name: playerName,
+          color: 'black',
+          pfp: 'default',
+          occupied: true,
+          id: Math.floor(Math.random() * 1000000)
+        })
       })
-      this.socket.on('roll-call', () => {
-        this.playerList = []
+      this.socket.on('disconnect-event', () => {
         this.socket.emit('host-present')
       })
       this.socket.on('broadcast-game-state', () => {
@@ -131,7 +158,6 @@ export default {
     },
     forceDisconnect() {
       this.socket.disconnect()
-      this.connectionStatus = false
     },
     addWinnerToSong(winningResponse) {
       this.song.push(winningResponse)

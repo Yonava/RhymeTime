@@ -24,7 +24,7 @@
         class="white--text mb-3"
         rounded
         large
-        :disabled="!playerList.length"
+        :disabled="playerList.filter(player => player.occupied).length < 2"
       >
         <v-icon class="mr-2">mdi-play</v-icon>
         Start Game
@@ -32,7 +32,7 @@
       <div class="text-h5">Players In Room:</div>
       <div v-for="player in playerList" :key="player.id">
         <div class="text-h6">
-          {{ player }}
+          {{ player.name }}
         </div>
       </div>
       <div 

@@ -16,16 +16,16 @@
 </template>
 
 <script>
-import vote from '../components/GameplayViews/Vote.vue'
-import respond from '../components/GameplayViews/Respond.vue'
-import waiting from '../components/GameplayViews/Waiting.vue'
-import intro from '../components/GameplayViews/Intro.vue'
-import recap from '../components/GameplayViews/Recap.vue'
-import outro from '../components/GameplayViews/EndScreen.vue'
+import vote from '../components/PlayerViews/Vote.vue'
+import respond from '../components/PlayerViews/Respond.vue'
+import waiting from '../components/PlayerViews/Waiting.vue'
+import intro from '../components/PlayerViews/Tutorial.vue'
+import recap from '../components/PlayerViews/Recap.vue'
+import outro from '../components/PlayerViews/EndScreen.vue'
 
 // dialogs
-import HostLeft from '../components/GameplayViews/Dialogs/HostLeft.vue'
-import GamePaused from '../components/GameplayViews/Dialogs/GamePaused.vue'
+import HostLeft from '../components/PlayerViews/Dialogs/HostLeft.vue'
+import GamePaused from '../components/PlayerViews/Dialogs/GamePaused.vue'
 
 import io from 'socket.io-client'
 
@@ -42,8 +42,6 @@ export default {
   },
   data() {
     return {
-      // true if sockets have successfully connected to the server
-      connectionStatus: false,
       // stores socket instance
       socket: null,
       // contains data received from host through pause-state socket endpt
@@ -75,7 +73,6 @@ export default {
       this.socket.on('connect', () => {
         this.socket.emit('join-room', this.$store.state.roomid, (response) => {
           if (response === 'connected') {
-            this.connectionStatus = true
             this.socket.emit('player-join', this.$store.state.nickname)
             this.hostCountdown()
             this.socket.emit('get-game-state')
@@ -89,15 +86,11 @@ export default {
         this.currentView = newView
         window.scrollTo(0, 0)
       })
-      this.socket.on('roll-call', () => {
-        this.socket.emit('player-join', this.$store.state.nickname)
+      this.socket.on('disconnect-event', () => {
         this.hostCountdown()
       })
       this.socket.on('host-present', () => {
         this.hostPresent = true
-      })
-      this.socket.on('report-to-host', () => {
-        this.socket.emit('player-join', this.$store.state.nickname)
       })
       this.socket.on('new-words', (newWords) => {
         this.wordsInPrompt = newWords
@@ -108,7 +101,6 @@ export default {
     },
     forceDisconnect() {
       this.socket.disconnect()
-      this.connectionStatus = false
     },
     hostCountdown() {
       this.hostPresent = false
