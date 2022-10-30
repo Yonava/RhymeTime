@@ -34,8 +34,8 @@ io.on('connection', socket => {
   // CONNECTION ENDPOINTS
 
   // emitted by player, received by host for constructing playerList
-  socket.on('player-join', (username) => {
-    socket.to(roomid).emit('player-join', username)
+  socket.on('player-join', (joinRequest) => {
+    socket.to(roomid).emit('player-join', joinRequest)
   })
 
   // emitted by host to control the view that the player sees

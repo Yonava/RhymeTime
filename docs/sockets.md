@@ -19,9 +19,10 @@ Gameplay endpoints, in the other hand, are endpoints that are used by each clien
 ### player-join
 <b>Sender</b> `Player Client` -> <b>Recipient</b> `Host Client`
 <br>
-<b>Data in Payload</b> username: string
+<b>Data in Payload</b> joinRequest: { playerName: string, id: number }
 <br>
-Used for players to tell the host that they have joined
+Used for players to request a spot in the game. Once validated by host,
+they are added to the playerList
 
 ### change-view
 <b>Sender</b> `Host Client` -> <b>Recipient</b> `Player Client`
