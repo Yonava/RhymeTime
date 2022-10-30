@@ -73,7 +73,11 @@ export default {
       this.socket.on('connect', () => {
         this.socket.emit('join-room', this.$store.state.roomid, (response) => {
           if (response === 'connected') {
-            this.socket.emit('player-join', this.$store.state.nickname)
+            let id = Math.floor(Math.random() * 9284724)
+            this.socket.emit('player-join', {
+              playerName: this.$store.state.nickname,
+              id
+            })
             this.hostCountdown()
             this.socket.emit('get-game-state')
           }
