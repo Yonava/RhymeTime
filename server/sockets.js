@@ -40,7 +40,7 @@ io.on('connection', socket => {
 
   // emitted by host when they need to kick someone out of the player pool
   // either due to a full room, or manually
-  socket.on('kicker', (kickObj) => {
+  socket.on('kick-player', (kickObj) => {
     socket.to(roomid).emit('kick-listener', kickObj)
   })
 

@@ -24,7 +24,7 @@ Gameplay endpoints, in the other hand, are endpoints that are used by each clien
 Used for players to request a spot in the game. Once validated by host,
 they are added to the playerList
 
-### kicker
+### kick-player
 <b>Sender</b> `Host Client` -> <b>Recipient</b> `Player Client`
 <br>
 <b>Data in Payload</b> joinRequest: { redirect: string, clientId: number }

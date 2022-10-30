@@ -32,7 +32,7 @@
       <div class="text-h5">Players In Room:</div>
       <div v-for="player in playerList" :key="player.id">
         <div class="text-h6">
-          {{ player.name }}
+          {{ player.name }} - {{ player.id }}
         </div>
       </div>
       <div 

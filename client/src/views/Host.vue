@@ -120,20 +120,30 @@ export default {
         })
       })
       this.socket.on('player-join', (joinRequest) => {
+        console.log(joinRequest.clientId)
         const OPEN_SPOT_INX = this.playerList.findIndex(player => !player.occupied)
         // check for duplicate names for joining client here
-        if (this.currentView !== 'waiting') return console.warn('no more mid game joins allowed!')
-        if (OPEN_SPOT_INX === -1) return console.warn('player limit exceeded!')
-        this.socket.emit('reject-join', {
-          id: joinRequest.id,
-          redirect: `/audience?r=${this.$store.state.roomid}`
-        })
+        if (this.currentView !== 'waiting') {
+          console.log('kicking', joinRequest.clientId)
+          this.socket.emit('kick-player', {
+            clientId: joinRequest.clientId,
+            redirect: `/audience?r=${this.$store.state.roomid}`
+          })
+          return
+        }
+        if (OPEN_SPOT_INX === -1) {
+          this.socket.emit('kick-player', {
+            clientId: joinRequest.id,
+            redirect: `/audience?r=${this.$store.state.roomid}`
+          })
+          return
+        }
         this.playerList.splice(OPEN_SPOT_INX, 1, {
-          name: playerName,
+          name: joinRequest.playerName,
           color: 'black',
           pfp: 'default',
           occupied: true,
-          id: Math.floor(Math.random() * 1000000)
+          id: joinRequest.clientId
         })
       })
       this.socket.on('disconnect-event', () => {

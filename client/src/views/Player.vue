@@ -78,7 +78,7 @@ export default {
             this.clientId = Math.floor(Math.random() * 9284724)
             this.socket.emit('player-join', {
               playerName: this.$store.state.nickname,
-              id: this.clientId
+              clientId: this.clientId
             })
             this.hostCountdown()
             this.socket.emit('get-game-state')
@@ -105,6 +105,7 @@ export default {
         this.candidates = newCandidates
       })
       this.socket.on('kick-listener', (kickReq) => {
+        console.log(kickReq.clientId, this.clientId)
         if (kickReq.clientId === this.clientId) {
           this.$router.push(kickReq.redirect)
         }
