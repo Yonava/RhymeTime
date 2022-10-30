@@ -126,7 +126,12 @@ export default {
         if (this.currentView !== 'waiting' || OPEN_SPOT_INX === -1) {
           this.socket.emit('kick-player', {
             clientId: joinRequest.clientId,
-            redirect: `/audience?r=${this.$store.state.roomid}`
+            redirect: {
+              name: 'audience',
+              query: {
+                room: this.$store.state.roomid
+              }
+            }
           })
           return
         }
@@ -134,7 +139,13 @@ export default {
         if (this.playerList.some(player => player.name === joinRequest.playerName)) {
           this.socket.emit('kick-player', {
             clientId: joinRequest.clientId,
-            redirect: `/join?err=nickname_taken&room=${this.$store.state.roomid}`
+            redirect: {
+              name: 'join',
+              query: {
+                err: 'nickname_taken',
+                room: this.$store.state.roomid
+              }
+            }
           })
           return
         }
