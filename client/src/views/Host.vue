@@ -87,7 +87,7 @@ export default {
   },
   mounted() {
     // initializes playerList with open spots
-    const NUM_OF_SPOTS = 6
+    const NUM_OF_SPOTS = 1
     for (let i = 0; i < NUM_OF_SPOTS; i++) {
       this.playerList.push({
         name: 'Open Spot',
@@ -123,16 +123,9 @@ export default {
       this.socket.on('player-join', (joinRequest) => {
         const OPEN_SPOT_INX = this.playerList.findIndex(player => !player.occupied)
         // check for duplicate names for joining client here
-        if (this.currentView !== 'waiting') {
+        if (this.currentView !== 'waiting' || OPEN_SPOT_INX === -1) {
           this.socket.emit('kick-player', {
             clientId: joinRequest.clientId,
-            redirect: `/audience?r=${this.$store.state.roomid}`
-          })
-          return
-        }
-        if (OPEN_SPOT_INX === -1) {
-          this.socket.emit('kick-player', {
-            clientId: joinRequest.id,
             redirect: `/audience?r=${this.$store.state.roomid}`
           })
           return

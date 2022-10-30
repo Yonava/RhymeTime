@@ -105,7 +105,6 @@ export default {
         this.candidates = newCandidates
       })
       this.socket.on('kick-listener', (kickReq) => {
-        console.log(kickReq.clientId, this.clientId)
         if (kickReq.clientId === this.clientId) {
           this.$router.push(kickReq.redirect)
         }

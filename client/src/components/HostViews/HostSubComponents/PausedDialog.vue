@@ -152,7 +152,7 @@ export default {
       return `
         ${
           window.location.href.substring(0, window.location.href.length - 5)
-        }/join?room=${
+        }/audience?r=${
           this.$store.state.roomid
         }
       `
