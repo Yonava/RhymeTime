@@ -87,7 +87,7 @@ export default {
   },
   mounted() {
     // initializes playerList with open spots
-    const NUM_OF_SPOTS = 1
+    const NUM_OF_SPOTS = 6
     for (let i = 0; i < NUM_OF_SPOTS; i++) {
       this.playerList.push({
         name: 'Open Spot',
@@ -127,6 +127,14 @@ export default {
           this.socket.emit('kick-player', {
             clientId: joinRequest.clientId,
             redirect: `/audience?r=${this.$store.state.roomid}`
+          })
+          return
+        }
+        // blocks duplicate nicknames from joining
+        if (this.playerList.some(player => player.name === joinRequest.playerName)) {
+          this.socket.emit('kick-player', {
+            clientId: joinRequest.clientId,
+            redirect: `/join?err=nickname_taken&room=${this.$store.state.roomid}`
           })
           return
         }
