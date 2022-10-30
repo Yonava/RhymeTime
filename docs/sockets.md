@@ -19,10 +19,20 @@ Gameplay endpoints, in the other hand, are endpoints that are used by each clien
 ### player-join
 <b>Sender</b> `Player Client` -> <b>Recipient</b> `Host Client`
 <br>
-<b>Data in Payload</b> joinRequest: { playerName: string, id: number }
+<b>Data in Payload</b> joinRequest: { playerName: string, clientId: number }
 <br>
 Used for players to request a spot in the game. Once validated by host,
 they are added to the playerList
+
+### kicker
+<b>Sender</b> `Host Client` -> <b>Recipient</b> `Player Client`
+<br>
+<b>Data in Payload</b> joinRequest: { redirect: string, clientId: number }
+<br>
+Used by host to kick client from player pool. The object format
+allows the host to specify the route they want to kicked client to redirct to
+as well as the clientId to uniquely specificy their request to the client that
+is targeted.
 
 ### change-view
 <b>Sender</b> `Host Client` -> <b>Recipient</b> `Player Client`

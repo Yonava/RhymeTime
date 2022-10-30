@@ -119,22 +119,15 @@ export default {
           }
         })
       })
-      this.socket.on('player-join', (playerName) => {
-        // add some sort of return to sender thing.
-        // when a player attempts to join, they should give
-        // this function an object with 
-        // { proposedName: string, senderID: string } instead of playerName
-        // this way we can do a validation to make sure the proposed
-        // name is not taken and that there is an empty spot.
-        // If everything checks out, we send a confirmation over socket
-        // with the senderID that the sender client can join 
-        // as a player. If something doesn't
-        // check out, we can also tell the sender client to return to
-        // the home page or redirect them into the audience
+      this.socket.on('player-join', (joinRequest) => {
         const OPEN_SPOT_INX = this.playerList.findIndex(player => !player.occupied)
         // check for duplicate names for joining client here
         if (this.currentView !== 'waiting') return console.warn('no more mid game joins allowed!')
         if (OPEN_SPOT_INX === -1) return console.warn('player limit exceeded!')
+        this.socket.emit('reject-join', {
+          id: joinRequest.id,
+          redirect: `/audience?r=${this.$store.state.roomid}`
+        })
         this.playerList.splice(OPEN_SPOT_INX, 1, {
           name: playerName,
           color: 'black',

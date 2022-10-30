@@ -38,6 +38,12 @@ io.on('connection', socket => {
     socket.to(roomid).emit('player-join', joinRequest)
   })
 
+  // emitted by host when they need to kick someone out of the player pool
+  // either due to a full room, or manually
+  socket.on('kicker', (kickObj) => {
+    socket.to(roomid).emit('kick-listener', kickObj)
+  })
+
   // emitted by host to control the view that the player sees
   socket.on('change-view', (view) => {
     socket.to(roomid).emit('change-view', view)

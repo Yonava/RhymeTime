@@ -56,7 +56,9 @@ export default {
       wordsInPrompt: [],
       // contains nicknames of players that have submitted a response that is being voted on
       // hence called a candidate
-      candidates: []
+      candidates: [],
+      // id that the client stores so host can uniquely identify it
+      clientId: 0
     }
   },
   destroyed() {
@@ -73,10 +75,10 @@ export default {
       this.socket.on('connect', () => {
         this.socket.emit('join-room', this.$store.state.roomid, (response) => {
           if (response === 'connected') {
-            let id = Math.floor(Math.random() * 9284724)
+            this.clientId = Math.floor(Math.random() * 9284724)
             this.socket.emit('player-join', {
               playerName: this.$store.state.nickname,
-              id
+              id: this.clientId
             })
             this.hostCountdown()
             this.socket.emit('get-game-state')
@@ -101,6 +103,11 @@ export default {
       })
       this.socket.on('candidate-list', (newCandidates) => {
         this.candidates = newCandidates
+      })
+      this.socket.on('kick-listener', (kickReq) => {
+        if (kickReq.clientId === this.clientId) {
+          this.$router.push(kickReq.redirect)
+        }
       })
     },
     forceDisconnect() {
