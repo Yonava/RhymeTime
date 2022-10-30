@@ -32,8 +32,15 @@
       <div class="text-h5">Players In Room:</div>
       <div v-for="player in playerList" :key="player.id">
         <div class="text-h6">
-          {{ player.name }} - {{ player.id }}
+          {{ player.name }}
         </div>
+        <v-btn 
+          rounded 
+          class="white--text"
+          @click.stop="kick(player.id)"
+          color="red"
+          v-if="player.occupied"
+        >kick</v-btn>
       </div>
       <div 
         v-if="!playerList.length" 
@@ -53,6 +60,9 @@ export default {
   methods: {
     next() {
       this.$emit('change-view', 'intro')
+    },
+    kick(clientId) {
+      this.$emit('kick', clientId)
     }
   },
   data() {

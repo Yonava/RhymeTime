@@ -22,6 +22,7 @@
       @round-over="roundOver"
       @round-change="totalRounds = $event"
       @restart-game="restartGame"
+      @kick="kickPlayer($event)"
     ></component>
 
     <PauseMenu
@@ -120,11 +121,9 @@ export default {
         })
       })
       this.socket.on('player-join', (joinRequest) => {
-        console.log(joinRequest.clientId)
         const OPEN_SPOT_INX = this.playerList.findIndex(player => !player.occupied)
         // check for duplicate names for joining client here
         if (this.currentView !== 'waiting') {
-          console.log('kicking', joinRequest.clientId)
           this.socket.emit('kick-player', {
             clientId: joinRequest.clientId,
             redirect: `/audience?r=${this.$store.state.roomid}`
@@ -191,6 +190,22 @@ export default {
       else if (this.isPageHidden) pausePackage.reason = 'not-visible'
       else pausePackage.reason = 'not-paused'
       this.socket.emit('pause-state', pausePackage)
+    },
+    kickPlayer(clientId) {
+      let playerIndex = this.playerList.findIndex((player) => player.id === clientId)
+      // handle player kicking
+      this.socket.emit('kick-player', {
+        clientId,
+        redirect: '/'
+      })
+      // remove from playerlist and replace with Open Spot
+      this.playerList.splice(playerIndex, 1, {
+        name: 'Open Spot',
+        color: 'white',
+        pfp: null,
+        occupied: false,
+        id: Math.floor(Math.random() * 142024)
+      })
     }
   },
   watch: {
