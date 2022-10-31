@@ -32,6 +32,10 @@ export default {
       type: Boolean,
       required: true
     },
+    numOfSpots: {
+      type: Number,
+      required: true
+    },
     socketInstance: {
       required: true
     }

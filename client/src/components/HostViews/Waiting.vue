@@ -24,7 +24,7 @@
         class="white--text mb-3"
         rounded
         large
-        :disabled="playerList.filter(player => player.occupied).length < 2"
+        :disabled="!playerList.length"
       >
         <v-icon class="mr-2">mdi-play</v-icon>
         Start Game
@@ -34,18 +34,21 @@
         <div class="text-h6">
           {{ player.name }}
         </div>
-        <v-btn 
+        <v-btn
+          @click.stop="kick(player.id)"
           rounded 
           class="white--text"
-          @click.stop="kick(player.id)"
           color="red"
-          v-if="player.occupied"
         >kick</v-btn>
       </div>
       <div 
-        v-if="!playerList.length" 
-        class="text-h6 red--text"
-      >No Players Have Joined Yet</div>
+        v-for="i in numOfSpots - playerList.length" 
+        :key="i"
+      >
+        <div class="text-h6">
+          Open Spot
+        </div>
+      </div>
     </center>
   </div>
 </template>

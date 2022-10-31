@@ -14,7 +14,7 @@
       <div :style="`transition: 3s; width: 60%; ${preIntroResponseStyles}`">
         <v-row align="center" justify="center">
           <v-col
-            v-for="player in playerList.filter(player => player.occupied)" 
+            v-for="player in playerList" 
             :key="player.id"
             cols="6"
           >
@@ -113,9 +113,7 @@ export default {
     promptResponses: {
       immediate: true,
       handler(v) {
-        const NUM_OF_PLAYERS = this.playerList
-          .filter(player => player.occupied)
-          .length
+        const NUM_OF_PLAYERS = this.playerList.length
         this.respondents = v.map(response => response.playerName)
         if (this.respondents.length === NUM_OF_PLAYERS) {
           this.stopTimer()

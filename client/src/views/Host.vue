@@ -17,6 +17,7 @@
       :winningResponse="winningResponse"
       :song="song"
       :isPaused="isPaused"
+      :numOfSpots="numOfSpots"
       @round-winner="addWinnerToSong($event)"
       @change-view="currentView = $event"
       @round-over="roundOver"
@@ -78,7 +79,9 @@ export default {
       // true if page is not visible (using visibilitychange event listener)
       isPageHidden: false,
       // if host selects to pause game
-      manuallyPaused: false
+      manuallyPaused: false,
+      // number of player spots offered in room
+      numOfSpots: 2
     }
   },
   destroyed() {
@@ -86,17 +89,6 @@ export default {
     document.removeEventListener('visibilitychange', this.modelVisibility)
   },
   mounted() {
-    // initializes playerList with open spots
-    const NUM_OF_SPOTS = 6
-    for (let i = 0; i < NUM_OF_SPOTS; i++) {
-      this.playerList.push({
-        name: 'Open Spot',
-        color: 'white',
-        pfp: null,
-        occupied: false,
-        id: i
-      })
-    }
     this.connectSocket()
     document.addEventListener('visibilitychange', this.modelVisibility)
   },
@@ -121,9 +113,9 @@ export default {
         })
       })
       this.socket.on('player-join', (joinRequest) => {
-        const OPEN_SPOT_INX = this.playerList.findIndex(player => !player.occupied)
+        const ROOM_FULL = this.numOfSpots <= this.playerList.length
         // check for duplicate names for joining client here
-        if (this.currentView !== 'waiting' || OPEN_SPOT_INX === -1) {
+        if (this.currentView !== 'waiting' || ROOM_FULL) {
           this.socket.emit('kick-player', {
             clientId: joinRequest.clientId,
             redirect: {
@@ -149,11 +141,10 @@ export default {
           })
           return
         }
-        this.playerList.splice(OPEN_SPOT_INX, 1, {
+        this.playerList.push({
           name: joinRequest.playerName,
           color: 'black',
           pfp: 'default',
-          occupied: true,
           id: joinRequest.clientId
         })
       })
@@ -211,13 +202,7 @@ export default {
         redirect: '/'
       })
       // remove from playerlist and replace with Open Spot
-      this.playerList.splice(playerIndex, 1, {
-        name: 'Open Spot',
-        color: 'white',
-        pfp: null,
-        occupied: false,
-        id: Math.floor(Math.random() * 142024)
-      })
+      this.playerList.splice(playerIndex, 1)
     }
   },
   watch: {
