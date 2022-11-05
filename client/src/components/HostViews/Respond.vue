@@ -15,7 +15,7 @@
         <v-row align="center" justify="center">
           <v-col
             v-for="player in playerList" 
-            :key="player.id"
+            :key="player.clientId"
             cols="6"
           >
             <ResponseCard

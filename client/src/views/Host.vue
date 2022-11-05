@@ -146,7 +146,7 @@ export default {
           name: joinRequest.playerName,
           color: 'black',
           pfp: 'default',
-          id: joinRequest.clientId
+          clientId: joinRequest.clientId
         })
       })
       this.socket.on('disconnect-event', () => {
@@ -196,7 +196,7 @@ export default {
       this.socket.emit('pause-state', pausePackage)
     },
     kickPlayer(clientId) {
-      let playerIndex = this.playerList.findIndex((player) => player.id === clientId)
+      let playerIndex = this.playerList.findIndex((player) => player.clientId === clientId)
       // handle player kicking
       this.socket.emit('kick-player', {
         clientId,

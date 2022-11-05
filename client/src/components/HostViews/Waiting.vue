@@ -30,12 +30,12 @@
         Start Game
       </v-btn>
       <div class="text-h5">Players In Room:</div>
-      <div v-for="player in playerList" :key="player.id">
+      <div v-for="player in playerList" :key="player.clientId">
         <div class="text-h6">
           {{ player.name }}
         </div>
         <v-btn
-          @click.stop="kick(player.id)"
+          @click.stop="kick(player.clientId)"
           rounded 
           class="white--text"
           color="red"

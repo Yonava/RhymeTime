@@ -28,7 +28,7 @@
     <div class="bar-parent"> 
       <div 
         v-for="player in candidates" 
-        :key="player.id" 
+        :key="player.clientId" 
         class="center voter-bar" 
         :style="`height: ${player.votes}%;`"
       >
