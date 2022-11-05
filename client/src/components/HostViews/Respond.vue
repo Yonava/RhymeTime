@@ -14,8 +14,8 @@
       <div :style="`transition: 3s; width: 60%; ${preIntroResponseStyles}`">
         <v-row align="center" justify="center">
           <v-col
-            v-for="player in playerList.filter(player => player.occupied)" 
-            :key="player.id"
+            v-for="player in playerList" 
+            :key="player.clientId"
             cols="6"
           >
             <ResponseCard
@@ -40,6 +40,7 @@ import ResponseCard from './HostSubComponents/PlayerResponseCard.vue'
 import Prompt from './HostSubComponents/ResponseHeading.vue'
 import Outro from './HostSubComponents/ResponseOutro.vue'
 import { playEffect } from '@/utils/Soundboard'
+import { Views } from '@/utils/Views'
 
 export default {
   mixins: [
@@ -105,7 +106,7 @@ export default {
       this.playOutro = true
       if (this.testMode) return
       setTimeout(() => {
-        this.$emit('change-view', 'vote')
+        this.$emit('change-view', Views.vote)
       }, this.outroDur)
     }
   },
@@ -113,9 +114,7 @@ export default {
     promptResponses: {
       immediate: true,
       handler(v) {
-        const NUM_OF_PLAYERS = this.playerList
-          .filter(player => player.occupied)
-          .length
+        const NUM_OF_PLAYERS = this.playerList.length
         this.respondents = v.map(response => response.playerName)
         if (this.respondents.length === NUM_OF_PLAYERS) {
           this.stopTimer()

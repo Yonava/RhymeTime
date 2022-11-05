@@ -17,11 +17,13 @@
       :winningResponse="winningResponse"
       :song="song"
       :isPaused="isPaused"
+      :numOfPlayerSpots="numOfPlayerSpots"
       @round-winner="addWinnerToSong($event)"
       @change-view="currentView = $event"
       @round-over="roundOver"
       @round-change="totalRounds = $event"
       @restart-game="restartGame"
+      @kick="kickPlayer($event)"
     ></component>
 
     <PauseMenu
@@ -38,12 +40,13 @@
 import waiting from '../components/HostViews/Waiting.vue'
 import respond from '../components/HostViews/Respond.vue'
 import vote from '../components/HostViews/Vote.vue'
-import intro from '../components/HostViews/Tutorial.vue'
+import tutorial from '../components/HostViews/Tutorial.vue'
 import recap from '../components/HostViews/Recap.vue'
-import outro from '../components/HostViews/EndScreen.vue'
+import endScreen from '../components/HostViews/EndScreen.vue'
 
 import PauseMenu from '../components/HostViews/HostSubComponents/PausedDialog.vue'
 
+import { Views } from '../utils/Views'
 import io from 'socket.io-client'
 
 export default {
@@ -51,9 +54,9 @@ export default {
     waiting,
     respond,
     vote,
-    intro,
+    tutorial,
     recap,
-    outro,
+    endScreen,
     PauseMenu
   },
   data() {
@@ -61,7 +64,7 @@ export default {
       // stores socket instance
       socket: null,
       // sets the current view of the game, emits to players
-      currentView: 'waiting',
+      currentView: Views.waiting,
       // playerlist contains player objects for every connected player
       playerList: [],
       // prompt responses each round are stored here. response obj format { playerName, response }
@@ -77,7 +80,9 @@ export default {
       // true if page is not visible (using visibilitychange event listener)
       isPageHidden: false,
       // if host selects to pause game
-      manuallyPaused: false
+      manuallyPaused: false,
+      // number of player spots offered in room
+      numOfPlayerSpots: 2
     }
   },
   destroyed() {
@@ -85,17 +90,6 @@ export default {
     document.removeEventListener('visibilitychange', this.modelVisibility)
   },
   mounted() {
-    // initializes playerList with open spots
-    const NUM_OF_SPOTS = 6
-    for (let i = 0; i < NUM_OF_SPOTS; i++) {
-      this.playerList.push({
-        name: 'Open Spot',
-        color: 'white',
-        pfp: null,
-        occupied: false,
-        id: i
-      })
-    }
     this.connectSocket()
     document.addEventListener('visibilitychange', this.modelVisibility)
   },
@@ -119,28 +113,40 @@ export default {
           }
         })
       })
-      this.socket.on('player-join', (playerName) => {
-        // add some sort of return to sender thing.
-        // when a player attempts to join, they should give
-        // this function an object with 
-        // { proposedName: string, senderID: string } instead of playerName
-        // this way we can do a validation to make sure the proposed
-        // name is not taken and that there is an empty spot.
-        // If everything checks out, we send a confirmation over socket
-        // with the senderID that the sender client can join 
-        // as a player. If something doesn't
-        // check out, we can also tell the sender client to return to
-        // the home page or redirect them into the audience
-        const OPEN_SPOT_INX = this.playerList.findIndex(player => !player.occupied)
+      this.socket.on('player-join', (joinRequest) => {
+        const ROOM_FULL = this.numOfPlayerSpots <= this.playerList.length
         // check for duplicate names for joining client here
-        if (this.currentView !== 'waiting') return console.warn('no more mid game joins allowed!')
-        if (OPEN_SPOT_INX === -1) return console.warn('player limit exceeded!')
-        this.playerList.splice(OPEN_SPOT_INX, 1, {
-          name: playerName,
+        if (this.currentView !== Views.waiting || ROOM_FULL) {
+          this.socket.emit('kick-player', {
+            clientId: joinRequest.clientId,
+            redirect: {
+              name: 'audience',
+              query: {
+                room: this.$store.state.roomid
+              }
+            }
+          })
+          return
+        }
+        // blocks duplicate nicknames from joining
+        if (this.playerList.some(player => player.name === joinRequest.playerName)) {
+          this.socket.emit('kick-player', {
+            clientId: joinRequest.clientId,
+            redirect: {
+              name: 'join',
+              query: {
+                err: 'nickname_taken',
+                room: this.$store.state.roomid
+              }
+            }
+          })
+          return
+        }
+        this.playerList.push({
+          name: joinRequest.playerName,
           color: 'black',
           pfp: 'default',
-          occupied: true,
-          id: Math.floor(Math.random() * 1000000)
+          clientId: joinRequest.clientId
         })
       })
       this.socket.on('disconnect-event', () => {
@@ -166,19 +172,19 @@ export default {
     // called by 'recap' when the round recap is over
     roundOver() {
       if (this.roundCount === this.totalRounds) {
-        return this.currentView = 'outro'        
+        return this.currentView = Views.endScreen       
       }
 
       // resets responses for new round
       this.promptResponses = []
 
       this.roundCount++
-      this.currentView = 'respond'
+      this.currentView = Views.respond
       // make sessionStorage back-up of game state here
     },
     restartGame() {
       this.roundCount = 1
-      this.currentView = 'waiting'
+      this.currentView = Views.waiting
       this.song = []
       this.promptResponses = []
     },
@@ -188,6 +194,16 @@ export default {
       else if (this.isPageHidden) pausePackage.reason = 'not-visible'
       else pausePackage.reason = 'not-paused'
       this.socket.emit('pause-state', pausePackage)
+    },
+    kickPlayer(clientId) {
+      let playerIndex = this.playerList.findIndex((player) => player.clientId === clientId)
+      // handle player kicking
+      this.socket.emit('kick-player', {
+        clientId,
+        redirect: '/'
+      })
+      // remove from playerlist and replace with Open Spot
+      this.playerList.splice(playerIndex, 1)
     }
   },
   watch: {

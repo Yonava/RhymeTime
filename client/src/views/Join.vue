@@ -8,6 +8,10 @@
       Join A Room
     </v-card-title>
     <div class="px-5">
+      <span
+        v-if="errorMessage"
+        class="red--text"
+      >{{ errorMessage }}</span>
       <v-text-field
         v-model="$store.state.nickname"
         label="Enter a nickname"
@@ -50,6 +54,16 @@ export default {
   computed: {
     canJoin() {
       return this.$store.state.nickname && this.$store.state.roomid
+    },
+    errorMessage() {
+      // creating a case and returning a string allows for different 
+      // error messages to be displayed to users inside the join card
+      switch (this.$route.query.err) {
+        case 'nickname_taken':
+          return 'Someone in the room you joined has the same nickname. Try something unique, original, spunky...'
+        default:
+          return ''
+      }
     }
   }
 }

@@ -19,14 +19,15 @@
 import vote from '../components/PlayerViews/Vote.vue'
 import respond from '../components/PlayerViews/Respond.vue'
 import waiting from '../components/PlayerViews/Waiting.vue'
-import intro from '../components/PlayerViews/Tutorial.vue'
+import tutorial from '../components/PlayerViews/Tutorial.vue'
 import recap from '../components/PlayerViews/Recap.vue'
-import outro from '../components/PlayerViews/EndScreen.vue'
+import endScreen from '../components/PlayerViews/EndScreen.vue'
 
 // dialogs
 import HostLeft from '../components/PlayerViews/Dialogs/HostLeft.vue'
 import GamePaused from '../components/PlayerViews/Dialogs/GamePaused.vue'
 
+import { Views } from '../utils/Views'
 import io from 'socket.io-client'
 
 export default {
@@ -34,9 +35,9 @@ export default {
     vote,
     respond,
     waiting,
-    intro,
+    tutorial,
     recap,
-    outro,
+    endScreen,
     HostLeft,
     GamePaused
   },
@@ -47,7 +48,7 @@ export default {
       // contains data received from host through pause-state socket endpt
       pauseData: { gamePaused: false, reason: 'not-paused' },
       // used for host to control which view the player is on
-      currentView: 'waiting',
+      currentView: Views.waiting,
       // false if no host can be found in room, is set to false every rollcall
       hostPresent: true,
       // hostLeft is different as it only turns false when hostPresent has stayed false for more than n seconds
@@ -56,7 +57,9 @@ export default {
       wordsInPrompt: [],
       // contains nicknames of players that have submitted a response that is being voted on
       // hence called a candidate
-      candidates: []
+      candidates: [],
+      // id that the client stores so host can uniquely identify it
+      clientId: 0
     }
   },
   destroyed() {
@@ -73,10 +76,10 @@ export default {
       this.socket.on('connect', () => {
         this.socket.emit('join-room', this.$store.state.roomid, (response) => {
           if (response === 'connected') {
-            let id = Math.floor(Math.random() * 9284724)
+            this.clientId = Math.floor(Math.random() * 9284724)
             this.socket.emit('player-join', {
               playerName: this.$store.state.nickname,
-              id
+              clientId: this.clientId
             })
             this.hostCountdown()
             this.socket.emit('get-game-state')
@@ -101,6 +104,11 @@ export default {
       })
       this.socket.on('candidate-list', (newCandidates) => {
         this.candidates = newCandidates
+      })
+      this.socket.on('kick-listener', (kickReq) => {
+        if (kickReq.clientId === this.clientId) {
+          this.$router.push(kickReq.redirect)
+        }
       })
     },
     forceDisconnect() {

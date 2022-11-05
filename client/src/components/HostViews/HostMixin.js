@@ -1,5 +1,6 @@
 import Clock from './HostSubComponents/ClockDisplay.vue'
 import { playEffect, SoundTrack } from '@/utils/Soundboard'
+import { Views } from '@/utils/Views'
 
 export default {
   data() {
@@ -9,7 +10,7 @@ export default {
       // for developing ui only. make sure this is set to false in prod
       testMode: false,
       // component that you want to test
-      testView: 'vote'
+      testView: Views.vote
     }
   },
   components: {
@@ -32,6 +33,10 @@ export default {
       type: Boolean,
       required: true
     },
+    numOfPlayerSpots: {
+      type: Number,
+      required: true
+    },
     socketInstance: {
       required: true
     }
@@ -39,34 +44,27 @@ export default {
   mounted() {
     
     if (this.testMode && this.$parent.currentView !== this.testView) this.$emit('change-view', this.testView)
-    
-    /*
-      TODO:
-      could each component be represented an object
-      with properties of sound track, timeLimit etc
-      maybe a ts enum??? worth exploring!
-    */
 
     this.$store.state.timeRemaining = 0
 
     switch (this.$parent.currentView) {
-      case 'respond':
+      case Views.respond:
         this.$store.state.timeRemaining = 90
         SoundTrack.playNew('respond')
         break
-      case 'vote':
+      case Views.vote:
         this.$store.state.timeRemaining = 30
         SoundTrack.playNew('vote')
         break
-      case 'recap':
+      case Views.recap:
         this.$store.state.timeRemaining = 15
         break
-      case 'waiting':
+      case Views.waiting:
         SoundTrack.playNew('waiting')
         break
-      case 'intro':
+      case Views.tutorial:
         break
-      case 'outro':
+      case Views.endScreen:
         break
       default:
         return console.error('Uncaught Case Passed Down to HostMixin')

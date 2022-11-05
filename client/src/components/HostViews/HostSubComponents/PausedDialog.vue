@@ -135,9 +135,7 @@ export default {
       }
     },
     playersPresent() {
-      const PLAYER_NAMES = this.playerList
-        .filter(player => player.occupied)
-        .map(player => player.name)
+      const PLAYER_NAMES = this.playerList.map(player => player.name)
       if (!PLAYER_NAMES.length) return 'No Players In Room'
       if (PLAYER_NAMES.length === 1) return PLAYER_NAMES[0]
       let playersInGame = ''
@@ -152,7 +150,7 @@ export default {
       return `
         ${
           window.location.href.substring(0, window.location.href.length - 5)
-        }/join?room=${
+        }/audience?room=${
           this.$store.state.roomid
         }
       `

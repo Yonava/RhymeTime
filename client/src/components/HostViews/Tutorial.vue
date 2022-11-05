@@ -18,6 +18,7 @@
 
 <script>
 import HostMixin from './HostMixin'
+import { Views } from '@/utils/Views'
 
 export default {
   mixins: [
@@ -31,7 +32,6 @@ export default {
   },
   mounted() {
     this.playerList.forEach(player => {
-      if (!player.occupied) return
       this.players.push({
         playerName: player.name,
         wantsToSkip: false
@@ -67,7 +67,7 @@ export default {
     },
     next() {
       if (this.testMode) return
-      this.$emit('change-view', 'respond')
+      this.$emit('change-view', Views.respond)
     }
   }
 }

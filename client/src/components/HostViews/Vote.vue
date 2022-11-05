@@ -28,7 +28,7 @@
     <div class="bar-parent"> 
       <div 
         v-for="player in candidates" 
-        :key="player.id" 
+        :key="player.clientId" 
         class="center voter-bar" 
         :style="`height: ${player.votes}%;`"
       >
@@ -44,6 +44,7 @@
 import HostMixin from "./HostMixin"
 import DisplayResponse from "./HostSubComponents/ResponseDisplayCard.vue"
 import Tiebreaker from "./HostSubComponents/TiebreakerCard.vue"
+import { Views } from '@/utils/Views'
 
 export default {
   mixins: [
@@ -104,7 +105,7 @@ export default {
         .map((candidate) => candidate.playerName))
     },
     countVotes(playerBallot) {
-      // this function servers to recount all votes in ballotBox
+      // this function serves to recount all votes in ballotBox
       // playerBallot obj format: { "nickname of sender client" : []string }
 
       // reset candidate votes for recount
@@ -132,7 +133,7 @@ export default {
       this.calculatePercentage()
     },
     calculatePercentage() {
-      // turns candidate votes into percentages so votes can be neatly displayed in css
+      // turns candidate votes into percentages for css display
       // 10, 20, 30 -> 16.6, 33.3, 50
       if (!this.candidates.length) return
       const TOTAL_VOTES = this.candidates
@@ -183,7 +184,7 @@ export default {
 
       // no edge case allows game to continue :)
       if (this.testMode) return
-      this.$emit("change-view", "recap")
+      this.$emit("change-view", Views.recap)
     }
   },
   watch: {

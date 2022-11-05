@@ -24,27 +24,38 @@
         class="white--text mb-3"
         rounded
         large
-        :disabled="playerList.filter(player => player.occupied).length < 2"
+        :disabled="!playerList.length"
       >
         <v-icon class="mr-2">mdi-play</v-icon>
         Start Game
       </v-btn>
       <div class="text-h5">Players In Room:</div>
-      <div v-for="player in playerList" :key="player.id">
+      <div v-for="player in playerList" :key="player.clientId">
         <div class="text-h6">
           {{ player.name }}
         </div>
+        <v-btn
+          @click.stop="kick(player.clientId)"
+          rounded 
+          class="white--text"
+          color="red"
+        >kick</v-btn>
       </div>
       <div 
-        v-if="!playerList.length" 
-        class="text-h6 red--text"
-      >No Players Have Joined Yet</div>
+        v-for="i in numOfPlayerSpots - playerList.length" 
+        :key="i"
+      >
+        <div class="text-h6">
+          Open Spot
+        </div>
+      </div>
     </center>
   </div>
 </template>
 
 <script>
 import HostMixin from './HostMixin'
+import { Views } from '@/utils/Views'
 
 export default {
   mixins: [
@@ -52,7 +63,10 @@ export default {
   ],
   methods: {
     next() {
-      this.$emit('change-view', 'intro')
+      this.$emit('change-view', Views.tutorial)
+    },
+    kick(clientId) {
+      this.$emit('kick', clientId)
     }
   },
   data() {

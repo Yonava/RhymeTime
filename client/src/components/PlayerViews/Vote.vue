@@ -2,7 +2,7 @@
   <div>
     Vote For The Most 🔥 Bar
     <draggable v-model="$parent.candidates">
-      <div v-for="player in $parent.candidates" :key="player.id">
+      <div v-for="player in $parent.candidates" :key="player.clientId">
         <h3>{{ player }}</h3>
       </div>
     </draggable>
