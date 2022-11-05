@@ -105,7 +105,7 @@ export default {
         .map((candidate) => candidate.playerName))
     },
     countVotes(playerBallot) {
-      // this function servers to recount all votes in ballotBox
+      // this function serves to recount all votes in ballotBox
       // playerBallot obj format: { "nickname of sender client" : []string }
 
       // reset candidate votes for recount
@@ -133,7 +133,7 @@ export default {
       this.calculatePercentage()
     },
     calculatePercentage() {
-      // turns candidate votes into percentages so votes can be neatly displayed in css
+      // turns candidate votes into percentages for css display
       // 10, 20, 30 -> 16.6, 33.3, 50
       if (!this.candidates.length) return
       const TOTAL_VOTES = this.candidates
