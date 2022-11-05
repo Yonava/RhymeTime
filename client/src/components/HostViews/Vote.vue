@@ -44,6 +44,7 @@
 import HostMixin from "./HostMixin"
 import DisplayResponse from "./HostSubComponents/ResponseDisplayCard.vue"
 import Tiebreaker from "./HostSubComponents/TiebreakerCard.vue"
+import { Views } from '@/utils/Views'
 
 export default {
   mixins: [
@@ -183,7 +184,7 @@ export default {
 
       // no edge case allows game to continue :)
       if (this.testMode) return
-      this.$emit("change-view", "recap")
+      this.$emit("change-view", Views.recap)
     }
   },
   watch: {

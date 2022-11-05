@@ -19,14 +19,15 @@
 import vote from '../components/PlayerViews/Vote.vue'
 import respond from '../components/PlayerViews/Respond.vue'
 import waiting from '../components/PlayerViews/Waiting.vue'
-import intro from '../components/PlayerViews/Tutorial.vue'
+import tutorial from '../components/PlayerViews/Tutorial.vue'
 import recap from '../components/PlayerViews/Recap.vue'
-import outro from '../components/PlayerViews/EndScreen.vue'
+import endScreen from '../components/PlayerViews/EndScreen.vue'
 
 // dialogs
 import HostLeft from '../components/PlayerViews/Dialogs/HostLeft.vue'
 import GamePaused from '../components/PlayerViews/Dialogs/GamePaused.vue'
 
+import { Views } from '../utils/Views'
 import io from 'socket.io-client'
 
 export default {
@@ -34,9 +35,9 @@ export default {
     vote,
     respond,
     waiting,
-    intro,
+    tutorial,
     recap,
-    outro,
+    endScreen,
     HostLeft,
     GamePaused
   },
@@ -47,7 +48,7 @@ export default {
       // contains data received from host through pause-state socket endpt
       pauseData: { gamePaused: false, reason: 'not-paused' },
       // used for host to control which view the player is on
-      currentView: 'waiting',
+      currentView: Views.waiting,
       // false if no host can be found in room, is set to false every rollcall
       hostPresent: true,
       // hostLeft is different as it only turns false when hostPresent has stayed false for more than n seconds

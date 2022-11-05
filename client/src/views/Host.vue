@@ -17,7 +17,7 @@
       :winningResponse="winningResponse"
       :song="song"
       :isPaused="isPaused"
-      :numOfSpots="numOfSpots"
+      :numOfPlayerSpots="numOfPlayerSpots"
       @round-winner="addWinnerToSong($event)"
       @change-view="currentView = $event"
       @round-over="roundOver"
@@ -40,12 +40,13 @@
 import waiting from '../components/HostViews/Waiting.vue'
 import respond from '../components/HostViews/Respond.vue'
 import vote from '../components/HostViews/Vote.vue'
-import intro from '../components/HostViews/Tutorial.vue'
+import tutorial from '../components/HostViews/Tutorial.vue'
 import recap from '../components/HostViews/Recap.vue'
-import outro from '../components/HostViews/EndScreen.vue'
+import endScreen from '../components/HostViews/EndScreen.vue'
 
 import PauseMenu from '../components/HostViews/HostSubComponents/PausedDialog.vue'
 
+import { Views } from '../utils/Views'
 import io from 'socket.io-client'
 
 export default {
@@ -53,9 +54,9 @@ export default {
     waiting,
     respond,
     vote,
-    intro,
+    tutorial,
     recap,
-    outro,
+    endScreen,
     PauseMenu
   },
   data() {
@@ -63,7 +64,7 @@ export default {
       // stores socket instance
       socket: null,
       // sets the current view of the game, emits to players
-      currentView: 'waiting',
+      currentView: Views.waiting,
       // playerlist contains player objects for every connected player
       playerList: [],
       // prompt responses each round are stored here. response obj format { playerName, response }
@@ -81,7 +82,7 @@ export default {
       // if host selects to pause game
       manuallyPaused: false,
       // number of player spots offered in room
-      numOfSpots: 2
+      numOfPlayerSpots: 2
     }
   },
   destroyed() {
@@ -113,9 +114,9 @@ export default {
         })
       })
       this.socket.on('player-join', (joinRequest) => {
-        const ROOM_FULL = this.numOfSpots <= this.playerList.length
+        const ROOM_FULL = this.numOfPlayerSpots <= this.playerList.length
         // check for duplicate names for joining client here
-        if (this.currentView !== 'waiting' || ROOM_FULL) {
+        if (this.currentView !== Views.waiting || ROOM_FULL) {
           this.socket.emit('kick-player', {
             clientId: joinRequest.clientId,
             redirect: {
@@ -171,19 +172,19 @@ export default {
     // called by 'recap' when the round recap is over
     roundOver() {
       if (this.roundCount === this.totalRounds) {
-        return this.currentView = 'outro'        
+        return this.currentView = Views.endScreen       
       }
 
       // resets responses for new round
       this.promptResponses = []
 
       this.roundCount++
-      this.currentView = 'respond'
+      this.currentView = Views.respond
       // make sessionStorage back-up of game state here
     },
     restartGame() {
       this.roundCount = 1
-      this.currentView = 'waiting'
+      this.currentView = Views.waiting
       this.song = []
       this.promptResponses = []
     },

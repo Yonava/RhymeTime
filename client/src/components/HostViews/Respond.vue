@@ -40,6 +40,7 @@ import ResponseCard from './HostSubComponents/PlayerResponseCard.vue'
 import Prompt from './HostSubComponents/ResponseHeading.vue'
 import Outro from './HostSubComponents/ResponseOutro.vue'
 import { playEffect } from '@/utils/Soundboard'
+import { Views } from '@/utils/Views'
 
 export default {
   mixins: [
@@ -105,7 +106,7 @@ export default {
       this.playOutro = true
       if (this.testMode) return
       setTimeout(() => {
-        this.$emit('change-view', 'vote')
+        this.$emit('change-view', Views.vote)
       }, this.outroDur)
     }
   },

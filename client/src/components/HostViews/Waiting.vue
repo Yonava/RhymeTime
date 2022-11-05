@@ -42,7 +42,7 @@
         >kick</v-btn>
       </div>
       <div 
-        v-for="i in numOfSpots - playerList.length" 
+        v-for="i in numOfPlayerSpots - playerList.length" 
         :key="i"
       >
         <div class="text-h6">
@@ -55,6 +55,7 @@
 
 <script>
 import HostMixin from './HostMixin'
+import { Views } from '@/utils/Views'
 
 export default {
   mixins: [
@@ -62,7 +63,7 @@ export default {
   ],
   methods: {
     next() {
-      this.$emit('change-view', 'intro')
+      this.$emit('change-view', Views.tutorial)
     },
     kick(clientId) {
       this.$emit('kick', clientId)

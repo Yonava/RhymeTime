@@ -56,6 +56,8 @@ export default {
       return this.$store.state.nickname && this.$store.state.roomid
     },
     errorMessage() {
+      // creating a case and returning a string allows for different 
+      // error messages to be displayed to users inside the join card
       switch (this.$route.query.err) {
         case 'nickname_taken':
           return 'Someone in the room you joined has the same nickname. Try something unique, original, spunky...'
