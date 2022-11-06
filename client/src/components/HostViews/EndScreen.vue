@@ -43,7 +43,7 @@ export default {
     const PLAYERS = this.winningResponses.map(response => response.player.name)
     PLAYERS.forEach(player => {
       const INDEX = this.scoreCard
-        .findIndex(playerEntry => playerEntry.playerName === player.name)
+        .findIndex(playerEntry => playerEntry.playerName === player)
       if (INDEX === -1) {
         this.scoreCard.push({
           playerName: player.name,

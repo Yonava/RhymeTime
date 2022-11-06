@@ -79,7 +79,7 @@ export default {
       // if host selects to pause game
       manuallyPaused: false,
       // number of player spots offered in room
-      numOfPlayerSpots: 2
+      numOfPlayerSpots: 6
     }
   },
   destroyed() {
