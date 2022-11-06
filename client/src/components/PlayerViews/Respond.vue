@@ -52,7 +52,11 @@ export default {
     socketInstance: {
       required: true,
       validator: socket => socket?.connected
-    }
+    },
+    clientId: {
+      type: Number,
+      required: true
+    },
   },
   methods: {
     submitResponse() {
@@ -62,7 +66,7 @@ export default {
     },
     sendResponseToHost() {
       const RESPONSE_OBJ = {
-        playerName: this.$store.state.nickname,
+        clientId: this.clientId,
         response: this.response
       }
 

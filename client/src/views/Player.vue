@@ -4,6 +4,7 @@
       :is="currentView"
       :wordsInPrompt="wordsInPrompt"
       :socketInstance="socket"
+      :clientId="clientId"
     ></component>
 
     <!-- Dialog Boxes -->

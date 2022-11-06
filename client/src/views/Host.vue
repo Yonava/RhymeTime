@@ -14,11 +14,10 @@
       :playerList="playerList"
       :promptResponses="promptResponses"
       :socketInstance="socket"
-      :winningResponse="winningResponse"
-      :song="song"
+      :winningResponses="winningResponses"
       :isPaused="isPaused"
       :numOfPlayerSpots="numOfPlayerSpots"
-      @round-winner="addWinnerToSong($event)"
+      @round-winner="winningResponses.push($event)"
       @change-view="currentView = $event"
       @round-over="roundOver"
       @round-change="totalRounds = $event"
@@ -67,16 +66,14 @@ export default {
       currentView: Views.waiting,
       // playerlist contains player objects for every connected player
       playerList: [],
-      // prompt responses each round are stored here. response obj format { playerName, response }
+      // prompt responses each round are stored here. response obj format { player: player, response: string }
       promptResponses: [],
       // stores what round the game is on
       roundCount: 1,
       // number of rounds that are to be played
       totalRounds: 3,
-      // response that scored the most points in the voting round
-      winningResponse: { playerName: '', response: '' },
-      // song consists out of the winning response objects of each round
-      song: [],
+      // responses that won in voting round
+      winningResponses: [],
       // true if page is not visible (using visibilitychange event listener)
       isPageHidden: false,
       // if host selects to pause game
@@ -164,10 +161,6 @@ export default {
     },
     forceDisconnect() {
       this.socket.disconnect()
-    },
-    addWinnerToSong(winningResponse) {
-      this.song.push(winningResponse)
-      this.winningResponse = winningResponse
     },
     // called by 'recap' when the round recap is over
     roundOver() {
