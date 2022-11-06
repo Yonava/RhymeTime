@@ -9,7 +9,7 @@
     <div class="center">
       This Rounds Winner Was...
       <br>
-      <b>{{ winningResponse.playerName }}</b>
+      <b>{{ winningResponse.player.name }}</b>
       <br>
       <b>Who Wrote:</b>
       <br>
@@ -34,18 +34,6 @@ export default {
       displayedResponse: ''
     }
   },
-  props: {
-    winningResponse: {
-      type: Object,
-      required: true,
-      default: () => {
-        return {
-          player: 'Nobody',
-          response: ':('
-        }
-      }
-    }
-  },
   mounted() {
     let counter = 0;
     this.writeText = setInterval(() => {
@@ -57,6 +45,12 @@ export default {
       }
     }, 50)
   },
+  computed: {
+    winningResponse() {
+      const LAST_INX = this.winningResponses.length - 1
+      return this.winningResponses[LAST_INX]
+    }
+  },
   methods: {
     next() {
       if (this.testMode) return
@@ -65,6 +59,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-</style>

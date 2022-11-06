@@ -84,21 +84,19 @@ export default {
     })
 
     this.socketInstance.on('player-prompt-submission', (playerResponse) => {
-      // playerResponse obj { playerName: string, response: string }
+      // playerResponse obj { clientId: number, response: string }
+      const playerObject = this.playerList
+        .find(player => player.clientId === playerResponse.clientId)
+      const promptResponse = {
+        response: playerResponse.response,
+        player: playerObject
+      }
       if (!this.acceptingSubmissions) return
       playEffect('responseReceived')
       setTimeout(() => {
-        this.promptResponses.push(playerResponse)
+        this.promptResponses.push(promptResponse)
       }, 350)
     })
-
-    // for offline testing
-    // setTimeout(() => {
-    //   playEffect('responseReceived')
-    //   setTimeout(() => {
-    //     this.promptResponses.push({player: 'Jack', response: 'hi'})
-    //   }, 350)
-    // }, 5000)
   },
   methods: {
     next() {
@@ -115,7 +113,7 @@ export default {
       immediate: true,
       handler(v) {
         const NUM_OF_PLAYERS = this.playerList.length
-        this.respondents = v.map(response => response.playerName)
+        this.respondents = v.map(response => response.player.name)
         if (this.respondents.length === NUM_OF_PLAYERS) {
           this.stopTimer()
           setTimeout(() => {

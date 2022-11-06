@@ -25,7 +25,7 @@ export default {
       type: Array,
       require: true
     },
-    song: {
+    winningResponses: {
       type: Array,
       required: true
     },

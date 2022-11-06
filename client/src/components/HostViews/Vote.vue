@@ -33,7 +33,7 @@
         :style="`height: ${player.votes}%;`"
       >
         <div class="text-p white--text name-tag">
-          {{ player.playerName }}
+          {{ player.player.name }}
         </div>
       </div>
     </div>
@@ -71,20 +71,16 @@ export default {
   destroyed() {
     // get winner data
     const WINNER = this.candidates[0].player
-    const WINNERS_RESPONSE = this.responses[this.responses
-      .findIndex(obj => obj.player === WINNER)].response
+    const WINNERS_RESPONSE = this.responses
+      .find(response => response.player.name === WINNER.name)
     
-    // give it to parent for round to round tracking
-    this.$emit("round-winner", {
-      playerName: WINNER,
-      response: WINNERS_RESPONSE,
-    })
+    this.$emit('round-winner', WINNERS_RESPONSE)
   },
   mounted() {
     this.responses = this.promptResponses
-    this.responses.forEach((response) => {
+    this.responses.forEach(response => {
       this.candidates.push({
-        playerName: response.playerName,
+        player: response.player,
         votes: 100
       })
     })
@@ -101,8 +97,8 @@ export default {
   },
   methods: {
     emitCandidateList() {
-      this.socketInstance.emit("candidate-list", this.candidates
-        .map((candidate) => candidate.playerName))
+      this.socketInstance.emit('candidate-list', this.candidates
+        .map(candidate => candidate.player.name))
     },
     countVotes(playerBallot) {
       // this function serves to recount all votes in ballotBox
@@ -125,7 +121,7 @@ export default {
         // counts up the votes on each ballot
         const BALLOT = this.ballotBox[playerName]
         for (let i = 0; i < BALLOT.length; i++) {
-          const CAND_INX = this.candidates.findIndex(c => c.playerName === BALLOT[i])
+          const CAND_INX = this.candidates.findIndex(c => c.player.name === BALLOT[i])
           this.candidates[CAND_INX].votes += (BALLOT.length - 1) - i
         }
       })
@@ -153,7 +149,7 @@ export default {
         return candidate.votes === FIRST_PLACE_VOTES
       })
       this.responses = this.responses.filter((response) => {
-        return this.candidates.map((i) => i.playerName).includes(response.playerName)
+        return this.candidates.map((i) => i.player.name).includes(response.player.name)
       })
       this.ballotBox = {}
       this.pollsClosed = true

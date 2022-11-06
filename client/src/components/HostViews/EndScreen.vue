@@ -8,10 +8,10 @@
       </v-card-text>
     </v-card>
 
-    <div v-for="bar in song" :key="bar.id">
-      <b>{{ bar.playerName }}</b>
+    <div v-for="response in winningResponses" :key="response.id">
+      <b>{{ response.player.name }}</b>
       <br />
-      <i>{{ bar.response }}</i>
+      <i>{{ response.response }}</i>
     </div>
     <v-btn 
       @click.stop="$emit('restart-game')" 
@@ -40,18 +40,19 @@ export default {
     };
   },
   mounted() {
-    const PLAYERS = this.song.map((response) => response.playerName);
-    PLAYERS.forEach((playerName) => {
-      const INDEX = this.scoreCard.findIndex((obj) => obj.playerName === playerName);
+    const PLAYERS = this.winningResponses.map(response => response.player.name)
+    PLAYERS.forEach(player => {
+      const INDEX = this.scoreCard
+        .findIndex(playerEntry => playerEntry.playerName === player)
       if (INDEX === -1) {
         this.scoreCard.push({
-          playerName,
+          playerName: player.name,
           score: 1,
-        });
+        })
       } else {
-        this.scoreCard[INDEX].score++;
+        this.scoreCard[INDEX].score++
       }
-    });
+    })
 
     this.scoreCard.sort((a, b) => b.score - a.score);
   },
