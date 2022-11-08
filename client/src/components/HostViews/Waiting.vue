@@ -1,55 +1,8 @@
 <template>
-  <div>
-    <center>
-      <div class="text-h6 mt-3">
-        Scan QR Code or Enter With RoomID {{ $store.state.roomid }} to Join
-      </div>
-      <div style="width: 50%">
-        <v-img
-          :src="qrCodeAPI"
-          width="200"
-          class="my-4"
-        ></v-img>
-        <v-text-field
-          v-model="rounds"
-          label="How many rounds are we playing?"
-          filled
-          type="number"
-          max-width="10px"
-        ></v-text-field>
-      </div>
-      <v-btn
-        @click.stop="next"
-        color="green"
-        class="white--text mb-3"
-        rounded
-        large
-        :disabled="!playerList.length"
-      >
-        <v-icon class="mr-2">mdi-play</v-icon>
-        Start Game
-      </v-btn>
-      <div class="text-h5">Players In Room:</div>
-      <div v-for="player in playerList" :key="player.clientId">
-        <div class="text-h6">
-          {{ player.name }}
-        </div>
-        <v-btn
-          @click.stop="kick(player.clientId)"
-          rounded 
-          class="white--text"
-          color="red"
-        >kick</v-btn>
-      </div>
-      <div 
-        v-for="i in numOfPlayerSpots - playerList.length" 
-        :key="i"
-      >
-        <div class="text-h6">
-          Open Spot
-        </div>
-      </div>
-    </center>
+  <div class="background-matte">
+    <div class="background-stripe-1"></div>
+    <div class="background-stripe-2"></div>
+    <div class="background-stripe-3"></div>
   </div>
 </template>
 
@@ -97,3 +50,33 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.background-matte {
+  width: 100vw;
+  height: 100vh;
+  background-color: #FFB118;
+  position: fixed;
+}
+.background-stripe-1 {
+  height: 150vw;
+  width: 175px;
+  background-color: #FFD37E;
+  transform: translateY(-85vh) translateX(30vw) rotate(80deg);
+  position: fixed;
+}
+.background-stripe-2 {
+  height: 150vw;
+  width: 175px;
+  background-color: #FFD37E;
+  transform: translateY(-55vh) translateX(30vw) rotate(40deg);
+  position: fixed;
+}
+.background-stripe-3 {
+  height: 150vw;
+  width: 175px;
+  background-color: #FFD37E;
+  transform: translateY(-55vh) translateX(30vw) rotate(130deg);
+  position: fixed;
+}
+</style>

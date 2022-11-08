@@ -1,13 +1,13 @@
 <template>  
   <div>
-    <div>
+    <!-- <div>
       <v-icon 
         @click.stop="manuallyPaused = !manuallyPaused"
         large
         class="mx-7 my-5"
       >{{ pausePlayIcon }}</v-icon>
       <span>{{ isPaused ? 'Paused' : 'Playing' }}</span>
-    </div>
+    </div> -->
   
     <component
       :is="currentView"
