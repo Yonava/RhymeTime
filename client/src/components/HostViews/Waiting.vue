@@ -3,15 +3,25 @@
     <div class="background-stripe-1"></div>
     <div class="background-stripe-2"></div>
     <div class="background-stripe-3"></div>
-    <div class="main-qr-box center">
-      <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nihil eveniet, distinctio soluta quia qui harum natus fugiat necessitatibus. Vel cum saepe nulla id omnis harum quo, iste natus nemo labore maxime praesentium, libero, atque facere doloribus laboriosam voluptate. Nam fuga et eius asperiores nulla laborum aliquam voluptatem consectetur debitis corrupti, repellendus ex veritatis atque cumque. Eveniet vero fugit accusamus iure voluptate nulla aliquam quis laudantium autem! Vero delectus quas, reprehenderit odit, maxime rerum cupiditate ad neque deserunt ipsum quae facere minima nobis sed dolores impedit labore itaque, accusamus suscipit. Nihil facere quidem ex soluta fugiat distinctio cupiditate nisi praesentium totam.</p>
+    <div class="left-side-box pa-3">
+      <p>Left side menu</p>
     </div>
-    <div class="left-side-box">
-      <p>Lorem ipsum dolor sit amet consec</p>
+    <div class="main-qr-box center px-5">
+      <h3 class="url-display pt-1">{{ displayUrl }}</h3>
+      <h1 style="font-size: 50px; font-weight: 1000">Room {{ roomId || '1234' }}</h1>
+      <!-- Add this -->
+      <!-- lazy-src="" -->
+      <v-img
+        :src="qrCodeAPI"
+        width="200"
+        class="mb-2"
+      ></v-img>
+      <h2 style="font-weight: 1000;">Join Now! 5 Spots Left</h2>
     </div>
-    <div class="right-side-box">
-      <p>Lorem ipsum dolor sit ame</p>
+    <div class="right-side-box pa-3">
+      <p>right side menu - start</p>
     </div>
+
   </div>
 </template>
 
@@ -48,6 +58,12 @@ export default {
     },
     qrCodeAPI() {
       return `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${this.url}`
+    },
+    roomId() {
+      return this.$store.state.roomid
+    },
+    displayUrl() {
+      return `${window.location.href.substring(0, window.location.href.length - 5)}/join`
     }
   },
   watch: {
@@ -110,5 +126,8 @@ export default {
   position: fixed;
   background-color: white;
   border-radius: 0px 0px 0px 10px;
+}
+.url-display {
+  /* padding-top: 5px; */
 }
 </style>
