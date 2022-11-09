@@ -68,7 +68,9 @@
             <PlayerCard 
               :playerColor="player.color" 
               :playerName="player.name" 
-              :playerPfp="player.pfp" 
+              :playerPfp="player.pfp"
+              :playerClientId="player.clientId"
+              @player-kicked="kick($event)"
             />
           </div>
         </div>

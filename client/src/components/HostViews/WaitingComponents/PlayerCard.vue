@@ -42,6 +42,11 @@ export default {
       required: false,
       type: String,
       default: 'Spot Open'
+    },
+    playerClientId: {
+      required: false,
+      type: Number,
+      default: 0
     }
   },
   computed: {
@@ -54,7 +59,7 @@ export default {
   },
   methods: {
     kickPlayer() {
-      this.$emit('player-kicked')
+      this.$emit('player-kicked', this.playerClientId)
     }
   }
 }
