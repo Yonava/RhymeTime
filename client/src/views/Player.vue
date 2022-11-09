@@ -9,10 +9,10 @@
 
     <!-- Dialog Boxes -->
     <host-left :visible="hostLeft" />
-    <!-- <game-paused 
+    <game-paused 
       :visible="pauseData.gamePaused" 
       :reason="pauseData.reason" 
-    /> -->
+    />
   </div>
 </template>
 
@@ -119,7 +119,7 @@ export default {
       this.hostPresent = false
       // gives host 3 seconds to set hostPresent back to true
       setTimeout(() => {
-        // this.hostLeft = !this.hostPresent
+        this.hostLeft = !this.hostPresent
       }, 3000)
     }
   },
