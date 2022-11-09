@@ -8,11 +8,11 @@
     ></component>
 
     <!-- Dialog Boxes -->
-    <host-left :visible="hostLeft" />
-    <game-paused 
+    <!-- <host-left :visible="hostLeft" /> -->
+    <!-- <game-paused 
       :visible="pauseData.gamePaused" 
       :reason="pauseData.reason" 
-    />
+    /> -->
   </div>
 </template>
 

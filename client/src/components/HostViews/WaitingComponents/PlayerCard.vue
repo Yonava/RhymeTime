@@ -101,16 +101,16 @@ export default {
 
 
   .slide-in-enter, .slide-out-leave-to {
-  transform: translateX(-100vw);
-}
-.slide-in-enter-to, .slide-in-leave-from, .slide-out-enter-to, .slide-out-leave-from {
-  transform: translateX(0);
-}
-.slide-in-enter-active, .slide-in-leave-active, .slide-out-enter-active, .slide-out-leave-active {
-  transition: all 1s;
-  position: fixed;
-}
-.slide-in-leave-to, .slide-out-enter {
-  transform: translateX(100vw);
-}
+    transform: translateX(-100vw);
+  }
+  .slide-in-enter-to, .slide-in-leave-from, .slide-out-enter-to, .slide-out-leave-from {
+    transform: translateX(0);
+  }
+  .slide-in-enter-active, .slide-in-leave-active, .slide-out-enter-active, .slide-out-leave-active {
+    transition: all 1s;
+    position: fixed;
+  }
+  .slide-in-leave-to, .slide-out-enter {
+    transform: translateX(100vw);
+  }
 </style>

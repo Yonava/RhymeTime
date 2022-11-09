@@ -11,13 +11,17 @@
     <div style="width: 85%">
       <div class="flex-container">
         <div v-for="color in colors" :key="color">
-          <div
-            @click.stop="selectedColor = color"
-            :style="`background-color: ${color}`"
-            class="frame-item mx-3" 
-          ></div>
-          <div>
-            <v-icon color="white">mdi-check-outline</v-icon>
+          <div style="position: relative;" >
+            <v-icon 
+              v-if="color === selectedColor"
+              class="check-mark"
+              dark
+            >mdi-check-outline</v-icon>
+            <div
+              @click.stop="selectedColor = color"
+              :style="`background-color: ${color};`"
+              class="frame-item ma-3"
+            ></div>
           </div>
         </div>
       </div>
@@ -25,15 +29,16 @@
     <h2 class="my-2">Take Your Pic</h2>
     <div style="width: 85%">
       <div class="flex-container">
-        <div v-for="i in numOfPfps" :key="i">
+        <div 
+          v-for="i in numOfPfps" 
+          :key="i"
+        >
           <v-img
             @click.stop="selectedPfp = i"
             :src="require(`../../../assets/pfps/${i}.webp`)"
-            class="frame-item mx-3"
+            :style="pfpSelected(i)"
+            class="frame-item ma-3"
           ></v-img>
-          <div>
-            <v-icon color="white">mdi-check-outline</v-icon>
-          </div>
         </div>
       </div>
     </div>
@@ -97,7 +102,17 @@ export default {
         pfp: this.selectedPfp,
         clientId: this.clientId
       })
-    }
+    },
+    pfpSelected(pfp) {
+      if (pfp === this.selectedPfp) {
+        return `border: 9px dashed ${this.selectedColor}`
+      } else return ''
+    },
+    // colorSelected(color) {
+    //   if (color === this.selectedColor) {
+    //     return `border: 9px dashed `
+    //   } else return ''
+    // }
   },
   watch: {
     selectedColor() {
@@ -131,6 +146,7 @@ h2 {
   height: 50px;
   width: 50px;
   border-radius: 5px;
+  cursor: pointer;
 }
 .flex-container {
   display: flex;
@@ -145,5 +161,12 @@ h2 {
   position: absolute;
   right: 0;
   margin-right: 12px;
+}
+.check-mark {
+  z-index: 2; 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>
