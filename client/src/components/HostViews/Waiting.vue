@@ -40,7 +40,7 @@
         width="200"
         class="mb-2"
       ></v-img>
-      <h2 style="font-weight: 1000;">Join Now! 5 Spots Left</h2>
+      <h2 style="font-weight: 1000;">{{ joinMessage }}</h2>
     </div>
     <div class="right-side-box pa-3 pl-6">
       <div 
@@ -75,7 +75,7 @@
           </div>
         </div>
         <div
-          v-for="i in numOfPlayerSpots - playerList.length" 
+          v-for="i in numOfOpenSpots" 
           :key="i"
         >
           <div class="ma-2">
@@ -133,6 +133,19 @@ export default {
     },
     displayUrl() {
       return `${window.location.href.substring(0, window.location.href.length - 5)}/join`
+    },
+    numOfOpenSpots() {
+      return this.numOfPlayerSpots - this.playerList.length
+    },
+    joinMessage() {
+      switch (this.numOfOpenSpots) {
+        case 1:
+          return 'Join Now! 1 Spot Left'
+        case 0:
+          return 'Room Full, Time To Start The Game!'
+        default:
+          return `Join Now! ${this.numOfOpenSpots} Spots Left`
+      }
     }
   },
   watch: {

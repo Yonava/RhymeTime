@@ -178,7 +178,7 @@ export default {
     restartGame() {
       this.roundCount = 1
       this.currentView = Views.waiting
-      this.song = []
+      this.winningResponses = []
       this.promptResponses = []
     },
     emitPausePackage() {
@@ -189,7 +189,8 @@ export default {
       this.socket.emit('pause-state', pausePackage)
     },
     kickPlayer(clientId) {
-      let playerIndex = this.playerList.findIndex((player) => player.clientId === clientId)
+      let playerIndex = this.playerList
+        .findIndex((player) => player.clientId === clientId)
       // handle player kicking
       this.socket.emit('kick-player', {
         clientId,

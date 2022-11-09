@@ -20,6 +20,7 @@
         color="red" 
         class="white--text"
         rounded
+        large
       >kick</v-btn>
     </div>
   </div>
