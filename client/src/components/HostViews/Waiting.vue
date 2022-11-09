@@ -3,8 +3,31 @@
     <div class="background-stripe-1"></div>
     <div class="background-stripe-2"></div>
     <div class="background-stripe-3"></div>
-    <div class="left-side-box pa-3">
-      <p>Left side menu</p>
+    <div class="left-side-box pa-3 center">
+        <div 
+          class="center" 
+          style="width: 100px; cursor: pointer"
+        >
+          <v-icon 
+            large 
+            color="black"
+          >mdi-arrow-left-circle</v-icon>
+          <p class="side-box-txt">Exit</p>
+        </div>
+        <div 
+          class="mx-3" 
+          style="width: 3px; height: 65px; background-color: black"
+        ></div>
+        <div 
+          class="center" 
+          style="width: 100px; cursor: pointer"
+        >
+          <v-icon  
+            large 
+            color="black"
+          >mdi-cog</v-icon>
+          <p class="side-box-txt">Settings</p>
+        </div>
     </div>
     <div class="main-qr-box center px-5">
       <h3 class="url-display pt-1">{{ displayUrl }}</h3>
@@ -18,10 +41,24 @@
       ></v-img>
       <h2 style="font-weight: 1000;">Join Now! 5 Spots Left</h2>
     </div>
-    <div class="right-side-box pa-3">
-      <p>right side menu - start</p>
+    <div class="right-side-box pa-3 pl-6">
+      <div 
+        class="center" 
+        style="cursor: pointer; flex-direction: row"
+      >
+        <p 
+          class="side-box-txt" 
+          style="font-size: 20pt"
+        >Start Game</p>
+        <v-icon
+          x-large
+          color="black"
+        >mdi-play</v-icon>
+      </div>
     </div>
-
+    <div>
+      
+    </div>
   </div>
 </template>
 
@@ -116,16 +153,23 @@ export default {
 .left-side-box {
   top: 0;
   left: 0;
-  position: fixed;
+  position: absolute;
   background-color: white;
   border-radius: 0px 0px 10px 0px;
+  flex-direction: row;
 }
 .right-side-box {
   top: 0;
   right: 0;
-  position: fixed;
+  position: absolute;
   background-color: white;
   border-radius: 0px 0px 0px 10px;
+  flex-direction: row;
+}
+p.side-box-txt {
+  font-weight: 1000;
+  margin: 0%;
+  font-size: 15pt;
 }
 .url-display {
   /* padding-top: 5px; */
