@@ -7,11 +7,14 @@
     <div style="width: 85%">
       <div class="flex-container">
         <div v-for="color in colors" :key="color">
-          <div 
+          <div
             @click.stop="selectedColor = color"
             :style="`background-color: ${color}`"
-            class="color ma-3" 
+            class="color mx-3" 
           ></div>
+          <div>
+            <v-icon color="white">mdi-check-outline</v-icon>
+          </div>
         </div>
       </div>
     </div>
@@ -21,6 +24,10 @@
 
 <script>
 export default {
+  mounted() {
+    const RAND_INX = Math.floor(Math.random() * this.colors.length)
+    this.selectedColor = this.colors[RAND_INX]
+  },
   data() {
     return {
       selectedColor: 'orange',
