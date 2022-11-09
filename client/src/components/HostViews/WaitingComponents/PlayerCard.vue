@@ -12,7 +12,7 @@
       <h1 :style="`font-weight: 1000; ${nameTxtColor}`">{{ playerName }}</h1>
     </div>
     <div 
-      v-if="playerName !== 'Spot Open'"
+      v-if="playerClientId"
       class="kick-overlay center"
     >
       <v-btn
