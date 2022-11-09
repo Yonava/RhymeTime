@@ -149,6 +149,9 @@ export default {
       this.socket.on('disconnect-event', () => {
         this.socket.emit('host-present')
       })
+      this.socket.on('player-object-change', newPlayerObject => {
+        
+      }) 
       this.socket.on('broadcast-game-state', () => {
         this.socket.emit('host-present')
         this.socket.emit('change-view', this.currentView)

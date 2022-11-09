@@ -66,6 +66,13 @@ Allows host to send a confirmation to players in room to confirm that the host i
 
 ## Gameplay Endpoints
 
+### player-object-change
+<b>Sender</b> `Player Client` -> <b>Recipient</b> `Host Client`
+<br>
+<b>Data in Payload</b> playerResponse: { name: string, color: string, pfp: string, clientId: number }
+<br>
+Used by player while waiting for game to start for switching their pfp and color
+
 ### player-prompt-response
 <b>Sender</b> `Player Client` -> <b>Recipient</b> `Host Client`
 <br>
