@@ -29,7 +29,6 @@
         kick
         <v-icon class="ml-2">mdi-alert-remove</v-icon>
       </v-btn>
-      
     </div>
   </div>
 </template>
