@@ -59,6 +59,10 @@ export default {
 
     // selects random starting pfp
     this.selectedPfp = Math.floor(Math.random() * (this.numOfPfps + 1))
+
+    setTimeout(() => {
+      this.emitPlayerObject()
+    }, 500)
   },
   data() {
     return {

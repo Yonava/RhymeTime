@@ -3,11 +3,15 @@
     class="player-card center" 
     :style="color"
   >
-    <div 
-      v-if="playerPfp !== 'none'" 
-      class="pfp"
-      style="width: 30%"
-    ></div>
+    <!-- <transition name="slide"> -->
+      <v-img
+        v-if="playerPfp !== 'none'"
+        :src="require(`../../../../assets/pfps/${playerPfp}.webp`)"
+        class="pfp"
+        aspect-ratio="1"
+        max-width="125px"
+      ></v-img>
+    <!-- </transition> -->
     <div style="width: 60%; text-align: center">
       <h1 :style="`font-weight: 1000; ${nameTxtColor}`">{{ playerName }}</h1>
     </div>
@@ -21,7 +25,11 @@
         class="white--text"
         rounded
         large
-      >kick</v-btn>
+      >
+        kick
+        <v-icon class="ml-2">mdi-alert-remove</v-icon>
+      </v-btn>
+      
     </div>
   </div>
 </template>
@@ -73,12 +81,10 @@ export default {
     position: relative;
     flex-direction: row;
     border-radius: 10px;
+    transition: 500ms;
   }
   .pfp {
-    height: 120px;
-    width: 120px;
-    background-color: gray;
-    border-radius: 5px;
+    border-radius: 10px;
   }
   .kick-overlay {
     position: absolute;
@@ -93,4 +99,19 @@ export default {
   .player-card:hover .kick-overlay {
     opacity: 1;
   }
+
+
+  .slide-in-enter, .slide-out-leave-to {
+  transform: translateX(-100vw);
+}
+.slide-in-enter-to, .slide-in-leave-from, .slide-out-enter-to, .slide-out-leave-from {
+  transform: translateX(0);
+}
+.slide-in-enter-active, .slide-in-leave-active, .slide-out-enter-active, .slide-out-leave-active {
+  transition: all 1s;
+  position: fixed;
+}
+.slide-in-leave-to, .slide-out-enter {
+  transform: translateX(100vw);
+}
 </style>

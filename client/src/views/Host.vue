@@ -150,7 +150,14 @@ export default {
         this.socket.emit('host-present')
       })
       this.socket.on('player-object-change', newPlayerObject => {
-        
+        let playerIndex = this.playerList
+          .findIndex((player) => player.clientId === newPlayerObject.clientId)
+        if (playerIndex === -1) {
+          return console.warn(`
+          Player with unrecongized clientId is 
+          attempting to make changes to their player object`)
+        }
+        this.playerList.splice(playerIndex, 1, newPlayerObject)
       }) 
       this.socket.on('broadcast-game-state', () => {
         this.socket.emit('host-present')
