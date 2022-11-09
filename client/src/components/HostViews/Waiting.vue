@@ -5,6 +5,7 @@
     <div class="background-stripe-3"></div>
     <div class="left-side-box pa-3 center">
         <div 
+          @click.stop="exit"
           class="center" 
           style="width: 100px; cursor: pointer"
         >
@@ -43,10 +44,11 @@
     </div>
     <div class="right-side-box pa-3 pl-6">
       <div 
+        @click.stop="next"
         class="center" 
         style="cursor: pointer; flex-direction: row"
       >
-        <p 
+        <p
           class="side-box-txt" 
           style="font-size: 20pt"
         >Start Game</p>
@@ -56,8 +58,29 @@
         >mdi-play</v-icon>
       </div>
     </div>
-    <div>
-      
+    <div class="player-card-container">
+      <div class="player-card-row">
+        <div 
+          v-for="player in playerList" 
+          :key="player.clientId"
+        >
+          <div class="ma-2">
+            <PlayerCard 
+              :playerColor="player.color" 
+              :playerName="player.name" 
+              :playerPfp="player.pfp" 
+            />
+          </div>
+        </div>
+        <div
+          v-for="i in numOfPlayerSpots - playerList.length" 
+          :key="i"
+        >
+          <div class="ma-2">
+            <PlayerCard />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -65,17 +88,24 @@
 <script>
 import HostMixin from './HostMixin'
 import { Views } from '@/utils/Views'
+import PlayerCard from './WaitingComponents/PlayerCard.vue'
 
 export default {
   mixins: [
     HostMixin
   ],
+  components: {
+    PlayerCard
+  },
   methods: {
     next() {
       this.$emit('change-view', Views.tutorial)
     },
     kick(clientId) {
       this.$emit('kick', clientId)
+    },
+    exit() {
+      this.$router.push('/')
     }
   },
   data() {
@@ -143,7 +173,7 @@ export default {
 }
 .main-qr-box {
   background-color: white;
-  position: fixed;
+  position: relative;
   width: 30vw;
   top: 0;
   left: 50%;
@@ -173,5 +203,15 @@ p.side-box-txt {
 }
 .url-display {
   /* padding-top: 5px; */
+}
+.player-card-container {
+  width: 55%;
+  margin: 10px auto;
+}
+.player-card-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-flow: wrap;
 }
 </style>
