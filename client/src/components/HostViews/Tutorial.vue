@@ -1,18 +1,14 @@
 <template>
-  <div class="center mt-5">
-    <div class="text-h4" style="width: 40%; text-align: center">
-      just close your eyes and imagine there is a tutorial video now playing in front of you,
-      if you really set your mind on it, you may manifest it into reality. 
+  <div class="background-matte center">
+    <h1>Tutorial Animation</h1>
+    <v-btn @click="forSkip++">vote for skip {{ forSkip }}</v-btn>
+    <v-btn @click="againstSkip++">vote against skip {{ againstSkip }}</v-btn>
+    <div 
+      :style="voteDisplayColor"
+      class="vote-display-container" 
+    >
+
     </div>
-    <v-btn
-      @click.stop="next" 
-      class="white--text mt-8" 
-      color="red"
-    >Skip intro</v-btn>
-    <br>
-    Votes for: {{ votesForSkip }}
-    <br>
-    Votes aganst: {{ votesAgainstSkip }}
   </div>
 </template>
 
@@ -27,7 +23,9 @@ export default {
   data() {
     return {
       players: [],
-      votesForSkip: 0
+      votesForSkip: 0,
+      againstSkip: 1,
+      forSkip: 1
     }
   },
   mounted() {
@@ -50,6 +48,10 @@ export default {
   computed: {
     votesAgainstSkip() {
       return this.players.length - this.votesForSkip
+    },
+    voteDisplayColor() {
+      let nayPercent = this.againstSkip/(this.againstSkip + this.forSkip) * 100
+      return `background: linear-gradient(to left, #E23B3B ${nayPercent}%, 0%, #4BB526);`
     }
   },
   methods: {
@@ -72,3 +74,25 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .background-matte {
+    background-color: rgb(26, 26, 26);
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+  }
+  h1 {
+    color: white;
+    font-size: 60pt;
+    font-weight: 1000;
+  }
+  .vote-display-container {
+    width: 85vw;
+    height: 75px;
+    bottom: 5%;
+    position: fixed;
+    border-radius: 50px;
+    transition: 500ms;
+  }
+</style>
