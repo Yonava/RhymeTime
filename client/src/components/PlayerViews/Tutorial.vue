@@ -1,10 +1,19 @@
 <template>
-  <div>
-    <v-btn 
-      @click.stop="wantsToSkip = !wantsToSkip"
-      :color="skipBtnColor"
-      class="white--text"
-    >{{ skipBtnText }}</v-btn>
+  <div class="background-matte">
+    <header class="center">
+      <h1>Tutorial Playing</h1>
+    </header>
+    <div class="center mt-6">
+      <div 
+        @click.stop="wantsToSkip = !wantsToSkip"
+        :style="skipBtnColor"
+        class="skip-btn center"
+      >
+        <span class="skip-btn-text">
+          {{ skipBtnText }}
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -27,10 +36,10 @@ export default {
       return this.$store.state.nickname
     },
     skipBtnText() {
-      return this.wantsToSkip ? 'take back vote' : 'vote to skip' 
+      return this.wantsToSkip ? 'Take Back Vote' : 'Vote to Skip' 
     },
     skipBtnColor() {
-      return this.wantsToSkip ? 'green' : 'red'
+      return `background-color: ${this.wantsToSkip ? '#4BB526' : '#E23B3B'}`
     }
   },
   watch: {
@@ -44,3 +53,30 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  header {
+    width: 100%;
+    height: 70px;
+    background-color: #FFB118;
+  }
+  h1 {
+    font-weight: 1000;
+    font-size: 26pt
+  }
+  .background-matte {
+    width: 100vw;
+    height: 100vh;
+    background-color: #FFD37E;
+  }
+  .skip-btn {
+    width: 85%;
+    height: 62px;
+    border-radius: 12px;
+  }
+  .skip-btn-text {
+    color: white;
+    font-weight: 1000;
+    font-size: 20pt;
+  }
+</style>
