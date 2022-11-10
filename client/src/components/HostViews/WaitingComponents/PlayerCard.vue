@@ -98,8 +98,6 @@ export default {
   .player-card:hover .kick-overlay {
     opacity: 1;
   }
-
-
   .slide-in-enter, .slide-out-leave-to {
     transform: translateX(-100vw);
   }

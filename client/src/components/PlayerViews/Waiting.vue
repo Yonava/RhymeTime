@@ -1,7 +1,7 @@
 <template>
   <div class="center">
     <header class="center" :style="headerColor">
-      <h1>{{ name || 'Yona' }}</h1>
+      <h1>{{ name }}</h1>
       <v-img
         :src="require(`../../../assets/pfps/${selectedPfp}.webp`)"
         class="selected-pfp"
@@ -63,7 +63,7 @@ export default {
     this.selectedColor = this.colors[RAND_INX]
 
     // selects random starting pfp
-    this.selectedPfp = Math.floor(Math.random() * (this.numOfPfps + 1))
+    this.selectedPfp = Math.floor(Math.random() * this.numOfPfps) + 1
 
     setTimeout(() => {
       this.emitPlayerObject()

@@ -32,7 +32,7 @@
     </div>
     <div class="main-qr-box center px-5">
       <h3 class="url-display pt-1">{{ displayUrl }}</h3>
-      <h1 style="font-size: 50px; font-weight: 1000">Room {{ roomId || '1234' }}</h1>
+      <h1 style="font-size: 50px; font-weight: 1000">Room {{ roomId }}</h1>
       <!-- Add this -->
       <!-- lazy-src="" -->
       <v-img
@@ -68,7 +68,7 @@
             <PlayerCard 
               :playerColor="player.color" 
               :playerName="player.name" 
-              :playerPfp="player.pfp"
+              :playerPfp="player.pfp.toString()"
               :playerClientId="player.clientId"
               @player-kicked="kick($event)"
             />
