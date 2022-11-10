@@ -1,13 +1,12 @@
 <template>
   <div class="background-matte center">
     <h1>Tutorial Animation</h1>
-    <v-btn @click="forSkip++">vote for skip {{ forSkip }}</v-btn>
-    <v-btn @click="againstSkip++">vote against skip {{ againstSkip }}</v-btn>
     <div 
       :style="voteDisplayColor"
       class="vote-display-container" 
     >
-
+      <h2>{{ votesForSkip }}</h2>
+      <h2>{{ votesAgainstSkip }}</h2>
     </div>
   </div>
 </template>
@@ -24,8 +23,8 @@ export default {
     return {
       players: [],
       votesForSkip: 0,
-      againstSkip: 1,
-      forSkip: 1
+
+      againstPercentOnDisplay: 100
     }
   },
   mounted() {
@@ -50,8 +49,7 @@ export default {
       return this.players.length - this.votesForSkip
     },
     voteDisplayColor() {
-      let nayPercent = this.againstSkip/(this.againstSkip + this.forSkip) * 100
-      return `background: linear-gradient(to left, #E23B3B ${nayPercent}%, 0%, #4BB526);`
+      return `background: linear-gradient(to left, #E23B3B ${this.againstPercentOnDisplay}%, 0%, #4BB526);`
     }
   },
   methods: {
@@ -67,9 +65,29 @@ export default {
         setTimeout(() => this.next(), 1500)
       }
     },
+    addVotesToDisplay() {
+      let totalVotes = this.votesForSkip + this.votesAgainstSkip
+      let percentAgainst = Math.round((this.votesAgainstSkip / totalVotes) * 100)
+      let diff = percentAgainst - this.againstPercentOnDisplay
+      if (!diff) return
+
+      // milliseconds per 1/4 percent move on display
+      const DELAY = 3
+
+      for (let i = 0; i < Math.abs(diff) * 4; i++) {
+        setTimeout(() => {
+          this.againstPercentOnDisplay += diff > 0 ? .25 : -.25
+        }, i * DELAY)
+      }
+    },
     next() {
       if (this.testMode) return
       this.$emit('change-view', Views.respond)
+    }
+  },
+  watch: {
+    votesForSkip() {
+      this.addVotesToDisplay()
     }
   }
 }
