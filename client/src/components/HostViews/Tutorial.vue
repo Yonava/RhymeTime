@@ -3,10 +3,17 @@
     <h1>Tutorial Animation</h1>
     <div 
       :style="voteDisplayColor"
-      class="vote-display-container" 
+      class="vote-display-container center" 
     >
-      <h2>{{ votesForSkip }}</h2>
-      <h2>{{ votesAgainstSkip }}</h2>
+      <h3>Vote To Skip</h3>
+      <h2 
+        class="vote-display-number"
+        style="left: 2.5%"
+      >{{ votesForSkip }}</h2>
+      <h2 
+        class="vote-display-number"
+        style="right: 2.5%"
+      >{{ votesAgainstSkip }}</h2>
     </div>
   </div>
 </template>
@@ -113,4 +120,17 @@ export default {
     border-radius: 50px;
     transition: 500ms;
   }
+  .vote-display-number {
+    font-weight: 1000;
+    color: white;
+    font-size: 32pt;
+    position: absolute;
+  }
+  h3 {
+    color: white;
+    font-weight: 1000;
+    font-size: 20pt;
+    position: relative;
+    top: -85%
+  } 
 </style>
