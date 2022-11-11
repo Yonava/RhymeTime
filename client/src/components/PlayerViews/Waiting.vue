@@ -62,7 +62,7 @@ export default {
     const RAND_INX = Math.floor(Math.random() * this.colors.length)
     this.selectedColor = this.colors[RAND_INX]
 
-    // selects random starting pfp
+    // selects random starting pfp, +1 to adjust range from 0-7 -> 1-8
     this.selectedPfp = Math.floor(Math.random() * this.numOfPfps) + 1
 
     setTimeout(() => {
