@@ -1,13 +1,13 @@
 <template>  
   <div>
-    <div>
+    <!-- <div>
       <v-icon 
         @click.stop="manuallyPaused = !manuallyPaused"
         large
         class="mx-7 my-5"
       >{{ pausePlayIcon }}</v-icon>
       <span>{{ isPaused ? 'Paused' : 'Playing' }}</span>
-    </div>
+    </div> -->
   
     <component
       :is="currentView"
@@ -149,6 +149,16 @@ export default {
       this.socket.on('disconnect-event', () => {
         this.socket.emit('host-present')
       })
+      this.socket.on('player-object-change', newPlayerObject => {
+        let playerIndex = this.playerList
+          .findIndex((player) => player.clientId === newPlayerObject.clientId)
+        if (playerIndex === -1) {
+          return console.warn(`
+          Player with unrecongized clientId is 
+          attempting to make changes to their player object`)
+        }
+        this.playerList.splice(playerIndex, 1, newPlayerObject)
+      }) 
       this.socket.on('broadcast-game-state', () => {
         this.socket.emit('host-present')
         this.socket.emit('change-view', this.currentView)
@@ -178,7 +188,7 @@ export default {
     restartGame() {
       this.roundCount = 1
       this.currentView = Views.waiting
-      this.song = []
+      this.winningResponses = []
       this.promptResponses = []
     },
     emitPausePackage() {
@@ -189,7 +199,8 @@ export default {
       this.socket.emit('pause-state', pausePackage)
     },
     kickPlayer(clientId) {
-      let playerIndex = this.playerList.findIndex((player) => player.clientId === clientId)
+      let playerIndex = this.playerList
+        .findIndex((player) => player.clientId === clientId)
       // handle player kicking
       this.socket.emit('kick-player', {
         clientId,

@@ -68,6 +68,11 @@ io.on('connection', socket => {
 
   // GAMEPLAY ENDPOINTS
 
+  // emitted by player in waiting room to swap color and pfp
+  socket.on('player-object-change', newPlayerObject => {
+    socket.to(roomId).emit('player-object-change', newPlayerObject)
+  })
+
   // emitted by player when they submit a prompt response to host
   socket.on('player-prompt-response', (playerResponse, callback) => {
     socket.to(roomId).emit('player-prompt-submission', playerResponse)
