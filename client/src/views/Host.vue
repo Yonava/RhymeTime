@@ -142,7 +142,7 @@ export default {
         this.playerList.push({
           name: joinRequest.playerName,
           color: 'black',
-          pfp: 'default',
+          pfp: '1',
           clientId: joinRequest.clientId
         })
       })
@@ -216,7 +216,7 @@ export default {
       if (Object.keys(this.$options.components).includes(v)) {
         this.socket.emit('change-view', v)
       } else {
-        console.error(`${v} is not a valid components: host refused socket emit`)
+        console.error(`${v} is not a valid component: host refused socket emit`)
       }
     },
     isPaused() {

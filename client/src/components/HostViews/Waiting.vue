@@ -131,6 +131,7 @@ export default {
     roomId() {
       return this.$store.state.roomid
     },
+    // example output: http://localhost:8080/join
     displayUrl() {
       return `${window.location.href.substring(0, window.location.href.length - 5)}/join`
     },
