@@ -10,11 +10,11 @@
         :player="{color: 'yellow', pfp: '2', name: 'Yoona'}"
       />
         <ResponseCard 
-        :hasResponded="false"
+        :hasResponded="true"
         :player="{color: 'black', pfp: '8', name: 'Y[inna'}"
       />
         <ResponseCard 
-        :hasResponded="false"
+        :hasResponded="true"
         :player="{color: 'blue', pfp: '6', name: 'Yooon[nina'}"
       />
         <ResponseCard 

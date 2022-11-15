@@ -4,7 +4,28 @@
       :style="borderColor"
       class="box"
     >
-      
+      <div 
+        v-if="hasResponded" 
+        class="center"
+        style="transform: translateY(50%); left: 0; top: 0; position: relative;"
+      >
+        <v-icon
+          color="green"
+          x-large
+        >
+          mdi-check-circle
+        </v-icon>
+      </div>
+      <div
+        v-else
+        class="snippet center" 
+        style="top: 42.5%; position: relative"
+        data-title=".dot-pulse"
+      >
+        <div class="stage">
+          <div class="dot-pulse"></div>
+        </div>
+      </div>
     </div>
     <div 
       :style="borderColorTriangle"
@@ -94,9 +115,9 @@ p {
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: #777777;
-  color: #777777;
-  box-shadow: 9999px 0 0 -5px #777777;
+  background-color: black;
+  color: black;
+  box-shadow: 9999px 0 0 -5px black;
   animation: dotPulse 1.5s infinite linear;
   animation-delay: .25s;
 }
@@ -109,58 +130,58 @@ p {
   width: 10px;
   height: 10px;
   border-radius: 5px;
-  background-color: #777777;
-  color: #777777;
+  background-color: black;
+  color: black;
 }
 
 .dot-pulse::before {
-  box-shadow: 9984px 0 0 -5px #777777;
+  box-shadow: 9984px 0 0 -5px black;
   animation: dotPulseBefore 1.5s infinite linear;
   animation-delay: 0s;
 }
 
 .dot-pulse::after {
-  box-shadow: 10014px 0 0 -5px #777777;
+  box-shadow: 10014px 0 0 -5px black;
   animation: dotPulseAfter 1.5s infinite linear;
   animation-delay: .5s;
 }
 
 @keyframes dotPulseBefore {
   0% {
-    box-shadow: 9984px 0 0 -5px #777777;
+    box-shadow: 9984px 0 0 -5px black;
   }
   30% {
-    box-shadow: 9984px 0 0 2px #777777;
+    box-shadow: 9984px 0 0 2px black;
   }
   60%,
   100% {
-    box-shadow: 9984px 0 0 -5px #777777;
+    box-shadow: 9984px 0 0 -5px black;
   }
 }
 
 @keyframes dotPulse {
   0% {
-    box-shadow: 9999px 0 0 -5px #777777;
+    box-shadow: 9999px 0 0 -5px black;
   }
   30% {
-    box-shadow: 9999px 0 0 2px #777777;
+    box-shadow: 9999px 0 0 2px black;
   }
   60%,
   100% {
-    box-shadow: 9999px 0 0 -5px #777777;
+    box-shadow: 9999px 0 0 -5px black;
   }
 }
 
 @keyframes dotPulseAfter {
   0% {
-    box-shadow: 10014px 0 0 -5px #777777;
+    box-shadow: 10014px 0 0 -5px black;
   }
   30% {
-    box-shadow: 10014px 0 0 2px #777777;
+    box-shadow: 10014px 0 0 2px black;
   }
   60%,
   100% {
-    box-shadow: 10014px 0 0 -5px #777777;
+    box-shadow: 10014px 0 0 -5px black;
   }
 }
 </style>
