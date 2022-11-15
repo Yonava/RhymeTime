@@ -1,44 +1,38 @@
 <template>
-  <div> 
-    <div style="position: absolute; top: 10%; left: 2%">
-      <Clock />
-    </div> 
-    <div style="position: absolute; top: 10%; right: 2%">
-      <Clock />
-    </div> 
-    <Prompt 
-      :words="words"
-      @prompt-intro-over="preIntroResponseStyles = ''"
-    />
-    <div class="center">
-      <div :style="`transition: 3s; width: 60%; ${preIntroResponseStyles}`">
-        <v-row align="center" justify="center">
-          <v-col
-            v-for="player in playerList" 
-            :key="player.clientId"
-            cols="6"
-          >
-            <ResponseCard
-              :playerName="player.name"
-              :hasResponded="respondents.includes(player.name)"
-            />
-          </v-col>
-        </v-row>
-      </div>
+  <div class="background-matte">
+    <header class="page-header center">
+      <h2 class="sub-title">Rhyme These {{ words.length }} Words with Eachother</h2>
+      <h1 class="title">{{ wordDisplay }}</h1>
+    </header>
+    <div class="response-card-container mt-4">
+      <ResponseCard 
+        :hasResponded="false"
+        :player="{color: 'yellow', pfp: '2', name: 'Yoona'}"
+      />
+        <ResponseCard 
+        :hasResponded="false"
+        :player="{color: 'black', pfp: '8', name: 'Y[inna'}"
+      />
+        <ResponseCard 
+        :hasResponded="false"
+        :player="{color: 'blue', pfp: '6', name: 'Yooon[nina'}"
+      />
+        <ResponseCard 
+        :hasResponded="false"
+        :player="{color: 'orange', pfp: '3', name: 'anna'}"
+      />
+      <ResponseCard 
+        :hasResponded="false"
+        :player="{color: 'brown', pfp: '5', name: 'Yoooniuonna'}"
+      />
     </div>
-    <!-- <v-btn @click="playOutro = !playOutro" style="z-index: 99">outro</v-btn> -->
-    <Outro 
-      :show="playOutro" 
-      :outroDur="outroDur"
-    />
   </div>
 </template>
 
 <script>
+/* eslint-disable */
 import HostMixin from './HostMixin'
 import ResponseCard from './HostSubComponents/PlayerResponseCard.vue'
-import Prompt from './HostSubComponents/ResponseHeading.vue'
-import Outro from './HostSubComponents/ResponseOutro.vue'
 import { playEffect } from '@/utils/Soundboard'
 import { Views } from '@/utils/Views'
 
@@ -47,9 +41,7 @@ export default {
     HostMixin
   ],
   components: {
-    ResponseCard,
-    Prompt,
-    Outro
+    ResponseCard
   },
   data() {
     return {
@@ -59,14 +51,8 @@ export default {
       respondents: [],
       // for testing
       hasResponded: false,
-      // these styles are applied until prompt finishes its intro
-      preIntroResponseStyles: 'opacity: 0; transform: translateY(-10%); width: 50%; height: 100%',
       // if false, players responses wont be pushed to promptResponses array
-      acceptingSubmissions: true,
-      // starts outro
-      playOutro: false,
-      // how long the outro takes to play
-      outroDur: 6000
+      acceptingSubmissions: true
     }
   },
   mounted() {
@@ -98,6 +84,17 @@ export default {
       }, 350)
     })
   },
+  computed: {
+    wordDisplay() {
+      let wordsInPrompt = ''
+      for (let i = 0; i < this.words.length; i++) {
+        if (this.words.length - 1 === i) wordsInPrompt += ', and '
+        else if (i !== 0) wordsInPrompt += ', '
+        wordsInPrompt += `${this.words[i][0].toUpperCase()}${this.words[i].substring(1)}`
+      }
+      return wordsInPrompt
+    }
+  },
   methods: {
     next() {
       this.acceptingSubmissions = false
@@ -125,3 +122,37 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .background-matte {
+    width: 100vw;
+    height: 100vh;
+    background-color: #FFD37E;
+  }
+  .page-header {
+    width: 100%;
+    height: 175px;
+    background-color: #FFB118;
+    position: relative;
+  }
+  .title {
+    color: white;
+    font-weight: 900;
+    /* scale is a bad way of doing things in this 
+    context but font-size is not working for some reason */
+    transform: scale(5);
+    position: absolute;
+    bottom: 27%;
+  }
+  .sub-title {
+    position: absolute;
+    top: 0.5%;
+    font-size: 35pt;
+    font-weight: 900;
+  }
+  .response-card-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+</style>

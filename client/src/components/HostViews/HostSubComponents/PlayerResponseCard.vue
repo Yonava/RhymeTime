@@ -1,46 +1,28 @@
 <template>
-  <v-card
-    class="mx-auto"
-    max-width="400"
-    outlined
-  >
-    <v-card-title 
-      :style="`word-break: break-word; background-color: ${cardTitleColor}`"
-      class="white--text"
-    > 
-      {{ playerName }} {{ suffix }}
-    </v-card-title>
-    <v-divider></v-divider>
-    <v-card-text class="pa-10">
-      <div class="center">
-        <div v-if="!hasResponded">
-          <div 
-            style="position: absolute" 
-            class="snippet" 
-            data-title=".dot-pulse"
-          >
-            <div class="stage">
-              <div class="dot-pulse"></div>
-            </div>
-          </div>
-        </div>
-        <v-icon 
-          v-else 
-          style="position: absolute" 
-          large
-        >
-          mdi-comment-check-outline
-        </v-icon>
-      </div>
-    </v-card-text>
-  </v-card>
+  <div class="center mx-2">
+    <div 
+      :style="borderColor"
+      class="box"
+    >
+      
+    </div>
+    <div 
+      :style="borderColorTriangle"
+      class="triangle"
+    ></div>
+    <v-img
+      :src="require(`../../../../assets/pfps/${player.pfp}.webp`)"
+      class="pfp"
+    ></v-img>
+    <h2>{{ player.name }}</h2>
+  </div>
 </template>
 
 <script>
 export default {
   props: {
-    playerName: {
-      type: String,
+    player: {
+      type: Object,
       required: true
     },
     hasResponded: {
@@ -49,17 +31,62 @@ export default {
     }
   },
   computed: {
-    suffix() {
-      return this.hasResponded ? ' is ready!' : ' is thinking...'
+    borderColor() {
+      return `border-color: ${this.player.color}`
     },
-    cardTitleColor() {
-      return this.hasResponded ? '#228B22' : '#D2042D'
+    borderColorTriangle() {
+      return `border-color: ${this.player.color} transparent transparent transparent`
     }
   }
 }
 </script>
 
 <style scoped>
+
+.triangle {
+  height: 0;
+  width: 0;
+  border: 16px dashed;
+  border-color: red transparent transparent transparent;
+}
+.box {
+  width: 300px;
+  height: 100px;
+  border-radius: 10px;
+  background-color: white;
+  border: 5px solid;
+}
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+h2 {
+  color: white;
+  margin: 0%;
+  transform: translateY(-10px)
+}
+html {
+  background-color: rgb(30,40,50);
+  margin: 0%;
+  padding: 0%;
+}
+.pfp {
+  height: 75px;
+  width: 75px;
+  object-fit: cover;
+  border-radius: 10px;
+  transform: translateY(-10px);
+}
+p {
+  margin: 0%;
+  padding-left: 2%;
+  font-size: 20pt;
+  font-weight: bold;
+}
+
+/* DOT PULSE EFFECT */
 
 .dot-pulse {
   position: relative;
