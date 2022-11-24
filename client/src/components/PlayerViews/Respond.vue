@@ -7,10 +7,11 @@
       <div class="content-container">
         <textarea 
           v-model="response"
-          class="response-text-area mt-7" 
+          class="response-text-area text-h5 mt-7" 
+          :placeholder="responseBoxPlaceholder"
         ></textarea>
         <div
-          :style="includesPrompt ? 'opacity: 0' : ''"
+          :style="includesPrompt ? 'opacity: 0;' : ''"
           class="prompt-requirements pl-1 mt-2"
           ref="promptRequirements"
         >
@@ -61,6 +62,18 @@ export default {
     },
   },
   computed: {
+    wordDisplay() {
+      let wordsInPrompt = ''
+      for (let i = 0; i < this.wordsInPrompt.length; i++) {
+        if (this.wordsInPrompt.length - 1 === i) wordsInPrompt += ', and '
+        else if (i !== 0) wordsInPrompt += ', '
+        wordsInPrompt += this.wordsInPrompt[i]
+      }
+      return wordsInPrompt
+    },
+    responseBoxPlaceholder() {
+      return `What's the best way to rhyme ${this.wordDisplay} together?`
+    },
     includesPrompt() {
       // returns true if response includes all words in the prompt
       return this.wordsInPrompt.every(word => {
@@ -68,7 +81,7 @@ export default {
       })
     },
     promptRequirements() {
-      return `${this.wordsInPrompt.join(', ')} must be included`
+      return `${this.wordDisplay} must be included`
     },
     sendBtn() {
       // sent but not received by host
@@ -118,6 +131,13 @@ export default {
         // callback responds with 'sent' if response was successfully transmitted
         this.submissionReceived = callback === 'sent'
       })
+
+      // if server does not respond within 5 seconds, assume submission was not received
+      setTimeout(() => {
+        if (!this.submissionReceived) {
+          this.submitted = false
+        }
+      }, 5000)
     },
   }
 }
@@ -134,9 +154,10 @@ export default {
     border-radius: 10px;
     font-weight: 800;
     font-size: 1.2rem;
-    transition: 500ms ease;
+    transition: 300ms ease;
     display: flex;
     align-items: center;
+    cursor: default;
   }
   .content-container {
     position: relative;
@@ -154,6 +175,7 @@ export default {
     padding: 10px;
     font-size: 1.2rem;
     resize: none;
+    font-weight: 300;
   }
   .header {
     width: 100%;

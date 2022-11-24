@@ -55,7 +55,7 @@ export default {
       // hostLeft is different as it only turns false when hostPresent has stayed false for more than n seconds
       hostLeft: false,
       // rhyming words in prompt
-      wordsInPrompt: ['giraffe', 'buffalo'],
+      wordsInPrompt: ['giraffe', 'buffalo', 'adciams'],
       // contains nicknames of players that have submitted a response that is being voted on
       // hence called a candidate
       candidates: [],
