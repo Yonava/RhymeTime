@@ -63,6 +63,8 @@ export default {
   },
   computed: {
     wordDisplay() {
+      // turns array of words into a string that can be neatly displayed: 
+      // ['its', 'rhyme', 'time'] -> 'its, rhyme, and time'
       let wordsInPrompt = ''
       for (let i = 0; i < this.wordsInPrompt.length; i++) {
         if (this.wordsInPrompt.length - 1 === i) wordsInPrompt += ', and '

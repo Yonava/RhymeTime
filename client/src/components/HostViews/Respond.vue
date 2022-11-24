@@ -8,7 +8,7 @@
         <Clock />
       </div>
       <h2 class="sub-title">Rhyme These {{ words.length }} Words with Eachother</h2>
-      <h1 class="title">{{ wordDisplay }}</h1>
+      <h1 class="title text-capitalize">{{ wordDisplay }}</h1>
     </header>
     <div class="response-card-container mt-4">
       <div 
@@ -81,11 +81,13 @@ export default {
       return this.$store.state.timeRemaining
     },
     wordDisplay() {
+      // turns array of words into a string that can be neatly displayed: 
+      // ['its', 'rhyme', 'time'] -> 'its, rhyme, and time'
       let wordsInPrompt = ''
       for (let i = 0; i < this.words.length; i++) {
         if (this.words.length - 1 === i) wordsInPrompt += ', and '
         else if (i !== 0) wordsInPrompt += ', '
-        wordsInPrompt += `${this.words[i][0].toUpperCase()}${this.words[i].substring(1)}`
+        wordsInPrompt += this.words[i]
       }
       return wordsInPrompt
     }
