@@ -5,18 +5,20 @@
         Drag To Vote
       </h1>
     </header>
-    <div class="center">
+    <div class="center mt-6">
       <div class="content-container">
         <draggable 
           v-model="candidates"
           @change="submitBallot"
         >
-          <div v-for="candidate in candidates" :key="candidate.player.clientId">
-            <PlayerCard
-              :player="candidate.player"
-              :response="candidate.response"
-            />
-          </div>
+          <TransitionGroup name="list">
+            <div v-for="candidate in candidates" :key="candidate.player.clientId">
+              <PlayerCard
+                :player="candidate.player"
+                :response="candidate.response"
+              />
+            </div>
+          </TransitionGroup>
         </draggable>
       </div>
     </div>
@@ -45,27 +47,27 @@ export default {
         {
           response: 'hello',
           player: {
-            name: 'player1',
+            name: 'Yona',
             color: 'rgb(26, 24, 53)',
-            pfp: '1',
+            pfp: '5',
             clientId: 1
           }
         },
         {
-          response: 'hello1',
+          response: 'this is josh is respond',
           player: {
-            name: 'player2',
+            name: 'Josh',
             color: 'green',
-            pfp: '1',
+            pfp: '2',
             clientId: 2
           }
         },
         {
           response: 'hello2',
           player: {
-            name: 'player3',
+            name: 'Jack',
             color: 'blue',
-            pfp: '1',
+            pfp: '8',
             clientId: 3
           }
         }
@@ -109,5 +111,10 @@ export default {
     width: 100vw;
     height: 100vh;
     background-color: #FFD37E;
+  }
+
+  /* for transition group component */
+  .list-move {
+    transition: all 0.5s ease;
   }
 </style>
