@@ -35,7 +35,9 @@
       :src="require(`../../../../assets/pfps/${player.pfp}.webp`)"
       class="pfp"
     ></v-img>
-    <h2>{{ player.name }}</h2>
+    <h2 class="name-tag">
+      {{ player.name }}
+    </h2>
   </div>
 </template>
 
@@ -71,8 +73,8 @@ export default {
   border-color: red transparent transparent transparent;
 }
 .box {
-  width: 300px;
-  height: 100px;
+  width: 400px;
+  height: 150px;
   border-radius: 10px;
   background-color: white;
   border: 5px solid;
@@ -83,8 +85,8 @@ export default {
   justify-content: center;
   flex-direction: column;
 }
-h2 {
-  color: white;
+.name-tag {
+  color: black;
   margin: 0%;
   transform: translateY(-10px)
 }

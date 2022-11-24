@@ -1,30 +1,25 @@
 <template>
   <div class="background-matte">
     <header class="page-header center">
+      <div 
+        class="ma-3"
+        style="position: absolute; top: 0; right: 0;"
+      >
+        <Clock />
+      </div>
       <h2 class="sub-title">Rhyme These {{ words.length }} Words with Eachother</h2>
       <h1 class="title">{{ wordDisplay }}</h1>
     </header>
     <div class="response-card-container mt-4">
-      <ResponseCard 
-        :hasResponded="false"
-        :player="{color: 'yellow', pfp: '2', name: 'Yoona'}"
-      />
+      <div 
+        v-for="player in playerList"
+        :key="player.clientId"
+      >
         <ResponseCard 
-        :hasResponded="true"
-        :player="{color: 'black', pfp: '8', name: 'Y[inna'}"
-      />
-        <ResponseCard 
-        :hasResponded="true"
-        :player="{color: 'blue', pfp: '6', name: 'Yooon[nina'}"
-      />
-        <ResponseCard 
-        :hasResponded="false"
-        :player="{color: 'orange', pfp: '3', name: 'anna'}"
-      />
-      <ResponseCard 
-        :hasResponded="false"
-        :player="{color: 'brown', pfp: '5', name: 'Yoooniuonna'}"
-      />
+          :hasResponded="playerHasResponded(player.clientId)"
+          :player="player"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -35,13 +30,15 @@ import HostMixin from './HostMixin'
 import ResponseCard from './HostSubComponents/PlayerResponseCard.vue'
 import { playEffect } from '@/utils/Soundboard'
 import { Views } from '@/utils/Views'
+import Clock from './HostSubComponents/ClockDisplay.vue'
 
 export default {
   mixins: [
     HostMixin
   ],
   components: {
-    ResponseCard
+    ResponseCard,
+    Clock
   },
   data() {
     return {
@@ -85,6 +82,9 @@ export default {
     })
   },
   computed: {
+    timeRemaining() {
+      return this.$store.state.timeRemaining
+    },
     wordDisplay() {
       let wordsInPrompt = ''
       for (let i = 0; i < this.words.length; i++) {
@@ -96,6 +96,9 @@ export default {
     }
   },
   methods: {
+    playerHasResponded(clientId) {
+      return this.respondents.includes(clientId)
+    },
     next() {
       this.acceptingSubmissions = false
       this.playOutro = true
@@ -110,7 +113,7 @@ export default {
       immediate: true,
       handler(v) {
         const NUM_OF_PLAYERS = this.playerList.length
-        this.respondents = v.map(response => response.player.name)
+        this.respondents = v.map(response => response.player.clientId)
         if (this.respondents.length === NUM_OF_PLAYERS) {
           this.stopTimer()
           setTimeout(() => {
