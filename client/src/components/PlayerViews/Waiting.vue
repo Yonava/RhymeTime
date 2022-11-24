@@ -62,9 +62,6 @@ export default {
     const RAND_INX = Math.floor(Math.random() * this.colors.length)
     this.selectedColor = this.colors[RAND_INX]
 
-    // selects random starting pfp, +1 to adjust range from 0-7 -> 1-8
-    this.selectedPfp = Math.floor(Math.random() * this.numOfPfps) + 1
-
     setTimeout(() => {
       this.emitPlayerObject()
     }, 500)
@@ -107,12 +104,7 @@ export default {
       if (pfp === this.selectedPfp) {
         return `border: 9px dashed ${this.selectedColor}`
       } else return ''
-    },
-    // colorSelected(color) {
-    //   if (color === this.selectedColor) {
-    //     return `border: 9px dashed `
-    //   } else return ''
-    // }
+    }
   },
   watch: {
     selectedColor() {
