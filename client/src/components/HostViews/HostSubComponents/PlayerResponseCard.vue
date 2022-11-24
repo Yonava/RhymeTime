@@ -5,9 +5,7 @@
       class="box"
     >
       <div 
-        v-if="hasResponded" 
-        class="center"
-        style="transform: translateY(50%); left: 0; top: 0; position: relative;"
+        v-if="response"
       >
         <p
           v-if="showResponse"
@@ -18,6 +16,7 @@
         <v-icon
           v-else
           color="green"
+          class="inner-icon"
           x-large
         >
           mdi-check-circle
@@ -43,7 +42,7 @@
       class="pfp"
     ></v-img>
     <h2 class="name-tag">
-      {{ player.name + (showResponse ? votePercentage : '') }}
+      {{ nameTag }}
     </h2>
   </div>
 </template>
@@ -56,7 +55,7 @@ export default {
       required: true
     },
     response: {
-      type: Boolean,
+      type: String,
       required: true
     },
     showResponse: {
@@ -76,15 +75,24 @@ export default {
     },
     borderColorTriangle() {
       return `border-color: ${this.player.color} transparent transparent transparent`
-    }
+    },
+    nameTag() {
+      let nameTag = this.player.name
+      if (this.showResponse) {
+        nameTag += ` (${this.votePercentage}%)`
+      }
+      return nameTag
+    } 
   }
 }
 </script>
 
 <style scoped>
 .response-text {
-  font-size: 1.5rem;
-  font-weight: 500;
+  font-size: 1.3rem;
+  line-height: 115%;
+  font-weight: 900;
+  overflow: hidden;
   color: #000;
 }
 
@@ -95,12 +103,21 @@ export default {
   border-color: red transparent transparent transparent;
 }
 .box {
+  position: relative;
   width: 400px;
   height: 150px;
   border-radius: 10px;
   background-color: white;
   border: 5px solid;
 }
+
+.inner-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .center {
   display: flex;
   align-items: center;

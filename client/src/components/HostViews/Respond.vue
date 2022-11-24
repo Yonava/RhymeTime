@@ -94,7 +94,7 @@ export default {
     response(clientId) {
       const playerResponse = this.promptResponses.find(response => response.player.clientId === clientId)
       if (playerResponse) return playerResponse.response
-      return false
+      return ''
     },
     next() {
       this.acceptingSubmissions = false
