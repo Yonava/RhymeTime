@@ -25,10 +25,12 @@
 
 <script>
 import draggable from 'vuedraggable'
+import PlayerCard from './PlayerSubComponents/PlayerCard.vue'
 
 export default {
   components: {
-    draggable
+    draggable,
+    PlayerCard
   },
   props: {
     socketInstance: {
@@ -44,8 +46,8 @@ export default {
           response: 'hello',
           player: {
             name: 'player1',
-            color: 'red',
-            pfp: 'https://i.imgur.com/8Q9QY7C.png',
+            color: 'rgb(26, 24, 53)',
+            pfp: '1',
             clientId: 1
           }
         },
@@ -54,7 +56,7 @@ export default {
           player: {
             name: 'player2',
             color: 'green',
-            pfp: 'https://i.imgur.com/8Q9QY7C.png',
+            pfp: '1',
             clientId: 2
           }
         },
@@ -63,7 +65,7 @@ export default {
           player: {
             name: 'player3',
             color: 'blue',
-            pfp: 'https://i.imgur.com/8Q9QY7C.png',
+            pfp: '1',
             clientId: 3
           }
         }
@@ -88,7 +90,7 @@ export default {
 <style scoped>
   .content-container {
     position: relative;
-    width: 80%;
+    width: 85%;
     display: flex;
     flex-direction: column;
     justify-content: center;

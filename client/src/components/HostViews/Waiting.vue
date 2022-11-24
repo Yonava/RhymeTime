@@ -31,8 +31,12 @@
         </div>
     </div>
     <div class="main-qr-box center px-5">
-      <h3 class="url-display pt-1">{{ displayUrl }}</h3>
-      <h1 style="font-size: 50px; font-weight: 1000">Room {{ roomId }}</h1>
+      <h3 class="url-display pt-1">
+        {{ displayUrl }}
+      </h3>
+      <h1 style="font-size: 50px; font-weight: 1000">
+        Room {{ roomId }}
+      </h1>
       <!-- Add this -->
       <!-- lazy-src="" -->
       <v-img
@@ -40,7 +44,9 @@
         width="200"
         class="mb-2"
       ></v-img>
-      <h2 style="font-weight: 1000;">{{ joinMessage }}</h2>
+      <h2 style="font-weight: 1000;">
+        {{ joinMessage }}
+      </h2>
     </div>
     <div class="right-side-box pa-3 pl-6">
       <div 
