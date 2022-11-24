@@ -43,35 +43,7 @@ export default {
     return {
       // contains response objects of players 
       // that have submitted a response { player: Player, response: string }
-      candidates: [
-        {
-          response: 'hello',
-          player: {
-            name: 'Yona',
-            color: 'rgb(26, 24, 53)',
-            pfp: '5',
-            clientId: 1
-          }
-        },
-        {
-          response: 'this is josh is respond',
-          player: {
-            name: 'Josh',
-            color: 'green',
-            pfp: '2',
-            clientId: 2
-          }
-        },
-        {
-          response: 'hello2',
-          player: {
-            name: 'Jack',
-            color: 'blue',
-            pfp: '8',
-            clientId: 3
-          }
-        }
-      ]
+      candidates: []
     }
   },
   mounted() {
@@ -79,10 +51,15 @@ export default {
       this.candidates = newCandidates
     })
   },
+  computed: {
+    clientName() {
+      return this.$store.state.nickname
+    }
+  },
   methods: {
     submitBallot() {
       const BALLOT = {}
-      BALLOT[this.$store.state.nickname] = this.candidates
+      BALLOT[this.clientName] = this.candidates.map(candidate => candidate.player.name)
       this.socketInstance.emit('submit-ballot', BALLOT)
     }
   }

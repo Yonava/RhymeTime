@@ -68,9 +68,9 @@ export default {
     })
     this.calculatePercentage()
 
-    this.emitCandidateList()
+    this.emitPlayerResponses()
     this.socketInstance.on('broadcast-game-state', () => {
-      this.emitCandidateList()
+      this.emitPlayerResponses()
     })
     this.socketInstance.on('ballot-collector', (playerBallot) => {
       if (this.pollsClosed) return
@@ -87,9 +87,8 @@ export default {
       if (playerResponse) return playerResponse.response
       return false
     },
-    emitCandidateList() {
-      this.socketInstance.emit('candidate-list', this.candidates
-        .map(candidate => candidate.player.name))
+    emitPlayerResponses() {
+      this.socketInstance.emit('candidate-list', this.responses)
     },
     countVotes(playerBallot) {
       // this function serves to recount all votes in ballotBox
@@ -143,7 +142,7 @@ export default {
       this.ballotBox = {}
       this.pollsClosed = true
       setTimeout(() => this.pollsClosed = false, 500)
-      this.emitCandidateList()
+      this.emitPlayerResponses()
       this.tackOnTime()
     },
     tackOnTime() {

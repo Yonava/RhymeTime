@@ -15,7 +15,7 @@
     <v-spacer></v-spacer>
     <v-dialog>
       <template v-slot:activator="{ on }">
-        <div 
+        <div
           v-on="on"
           class="view-response"
         >
