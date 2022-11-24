@@ -1,7 +1,7 @@
 <template>
   <div class="background-matte">
-    <header class="center">
-      <h1>Tutorial Playing</h1>
+    <header class="header center">
+      <h1 class="player-view-title">Tutorial Playing</h1>
     </header>
     <div class="center mt-6">
       <div 
@@ -55,14 +55,14 @@ export default {
 </script>
 
 <style scoped>
-  header {
+  .header {
     width: 100%;
     height: 70px;
     background-color: #FFB118;
   }
-  h1 {
-    font-weight: 1000;
-    font-size: 26pt
+  .player-view-title {
+    font-size: 40px; 
+    font-weight: 900;
   }
   .background-matte {
     width: 100vw;
@@ -73,6 +73,7 @@ export default {
     width: 85%;
     height: 62px;
     border-radius: 12px;
+    cursor: pointer;
   }
   .skip-btn-text {
     color: white;
