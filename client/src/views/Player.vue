@@ -80,7 +80,7 @@ export default {
       this.socket = io(SOCKET_URL)
       this.socket.on('connect', () => {
         this.socket.emit('join-room', this.roomId, response => {
-        if (response === 'connected') {
+          if (response === 'connected') {
             this.hostCountdown()
             this.socket.emit('get-game-state')
           }
