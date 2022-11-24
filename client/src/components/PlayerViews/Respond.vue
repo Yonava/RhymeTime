@@ -3,15 +3,32 @@
     <header class="header center">
       <h1 class="player-view-title">Respond</h1>
     </header>
-    <div class="center mt-6">
-      <div 
-        @click.stop="submitResponse"
-        :style="sendBtn.color"
-        class="send-btn center"
-      >
-        <span class="send-btn-text">
-          {{ sendBtn.text }}
-        </span>
+    <div class="center">
+      <div class="content-container">
+        <textarea 
+          v-model="response"
+          class="response-text-area mt-7" 
+        ></textarea>
+        <div
+          :style="includesPrompt ? 'opacity: 0' : ''"
+          class="prompt-requirements pl-1 mt-2"
+          ref="promptRequirements"
+        >
+          <v-icon 
+            color="white"
+            class="mr-1"
+          >mdi-alert-circle</v-icon>
+          {{ promptRequirements }}
+        </div>
+        <div 
+          @click.stop="submitResponse"
+          :style="sendBtn.color"
+          class="send-btn center mt-12"
+        >
+          <span class="send-btn-text">
+            {{ sendBtn.text }}
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -44,6 +61,15 @@ export default {
     },
   },
   computed: {
+    includesPrompt() {
+      // returns true if response includes all words in the prompt
+      return this.wordsInPrompt.every(word => {
+        return this.response.toLowerCase().includes(word.toLowerCase())
+      })
+    },
+    promptRequirements() {
+      return `${this.wordsInPrompt.join(', ')} must be included`
+    },
     sendBtn() {
       // sent but not received by host
       if (this.submitted && !this.submissionReceived) {
@@ -67,12 +93,18 @@ export default {
     }
   },
   methods: {
+    highlightPromptRequirements() {
+      // highlights prompt requirements if response does not include all words in prompt
+      if (!this.includesPrompt) {
+        this.$refs.promptRequirements.classList.add('highlight')
+        setTimeout(() => {
+          this.$refs.promptRequirements.classList.remove('highlight')
+        }, 500)
+      }
+    },
     submitResponse() {
       if (this.submitted) return
-      let includesPrompt = response => {
-        return this.wordsInPrompt.every(word => response.toLowerCase().indexOf(word) !== -1)
-      }
-      if (!includesPrompt(this.response)) return this.highlightPromptRequirements()
+      if (!this.includesPrompt) return this.highlightPromptRequirements()
       this.submitted = true
       this.sendResponseToHost()
     },
@@ -92,6 +124,37 @@ export default {
 </script>
 
 <style scoped>
+  .highlight {
+    background: rgb(135, 65, 65) !important;
+  }
+  .prompt-requirements {
+    position: relative;
+    color: white;
+    background-color: #FF0000;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 1.2rem;
+    transition: 500ms ease;
+    display: flex;
+    align-items: center;
+  }
+  .content-container {
+    position: relative;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+  }
+  .response-text-area {
+    width: 100%;
+    height: 200px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 1.2rem;
+    resize: none;
+  }
   .header {
     width: 100%;
     height: 70px;
@@ -107,14 +170,14 @@ export default {
     background-color: #FFD37E;
   }
   .send-btn {
-    width: 85%;
+    width: 100%;
     height: 62px;
-    border-radius: 12px;
+    border-radius: 7px;
     cursor: pointer;
   }
   .send-btn-text {
     color: white;
-    font-weight: 1000;
-    font-size: 20pt;
+    font-weight: 900;
+    font-size: 2.25rem;
   }
 </style>
