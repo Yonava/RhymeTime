@@ -7,8 +7,8 @@
       <div class="content-container">
         <textarea 
           v-model="response"
-          class="response-text-area text-h5 mt-7" 
           :placeholder="responseBoxPlaceholder"
+          class="response-text-area text-h5 mt-7" 
         ></textarea>
         <div
           :style="includesPrompt ? 'opacity: 0;' : ''"

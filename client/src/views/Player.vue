@@ -49,16 +49,13 @@ export default {
       // contains data received from host through pause-state socket endpt
       pauseData: { gamePaused: false, reason: 'not-paused' },
       // used for host to control which view the player is on
-      currentView: Views.respond,
+      currentView: Views.vote,
       // false if no host can be found in room, is set to false every rollcall
       hostPresent: true,
       // hostLeft is different as it only turns false when hostPresent has stayed false for more than n seconds
       hostLeft: false,
       // rhyming words in prompt
-      wordsInPrompt: ['giraffe', 'buffalo', 'adciams'],
-      // contains nicknames of players that have submitted a response that is being voted on
-      // hence called a candidate
-      candidates: [],
+      wordsInPrompt: [],
       // id that the client stores so host can uniquely identify it
       clientId: 0
     }
@@ -102,9 +99,6 @@ export default {
       })
       this.socket.on('new-words', (newWords) => {
         this.wordsInPrompt = newWords
-      })
-      this.socket.on('candidate-list', (newCandidates) => {
-        this.candidates = newCandidates
       })
       this.socket.on('kick-listener', (kickReq) => {
         if (kickReq.clientId === this.clientId) {
