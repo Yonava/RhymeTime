@@ -7,7 +7,9 @@
       >
         <Clock />
       </div>
-      <h2 class="sub-title">Rhyme These {{ words.length }} Words with Eachother</h2>
+      <h2 class="sub-title">
+        Rhyme These {{ words.length }} Words with Eachother
+      </h2>
       <h1 class="title text-capitalize">{{ wordDisplay }}</h1>
     </header>
     <div class="response-card-container mt-4">

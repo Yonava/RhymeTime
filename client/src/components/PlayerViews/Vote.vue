@@ -12,7 +12,10 @@
           @change="submitBallot"
         >
           <TransitionGroup name="list">
-            <div v-for="candidate in candidates" :key="candidate.player.clientId">
+            <div 
+              v-for="candidate in candidates" 
+              :key="candidate.player.clientId"
+            >
               <PlayerCard
                 :player="candidate.player"
                 :response="candidate.response"
@@ -35,6 +38,10 @@ export default {
     PlayerCard
   },
   props: {
+    clientId: {
+      type: Number,
+      required: true
+    },
     socketInstance: {
       required: true
     }
@@ -48,7 +55,9 @@ export default {
   },
   mounted() {
     this.socketInstance.on('candidate-list', (newCandidates) => {
+      // remove self from candidate list
       this.candidates = newCandidates
+        .filter(candidate => candidate.player.clientId !== this.clientId)
     })
   },
   computed: {
