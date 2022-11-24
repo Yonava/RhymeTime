@@ -10,7 +10,7 @@ export default {
       // for developing ui only. make sure this is set to false in prod
       testMode: true,
       // component that you want to test
-      testView: Views.respond
+      testView: Views.vote
     }
   },
   components: {

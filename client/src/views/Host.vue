@@ -65,31 +65,7 @@ export default {
       // sets the current view of the game, emits to players
       currentView: Views.waiting,
       // playerlist contains player objects for every connected player
-      playerList: [{
-        name: 'yona',
-        color: 'red',
-        pfp: '1'
-      },{
-        name: 'yona',
-        color: 'red',
-        pfp: '1'
-      },{
-        name: 'yona',
-        color: 'red',
-        pfp: '1'
-      },{
-        name: 'yona',
-        color: 'red',
-        pfp: '1'
-      },{
-        name: 'yona',
-        color: 'red',
-        pfp: '1'
-      },{
-        name: 'yona',
-        color: 'red',
-        pfp: '1'
-      }],
+      playerList: [],
       // prompt responses each round are stored here. response obj format { player: player, response: string }
       promptResponses: [],
       // stores what round the game is on

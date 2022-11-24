@@ -15,8 +15,8 @@
         v-for="player in playerList"
         :key="player.clientId"
       >
-        <ResponseCard 
-          :hasResponded="playerHasResponded(player.clientId)"
+        <ResponseCard
+          :response="response(player.clientId)"
           :player="player"
         />
       </div>
@@ -25,7 +25,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import HostMixin from './HostMixin'
 import ResponseCard from './HostSubComponents/PlayerResponseCard.vue'
 import { playEffect } from '@/utils/Soundboard'
@@ -44,10 +43,6 @@ export default {
     return {
       // words in current prompt
       words: [],
-      // array containing players that have answered the prompt
-      respondents: [],
-      // for testing
-      hasResponded: false,
       // if false, players responses wont be pushed to promptResponses array
       acceptingSubmissions: true
     }
@@ -96,8 +91,10 @@ export default {
     }
   },
   methods: {
-    playerHasResponded(clientId) {
-      return this.respondents.includes(clientId)
+    response(clientId) {
+      const playerResponse = this.promptResponses.find(response => response.player.clientId === clientId)
+      if (playerResponse) return playerResponse.response
+      return false
     },
     next() {
       this.acceptingSubmissions = false
@@ -111,10 +108,9 @@ export default {
   watch: {
     promptResponses: {
       immediate: true,
-      handler(v) {
+      handler() {
         const NUM_OF_PLAYERS = this.playerList.length
-        this.respondents = v.map(response => response.player.clientId)
-        if (this.respondents.length === NUM_OF_PLAYERS) {
+        if (this.promptResponses.length === NUM_OF_PLAYERS) {
           this.stopTimer()
           setTimeout(() => {
             this.next()

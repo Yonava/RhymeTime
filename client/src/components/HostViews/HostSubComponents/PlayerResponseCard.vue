@@ -9,7 +9,14 @@
         class="center"
         style="transform: translateY(50%); left: 0; top: 0; position: relative;"
       >
+        <p
+          v-if="showResponse"
+          class="response-text"
+        >
+          {{ response }}
+        </p>
         <v-icon
+          v-else
           color="green"
           x-large
         >
@@ -36,7 +43,7 @@
       class="pfp"
     ></v-img>
     <h2 class="name-tag">
-      {{ player.name }}
+      {{ player.name + (showResponse ? votePercentage : '') }}
     </h2>
   </div>
 </template>
@@ -48,9 +55,19 @@ export default {
       type: Object,
       required: true
     },
-    hasResponded: {
+    response: {
       type: Boolean,
       required: true
+    },
+    showResponse: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    votePercentage: {
+      type: Number,
+      required: false,
+      default: 0
     }
   },
   computed: {
@@ -65,6 +82,11 @@ export default {
 </script>
 
 <style scoped>
+.response-text {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #000;
+}
 
 .triangle {
   height: 0;
