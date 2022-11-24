@@ -34,8 +34,8 @@ io.on('connection', socket => {
   // CONNECTION ENDPOINTS
 
   // emitted by player, received by host for constructing playerList
-  socket.on('player-join', (joinRequest) => {
-    socket.to(roomId).emit('player-join', joinRequest)
+  socket.on('player-join', player => {
+    socket.to(roomId).emit('player-join', player)
   })
 
   // emitted by host when they need to kick someone out of the player pool

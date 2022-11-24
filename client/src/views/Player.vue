@@ -5,6 +5,7 @@
       :wordsInPrompt="wordsInPrompt"
       :socketInstance="socket"
       :clientId="clientId"
+      @connect-socket="connectSocket"
     ></component>
 
     <!-- Dialog Boxes -->
@@ -49,7 +50,7 @@ export default {
       // contains data received from host through pause-state socket endpt
       pauseData: { gamePaused: false, reason: 'not-paused' },
       // used for host to control which view the player is on
-      currentView: Views.vote,
+      currentView: Views.waiting,
       // false if no host can be found in room, is set to false every rollcall
       hostPresent: true,
       // hostLeft is different as it only turns false when hostPresent has stayed false for more than n seconds
@@ -57,14 +58,20 @@ export default {
       // rhyming words in prompt
       wordsInPrompt: [],
       // id that the client stores so host can uniquely identify it
-      clientId: 0
+      clientId: Math.floor(Math.random() * 9284724)
     }
+  },
+  created() {
+    // connect to socket
+    this.connectSocket()
   },
   destroyed() {
     if (this.socket?.connected) this.forceDisconnect()
   },
-  mounted() {
-    this.connectSocket()
+  computed: {
+    roomId() {
+      return this.$store.state.roomid
+    }
   },
   methods: {
     connectSocket() {
@@ -72,13 +79,8 @@ export default {
       if (this.socket?.connected) return
       this.socket = io(SOCKET_URL)
       this.socket.on('connect', () => {
-        this.socket.emit('join-room', this.$store.state.roomid, (response) => {
-          if (response === 'connected') {
-            this.clientId = Math.floor(Math.random() * 9284724)
-            this.socket.emit('player-join', {
-              playerName: this.$store.state.nickname,
-              clientId: this.clientId
-            })
+        this.socket.emit('join-room', this.roomId, response => {
+        if (response === 'connected') {
             this.hostCountdown()
             this.socket.emit('get-game-state')
           }

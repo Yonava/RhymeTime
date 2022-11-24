@@ -19,7 +19,7 @@ Gameplay endpoints, in the other hand, are endpoints that are used by each clien
 ### player-join
 <b>Sender</b> `Player Client` -> <b>Recipient</b> `Host Client`
 <br>
-<b>Data in Payload</b> joinRequest: { playerName: string, clientId: number }
+<b>Data in Payload</b> joinRequest: player: Player
 <br>
 Used for players to request a spot in the game. Once validated by host,
 they are added to the playerList
@@ -90,7 +90,7 @@ Used by host to send a new prompt to players
 ### candidate-list
 <b>Sender</b> `Host Client` -> <b>Recipient</b> `Player Client`
 <br>
-<b>Data in Payload</b> list: []string
+<b>Data in Payload</b> list: []Response -> { response: string, player: Player }
 <br>
 Used by host to tell players who they can vote for
 

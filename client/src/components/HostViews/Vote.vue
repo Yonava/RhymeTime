@@ -82,11 +82,6 @@ export default {
       const CANDIDATE = this.candidates.find(candidate => candidate.player.clientId === clientId)
       return CANDIDATE.votes
     },
-    response(clientId) {
-      const playerResponse = this.promptResponses.find(response => response.player.clientId === clientId)
-      if (playerResponse) return playerResponse.response
-      return false
-    },
     emitPlayerResponses() {
       this.socketInstance.emit('candidate-list', this.responses)
     },

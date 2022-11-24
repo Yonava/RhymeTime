@@ -1,7 +1,7 @@
 <template>
   <div class="center">
     <header class="center" :style="headerColor">
-      <h1>{{ name }}</h1>
+      <h1>{{ clientName }}</h1>
       <v-img
         :src="require(`../../../assets/pfps/${selectedPfp}.webp`)"
         class="selected-pfp"
@@ -62,9 +62,17 @@ export default {
     const RAND_INX = Math.floor(Math.random() * this.colors.length)
     this.selectedColor = this.colors[RAND_INX]
 
+    // selects random starting pfp
+    this.selectedPfp = Math.floor(Math.random() * this.numOfPfps) + 1 
+  
     setTimeout(() => {
-      this.emitPlayerObject()
-    }, 500)
+      this.socketInstance.emit('player-join', {
+        name: this.clientName,
+        color: this.selectedColor,
+        pfp: this.selectedPfp,
+        clientId: this.clientId
+      })
+    }, 2000);
   },
   data() {
     return {
@@ -84,8 +92,11 @@ export default {
     }
   },
   computed: {
-    name() {
+    clientName() {
       return this.$store.state.nickname
+    },
+    roomId() {
+      return this.$store.state.roomid
     },
     headerColor() {
       return `background-color: ${this.selectedColor}`
@@ -94,7 +105,7 @@ export default {
   methods: {
     emitPlayerObject() {
       this.socketInstance.emit('player-object-change', {
-        name: this.name,
+        name: this.clientName,
         color: this.selectedColor,
         pfp: this.selectedPfp,
         clientId: this.clientId
