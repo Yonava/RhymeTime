@@ -12,12 +12,15 @@
     <img
       :src="pfpSource"
       alt="Winner's Profile Picture"
-      class="pfp"
+      class="pfp mt-2"
     />
     <div class="response-box-container center">
       <div class="triangle"></div>
-      <div class="response-display-box">
-    </div>
+      <div class="response-display-box pl-5 pt-3">
+        <div class="text-h3 font-weight-black">
+          {{ displayedResponse }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -75,7 +78,8 @@ export default {
   background-color: #FFB118;
 }
 .pfp {
-  width: 17.5%;
+  width: 175px;
+  height: 175px;
   object-fit: cover;
   border-radius: 15px;
 }

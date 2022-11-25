@@ -4,31 +4,36 @@
     <div class="background-stripe-2"></div>
     <div class="background-stripe-3"></div>
     <div class="left-side-box pa-3 center">
-        <div 
-          @click.stop="exit"
-          class="center" 
-          style="width: 100px; cursor: pointer"
-        >
-          <v-icon 
-            large 
-            color="black"
-          >mdi-arrow-left-circle</v-icon>
-          <p class="side-box-txt">Exit</p>
-        </div>
-        <div 
-          class="mx-3" 
-          style="width: 3px; height: 65px; background-color: black"
-        ></div>
-        <div 
-          class="center" 
-          style="width: 100px; cursor: pointer"
-        >
-          <v-icon  
-            large 
-            color="black"
-          >mdi-cog</v-icon>
-          <p class="side-box-txt">Settings</p>
-        </div>
+      <div
+        @click.stop="exit"
+        class="center" 
+        style="width: 100px; cursor: pointer"
+      >
+        <v-icon 
+          large 
+          color="black"
+        >mdi-arrow-left-circle</v-icon>
+        <p class="side-box-txt">
+          Exit
+        </p>
+      </div>
+      <div 
+        class="mx-3" 
+        style="width: 3px; height: 65px; background-color: black"
+      ></div>
+      <div 
+        @click.stop="openSettings"
+        class="center" 
+        style="width: 100px; cursor: pointer"
+      >
+        <v-icon  
+          large 
+          color="black"
+        >mdi-cog</v-icon>
+        <p class="side-box-txt">
+          Settings
+        </p>
+      </div>
     </div>
     <div class="main-qr-box center px-5">
       <h3 class="url-display pt-1">
@@ -105,6 +110,11 @@ export default {
   components: {
     PlayerCard
   },
+  emits: [
+    'round-change',
+    'toggle-pause',
+    'player-kicked'
+  ],
   methods: {
     next() {
       this.$emit('change-view', Views.tutorial)
@@ -114,6 +124,9 @@ export default {
     },
     exit() {
       this.$router.push('/')
+    },
+    openSettings() {
+      this.$emit('toggle-pause')
     }
   },
   data() {

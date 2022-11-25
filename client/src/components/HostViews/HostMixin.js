@@ -8,7 +8,7 @@ export default {
       // for interval idempotence
       timerRunning: false,
       // for developing ui only. make sure this is set to false in prod
-      testMode: true,
+      testMode: false,
       // component that you want to test
       testView: Views.recap
     }

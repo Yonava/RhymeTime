@@ -1,14 +1,5 @@
 <template>  
   <div>
-    <!-- <div>
-      <v-icon 
-        @click.stop="manuallyPaused = !manuallyPaused"
-        large
-        class="mx-7 my-5"
-      >{{ pausePlayIcon }}</v-icon>
-      <span>{{ isPaused ? 'Paused' : 'Playing' }}</span>
-    </div> -->
-  
     <component
       :is="currentView"
       :playerList="playerList"
@@ -17,6 +8,7 @@
       :winningResponses="winningResponses"
       :isPaused="isPaused"
       :numOfPlayerSpots="numOfPlayerSpots"
+      @toggle-pause="manuallyPaused = !manuallyPaused"
       @round-winner="winningResponses.push($event)"
       @change-view="currentView = $event"
       @round-over="roundOver"
@@ -24,9 +16,9 @@
       @restart-game="restartGame"
       @kick="kickPlayer($event)"
     ></component>
-
     <PauseMenu
       :visible="manuallyPaused" 
+      :currentView="currentView"
       :roundCount="roundCount"
       :totalRounds="totalRounds"
       :playerList="playerList"
@@ -73,17 +65,7 @@ export default {
       // number of rounds that are to be played
       totalRounds: 3,
       // responses that won in voting round
-      winningResponses: [
-        {
-          player: {
-            name: 'Yona',
-            color: 'red',
-            pfp: '1',
-            clientId: 123
-          },
-          response: 'This is a test response'
-        }
-      ],
+      winningResponses: [],
       // true if page is not visible (using visibilitychange event listener)
       isPageHidden: false,
       // if host selects to pause game
