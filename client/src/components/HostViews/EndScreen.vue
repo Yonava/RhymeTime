@@ -10,23 +10,26 @@
     <div class="center">
       <div class="podium-container" style="display: flex;">
         <div class="podium-width-occupier">
-          <div class="third-place-podium">
-            <div style="transform: translateY(-160px)">
+          <div class="third-place-podium"></div>
+          <div class="center">
+            <div class="third-player-card" :style="playerCardYOffset[2]">
               <PlayerCard :player="scoreCard[2].player" />
             </div>
           </div>
         </div>
         <div class="podium-width-occupier">
-          <div class="first-place-podium">
-            <div style="transform: translateY(-160px)">
-              <PlayerCard :player="scoreCard[0].player" />
+          <div class="first-place-podium"></div>
+          <div class="center">
+            <div class="first-player-card" :style="playerCardYOffset[2]">
+              <PlayerCard :player="scoreCard[2].player" />
             </div>
           </div>
         </div>
         <div class="podium-width-occupier">
-          <div class="second-place-podium">
-            <div style="transform: translateY(-160px)">
-              <PlayerCard :player="scoreCard[1].player" />
+          <div class="second-place-podium"></div>
+          <div class="center">
+            <div class="second-player-card" :style="playerCardYOffset[2]">
+              <PlayerCard :player="scoreCard[2].player" />
             </div>
           </div>
         </div>
@@ -50,6 +53,18 @@ export default {
     return {
       // stores players along with their respective song credits
       scoreCard: [],
+      // stores the y offset of the player card
+      playerCardYOffset: [
+        {
+          transform: 'translateY(0px)'
+        },
+        {
+          transform: 'translateY(0px)'
+        },
+        {
+          transform: 'translateY(0px)'
+        }
+      ]
     }
   },
   mounted() {
@@ -60,7 +75,7 @@ export default {
         score: 0,
       });
     })
-    
+
     // increments the score of the player who submitted the winning response
     this.winningResponses.forEach((response) => {
       this.scoreCard
@@ -69,11 +84,26 @@ export default {
 
     // sort scorecard by score
     this.scoreCard.sort((a, b) => b.score - a.score)
+
+
   },
 };
 </script>
 
 <style scoped>
+.third-player-card {
+  position: absolute;
+  bottom: -10px;
+}
+.second-player-card {
+  position: absolute;
+  bottom: 90px;
+}
+.first-player-card {
+  position: absolute;
+  bottom: 240px;
+}
+
 .end-screen-title {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
@@ -109,6 +139,7 @@ export default {
   width: 200px;
   position: relative;
 }
+
 .podium-container {
   position: absolute;
   bottom: 0;
