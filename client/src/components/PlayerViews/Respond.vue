@@ -1,7 +1,9 @@
 <template>
   <div class="background-matte">
     <header class="header center">
-      <h1 class="player-view-title">Respond</h1>
+      <h1 class="player-view-title">
+        Respond
+      </h1>
     </header>
     <div class="center">
       <div class="content-container">
