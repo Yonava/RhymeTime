@@ -1,16 +1,26 @@
 <template>
   <div class="center">
-    <header class="center" :style="headerColor">
-      <h1>{{ clientName }}</h1>
+    <header 
+      :style="headerColor"
+      class="center" 
+    >
+      <h1>
+        {{ clientName }}
+      </h1>
       <v-img
         :src="require(`../../../assets/pfps/${selectedPfp}.webp`)"
         class="selected-pfp"
       ></v-img>
     </header>
-    <h2 class="my-2">Choose Your Color</h2>
+    <h2 class="my-2">
+      Choose Your Color
+    </h2>
     <div style="width: 85%">
       <div class="flex-container">
-        <div v-for="color in colors" :key="color">
+        <div 
+          v-for="color in colors" 
+          :key="color"
+        >
           <div style="position: relative;" >
             <v-icon 
               v-if="color === selectedColor"
@@ -26,7 +36,9 @@
         </div>
       </div>
     </div>
-    <h2 class="my-2">Take Your Pic</h2>
+    <h2 class="my-2">
+      Take Your Pic
+    </h2>
     <div style="width: 85%">
       <div class="flex-container">
         <div 

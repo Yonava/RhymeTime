@@ -1,20 +1,27 @@
 <template>
   <v-dialog
     v-model="show"
-    persistent
     max-width="500"
   >
-    <v-card>
+    <v-card class="pa-3">
       <div class="center">
-        <v-card-title style="word-break: break-word" class="text-h5 pa-0 mt-2">
-          Room {{ $store.state.roomid }}
-        </v-card-title>
-        <v-img
-          :src="qrCodeAPI"
-          width="200"
-          class="my-4"
-        ></v-img>
-        <div class="divider ma-2"></div>
+        <div 
+          v-if="currentView !== Views.waiting"
+          class="center"
+        >
+          <v-card-title 
+            style="word-break: break-word" 
+            class="text-h5 pa-0 mt-2"
+          >
+            Room {{ $store.state.roomid }}
+          </v-card-title>
+          <v-img
+            :src="qrCodeAPI"
+            width="200"
+            class="my-4"
+          ></v-img>
+          <div class="divider ma-2"></div>
+        </div>
         Round
         <v-progress-circular
           :value="gameProgress"
@@ -29,7 +36,11 @@
         <div class="divider ma-2"></div>
         <div class="text-h6 mb-2">Volume Settings</div>
         <div style="width: 85%">
-          <v-row dense align="center" justify="center">
+          <v-row 
+            dense 
+            align="center" 
+            justify="center"
+          >
             <v-col cols="10">
               <v-slider
                 v-model="sfxVolume"
@@ -46,7 +57,11 @@
               class="mb-5"
             >SFX</v-col>
           </v-row>
-          <v-row dense align="center" justify="center">
+          <v-row 
+            dense 
+            align="center" 
+            justify="center"
+          >
             <v-col cols="10">
               <v-slider
                 v-model="musicVolume"
@@ -66,8 +81,9 @@
         </div>
         <v-card-actions> 
           <div 
+            v-if="currentView !== Views.waiting"
             @click.stop="exit"
-            style="cursor: pointer; position: absolute; left:0"
+            style="cursor: pointer; position: absolute; left: 0"
             class="ml-3"
           >
             <v-icon color="red">
@@ -92,6 +108,7 @@
 
 <script>
 import { SoundTrack } from '../../../utils/Soundboard'
+import { Views } from '../../../utils/Views'
 
 export default {
   props: {
@@ -110,11 +127,17 @@ export default {
     playerList: {
       type: Array,
       required: true
+    },
+    currentView: {
+      type: String,
+      required: true
     }
   },
+  emits: ['unpause'],
   data() {
     return {
-      gameProgress: 0
+      gameProgress: 0,
+      Views
     }
   },
   computed: {

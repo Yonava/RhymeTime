@@ -1,14 +1,5 @@
 <template>  
   <div>
-    <!-- <div>
-      <v-icon 
-        @click.stop="manuallyPaused = !manuallyPaused"
-        large
-        class="mx-7 my-5"
-      >{{ pausePlayIcon }}</v-icon>
-      <span>{{ isPaused ? 'Paused' : 'Playing' }}</span>
-    </div> -->
-  
     <component
       :is="currentView"
       :playerList="playerList"
@@ -17,6 +8,7 @@
       :winningResponses="winningResponses"
       :isPaused="isPaused"
       :numOfPlayerSpots="numOfPlayerSpots"
+      @toggle-pause="manuallyPaused = !manuallyPaused"
       @round-winner="winningResponses.push($event)"
       @change-view="currentView = $event"
       @round-over="roundOver"
@@ -24,9 +16,9 @@
       @restart-game="restartGame"
       @kick="kickPlayer($event)"
     ></component>
-
     <PauseMenu
       :visible="manuallyPaused" 
+      :currentView="currentView"
       :roundCount="roundCount"
       :totalRounds="totalRounds"
       :playerList="playerList"

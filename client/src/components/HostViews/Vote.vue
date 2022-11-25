@@ -38,6 +38,9 @@ export default {
   components: {
     ResponseCard
   },
+  emits: [
+    'round-winner'
+  ],
   data() {
     return {
       // stores ballots submitted by players
@@ -49,14 +52,6 @@ export default {
       // is set to promptResponses then widdled down in case of a tiebreaker event
       responses: []
     };
-  },
-  destroyed() {
-    // get winner data
-    const WINNER = this.candidates[0].player
-    const WINNERS_RESPONSE = this.responses
-      .find(response => response.player.name === WINNER.name)
-    
-    this.$emit('round-winner', WINNERS_RESPONSE)
   },
   mounted() {
     this.responses = this.promptResponses
@@ -157,6 +152,12 @@ export default {
       if (this.candidates.length > 1) {
         if (this.candidates[0].votes === this.candidates[1].votes) {
           return this.runTiebreaker()
+        } else {
+          const roundWinner = this.candidates[0]
+          const winningResponse = this.responses.find(response => {
+            return response.player.name === roundWinner.player.name
+          })
+          this.$emit('round-winner', winningResponse)
         }
       }
 

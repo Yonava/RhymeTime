@@ -5,7 +5,7 @@
   >
     <!-- <transition name="slide"> -->
       <v-img
-        v-if="playerPfp !== 'none'"
+        v-if="playerPfp"
         :src="require(`../../../../assets/pfps/${playerPfp}.webp`)"
         class="pfp"
         aspect-ratio="1"
@@ -44,7 +44,7 @@ export default {
     playerPfp: {
       required: false,
       type: String,
-      default: 'none'
+      default: undefined
     },
     playerName: {
       required: false,

@@ -1,23 +1,26 @@
 <template>
-  <div>
-    <div style="position: absolute; top: 10%; left: 2%">
-      <Clock title="Next Round Starting In" />
-    </div> 
-    <div style="position: absolute; top: 10%; right: 2%">
-      <Clock title="Next Round Starting In" />
-    </div> 
-    <div class="center">
-      This Rounds Winner Was...
-      <br>
-      <b>{{ winningResponse.player.name }}</b>
-      <br>
-      <b>Who Wrote:</b>
-      <br>
-      <div class="box">
-        <i>{{ displayedResponse }}</i>
+  <div
+    class="background-matte center"
+    :style="border"
+  >
+    <div class="text-h2 font-weight-black">
+      Round Winner
+    </div>
+    <div class="text-h1 white--text font-weight-black">
+      {{ winningResponse.player.name }}
+    </div>
+    <img
+      :src="pfpSource"
+      alt="Winner's Profile Picture"
+      class="pfp mt-2"
+    />
+    <div class="response-box-container center">
+      <div class="triangle"></div>
+      <div class="response-display-box pl-5 pt-3">
+        <div class="text-h3 font-weight-black">
+          {{ displayedResponse }}
+        </div>
       </div>
-      <div>What Poetry!</div>
-      <v-btn @click="next">next</v-btn>
     </div>
   </div>
 </template>
@@ -47,8 +50,16 @@ export default {
   },
   computed: {
     winningResponse() {
-      const LAST_INX = this.winningResponses.length - 1
-      return this.winningResponses[LAST_INX]
+      const LAST_INDEX = this.winningResponses.length - 1
+      return this.winningResponses[LAST_INDEX]
+    },
+    border() {
+      return {
+        border: `50px solid ${this.winningResponse.player.color}`
+      }
+    },
+    pfpSource() {
+      return require(`../../../assets/pfps/${this.winningResponse.player.pfp}.webp`)
     }
   },
   methods: {
@@ -59,3 +70,34 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.background-matte {
+  width: 100vw;
+  height: 100vh;
+  background-color: #FFB118;
+}
+.pfp {
+  width: 175px;
+  height: 175px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+.triangle {
+  height: 0;
+  width: 0;
+  border: 40px dashed;
+  border-color: transparent transparent #FFD37E transparent;
+}
+.response-box-container {
+  transform: translateY(-27.5px);
+  width: 100%;
+  position: relative;
+}
+.response-display-box {
+  width: 65%;
+  height: 240px;
+  background-color: #FFD37E;
+  border-radius: 15px;
+}
+</style>
