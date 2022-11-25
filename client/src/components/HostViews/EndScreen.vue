@@ -1,31 +1,12 @@
 <template>
-  <div class="center">
-    <v-card>
-      <v-card-title>{{ scoreCard[0].playerName }} Won!</v-card-title>
-      <v-card-text>
-        {{ scoreCard[0].playerName }} managed to win a whopping
-        {{ scoreCard[0].score }} rounds!
-      </v-card-text>
-    </v-card>
-
-    <div v-for="response in winningResponses" :key="response.id">
-      <b>{{ response.player.name }}</b>
-      <br />
-      <i>{{ response.response }}</i>
-    </div>
-    <v-btn 
-      @click.stop="$emit('restart-game')" 
-      color="green white--text"
-    >Play again</v-btn>
-    <v-btn 
-      @click.stop="$router.push('/')" 
-      color="red white--text"
-    >end the party</v-btn>
+  <div class="background-matte">
+    <div class="background-stripe-1"></div>
+    <div class="background-stripe-2"></div>
   </div>
 </template>
 
 <script>
-import HostMixin from "./HostMixin";
+import HostMixin from './HostMixin'
 
 export default {
   mixins: [
@@ -33,28 +14,52 @@ export default {
   ],
   data() {
     return {
-      // player with the most appearances in 'song' aka song credits
-      winner: "",
       // stores players along with their respective song credits
       scoreCard: [],
-    };
+    }
+  },
+  computed: {
+    // returns the player with the highest score
+    winner() {
+      return this.scoreCard
+        .reduce((prev, current) => (prev.score > current.score) ? prev : current)
+    },
   },
   mounted() {
-    const PLAYERS = this.winningResponses.map(response => response.player.name)
-    PLAYERS.forEach(player => {
-      const INDEX = this.scoreCard
-        .findIndex(playerEntry => playerEntry.playerName === player)
-      if (INDEX === -1) {
-        this.scoreCard.push({
-          playerName: player.name,
-          score: 1,
-        })
-      } else {
-        this.scoreCard[INDEX].score++
-      }
+    // initializes the scorecard
+    this.playerList.forEach((player) => {
+      this.scoreCard.push({
+        ...player,
+        score: 0,
+      });
     })
-
-    this.scoreCard.sort((a, b) => b.score - a.score);
+    // increments the score of the player who submitted the winning response
+    this.winningResponses.forEach((response) => {
+      this.scoreCard
+        .find((p) => p.player.clientId === response.player.clientId).score += 1
+    })
   },
 };
 </script>
+
+<style scoped>
+.background-matte {
+  background-color: #303030;
+  width: 100vw;
+  height: 100vh;
+}
+.background-stripe-2 {
+  height: 150vw;
+  width: 175px;
+  background-color: #414141;
+  transform: translateY(-85vh) translateX(30vw) rotate(100deg);
+  position: fixed;
+}
+.background-stripe-1 {
+  height: 150vw;
+  width: 175px;
+  background-color: #414141;
+  transform: translateY(-85vh) translateX(30vw) rotate(220deg);
+  position: fixed;
+}
+</style>

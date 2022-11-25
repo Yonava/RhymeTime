@@ -32,6 +32,9 @@ export default {
   mixins: [
     HostMixin
   ],
+  emits: [
+    'round-over'
+  ],
   data() {
     return {
       displayedResponse: ''

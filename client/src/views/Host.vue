@@ -57,7 +57,32 @@ export default {
       // sets the current view of the game, emits to players
       currentView: Views.waiting,
       // playerlist contains player objects for every connected player
-      playerList: [],
+      playerList: [
+        {
+          player: {
+            name: 'Player 1',
+            color: 'red',
+            pfp: '2',
+            clientId: 1
+          },
+        },
+        {
+          player: {
+            name: 'Player 2',
+            color: 'blue',
+            pfp: '3',
+            clientId: 2
+          },
+        },
+        {
+          player: {
+            name: 'Player 3',
+            color: 'green',
+            pfp: '6',
+            clientId: 3
+          },
+        },
+      ],
       // prompt responses each round are stored here. response obj format { player: player, response: string }
       promptResponses: [],
       // stores what round the game is on
@@ -65,7 +90,44 @@ export default {
       // number of rounds that are to be played
       totalRounds: 3,
       // responses that won in voting round
-      winningResponses: [],
+      winningResponses: [
+        {
+          player: {
+            name: 'Player 1',
+            color: 'red',
+            pfp: '2',
+            clientId: 1
+          },
+          response: 'This is a test response'
+        },
+        {
+          player: {
+            name: 'Player 2',
+            color: 'blue',
+            pfp: '3',
+            clientId: 2
+          },
+          response: 'This is a test response'
+        },
+        {
+          player: {
+            name: 'Player 3',
+            color: 'green',
+            pfp: '6',
+            clientId: 3
+          },
+          response: 'This is a test response'
+        },
+        {
+          player: {
+            name: 'Player 2',
+            color: 'blue',
+            pfp: '3',
+            clientId: 2
+          },
+          response: 'This is a test response'
+        },
+      ],
       // true if page is not visible (using visibilitychange event listener)
       isPageHidden: false,
       // if host selects to pause game
