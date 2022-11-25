@@ -3,12 +3,16 @@
     class="background-matte center"
     :style="border"
   >
-    <v-img
-      :src="require(`../../../../assets/pfps/${playerPfp}.webp`)"
+    <div class="text-h2 font-weight-black">
+      Round Winner
+    </div>
+    <div class="text-h1 white--text font-weight-black">
+      {{ winningResponse.player.name }}
+    </div>
+    <img
+      :src="pfpSource"
       class="pfp"
-      aspect-ratio="1"
-      max-width="125px"
-    ></v-img>
+    />
   </div>
 </template>
 
@@ -44,6 +48,9 @@ export default {
       return {
         border: `50px solid ${this.winningResponse.player.color}`
       }
+    },
+    pfpSource() {
+      return require(`../../../assets/pfps/${this.winningResponse.player.pfp}.webp`)
     }
   },
   methods: {
@@ -60,5 +67,9 @@ export default {
   width: 100vw;
   height: 100vh;
   background-color: #FFB118;
+}
+.pfp {
+  width: 25%;
+  object-fit: cover;
 }
 </style>
