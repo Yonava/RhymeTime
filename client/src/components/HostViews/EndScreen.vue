@@ -10,13 +10,25 @@
     <div class="center">
       <div class="podium-container" style="display: flex;">
         <div class="podium-width-occupier">
-          <div class="third-place-podium"></div>
+          <div class="third-place-podium">
+            <div style="transform: translateY(-160px)">
+              <PlayerCard :player="scoreCard[2].player" />
+            </div>
+          </div>
         </div>
         <div class="podium-width-occupier">
-          <div class="first-place-podium"></div>
+          <div class="first-place-podium">
+            <div style="transform: translateY(-160px)">
+              <PlayerCard :player="scoreCard[0].player" />
+            </div>
+          </div>
         </div>
         <div class="podium-width-occupier">
-          <div class="second-place-podium"></div>
+          <div class="second-place-podium">
+            <div style="transform: translateY(-160px)">
+              <PlayerCard :player="scoreCard[1].player" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -25,23 +37,20 @@
 
 <script>
 import HostMixin from './HostMixin'
+import PlayerCard from './HostSubComponents/EndScreenPlayer.vue'
 
 export default {
   mixins: [
     HostMixin
   ],
+  components: {
+    PlayerCard
+  },
   data() {
     return {
       // stores players along with their respective song credits
       scoreCard: [],
     }
-  },
-  computed: {
-    // returns the player with the highest score
-    winner() {
-      return this.scoreCard
-        .reduce((prev, current) => (prev.score > current.score) ? prev : current)
-    },
   },
   mounted() {
     // initializes the scorecard
@@ -51,11 +60,15 @@ export default {
         score: 0,
       });
     })
+    
     // increments the score of the player who submitted the winning response
     this.winningResponses.forEach((response) => {
       this.scoreCard
         .find((p) => p.player.clientId === response.player.clientId).score += 1
     })
+
+    // sort scorecard by score
+    this.scoreCard.sort((a, b) => b.score - a.score)
   },
 };
 </script>
@@ -74,33 +87,31 @@ export default {
 .third-place-podium {
   position: absolute;
   bottom: 0;
-  width: 250px;
-  height: 300px;
+  width: 200px;
+  height: 150px;
   background: #CD7F32
 }
 .second-place-podium {
   position: absolute;
   bottom: 0;
-  width: 250px;
-  height: 450px;
+  width: 200px;
+  height: 250px;
   background: #C0C0C0;
 }
 .first-place-podium {
   position: absolute;
   bottom: 0;
-  width: 250px;
-  height: 600px;
+  width: 200px;
+  height: 400px;
   background: #FFD700;
 }
 .podium-width-occupier {
-  width: 250px;
+  width: 200px;
   position: relative;
 }
-
 .podium-container {
   position: absolute;
   bottom: 0;
-  border: 1px solid white;
 }
 .background-matte {
   background-color: #303030;
