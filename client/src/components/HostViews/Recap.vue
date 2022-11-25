@@ -1,24 +1,14 @@
 <template>
-  <div>
-    <div style="position: absolute; top: 10%; left: 2%">
-      <Clock title="Next Round Starting In" />
-    </div> 
-    <div style="position: absolute; top: 10%; right: 2%">
-      <Clock title="Next Round Starting In" />
-    </div> 
-    <div class="center">
-      This Rounds Winner Was...
-      <br>
-      <b>{{ winningResponse.player.name }}</b>
-      <br>
-      <b>Who Wrote:</b>
-      <br>
-      <div class="box">
-        <i>{{ displayedResponse }}</i>
-      </div>
-      <div>What Poetry!</div>
-      <v-btn @click="next">next</v-btn>
-    </div>
+  <div
+    class="background-matte center"
+    :style="border"
+  >
+    <v-img
+      :src="require(`../../../../assets/pfps/${playerPfp}.webp`)"
+      class="pfp"
+      aspect-ratio="1"
+      max-width="125px"
+    ></v-img>
   </div>
 </template>
 
@@ -49,6 +39,11 @@ export default {
     winningResponse() {
       const LAST_INX = this.winningResponses.length - 1
       return this.winningResponses[LAST_INX]
+    },
+    border() {
+      return {
+        border: `50px solid ${this.winningResponse.player.color}`
+      }
     }
   },
   methods: {
@@ -59,3 +54,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.background-matte {
+  width: 100vw;
+  height: 100vh;
+  background-color: #FFB118;
+}
+</style>

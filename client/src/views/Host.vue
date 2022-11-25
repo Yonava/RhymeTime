@@ -73,7 +73,17 @@ export default {
       // number of rounds that are to be played
       totalRounds: 3,
       // responses that won in voting round
-      winningResponses: [],
+      winningResponses: [
+        {
+          player: {
+            name: 'Yona',
+            color: 'red',
+            pfp: '1',
+            clientId: 123
+          },
+          response: 'This is a test response'
+        }
+      ],
       // true if page is not visible (using visibilitychange event listener)
       isPageHidden: false,
       // if host selects to pause game
