@@ -2,6 +2,24 @@
   <div class="background-matte">
     <div class="background-stripe-1"></div>
     <div class="background-stripe-2"></div>
+    <header class="center mt-10">
+      <div class="text-h1 end-screen-title font-weight-black white--text px-7 py-5">
+        View Finished Song
+      </div>
+    </header>
+    <div class="center">
+      <div class="podium-container" style="display: flex;">
+        <div class="podium-width-occupier">
+          <div class="third-place-podium"></div>
+        </div>
+        <div class="podium-width-occupier">
+          <div class="first-place-podium"></div>
+        </div>
+        <div class="podium-width-occupier">
+          <div class="second-place-podium"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -43,10 +61,52 @@ export default {
 </script>
 
 <style scoped>
+.end-screen-title {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 2;
+  transition: 300ms;
+}
+.end-screen-title:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+.third-place-podium {
+  position: absolute;
+  bottom: 0;
+  width: 250px;
+  height: 300px;
+  background: #CD7F32
+}
+.second-place-podium {
+  position: absolute;
+  bottom: 0;
+  width: 250px;
+  height: 450px;
+  background: #C0C0C0;
+}
+.first-place-podium {
+  position: absolute;
+  bottom: 0;
+  width: 250px;
+  height: 600px;
+  background: #FFD700;
+}
+.podium-width-occupier {
+  width: 250px;
+  position: relative;
+}
+
+.podium-container {
+  position: absolute;
+  bottom: 0;
+  border: 1px solid white;
+}
 .background-matte {
   background-color: #303030;
   width: 100vw;
   height: 100vh;
+  position: fixed;
 }
 .background-stripe-2 {
   height: 150vw;
