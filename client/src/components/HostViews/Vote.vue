@@ -1,49 +1,34 @@
 <template>
-  <div>
-    <Tiebreaker :visible="showTiebreaker" />
-    <div style="position: absolute; top: 10%; left: 2%; z-index: 2">
-      <Clock title="Polls Close In" />
-    </div>
-    <div style="position: absolute; top: 10%; right: 2%; z-index: 2">
-      <Clock title="Polls Close In" />
-    </div>
-    <div class="center mt-5">
-      <div class="text-h4">Your Submissions</div>
-    </div>
-
-    <div class="center">
-      <div style="width: 75%;">
-        <v-row class="pa-4">
-          <v-col v-for="response in responses" :key="response.id">
-            <DisplayResponse :response="response" />
-          </v-col>
-        </v-row>
-      </div>
-    </div>
-
-    <div class="center">
-      <div class="text-h4 mt-5">Live Voting Results</div>
-    </div>
-
-    <div class="bar-parent"> 
+  <div class="background-matte">
+    <header class="page-header center">
       <div 
-        v-for="player in candidates" 
-        :key="player.clientId" 
-        class="center voter-bar" 
-        :style="`height: ${player.votes}%;`"
+        class="ma-3"
+        style="position: absolute; top: 0; right: 0;"
       >
-        <div class="text-p white--text name-tag">
-          {{ player.player.name }}
-        </div>
+        <Clock />
+      </div>
+      <h2 class="sub-title">It Is Time To</h2>
+      <h1 class="title">Vote</h1>
+    </header>
+    <div class="response-card-container mt-4">
+      <div 
+        v-for="response in responses"
+        :key="response.player.clientId"
+      >
+        <ResponseCard
+          :response="response.response"
+          :player="response.player"
+          :showResponse="true"
+          :votePercentage="votePercentage(response.player.clientId)"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import HostMixin from "./HostMixin"
-import DisplayResponse from "./HostSubComponents/ResponseDisplayCard.vue"
-import Tiebreaker from "./HostSubComponents/TiebreakerCard.vue"
+import HostMixin from './HostMixin'
+import ResponseCard from './HostSubComponents/PlayerResponseCard.vue'
 import { Views } from '@/utils/Views'
 
 export default {
@@ -51,21 +36,18 @@ export default {
     HostMixin
   ],
   components: {
-    DisplayResponse,
-    Tiebreaker
+    ResponseCard
   },
   data() {
     return {
       // stores ballots submitted by players
       ballotBox: {},
-      // candidate = { player: playerName, votes: totalVotes }
+      // candidate = { player: Player, votes: % of vote share }
       candidates: [],
       // if true, no ballots are accepted
       pollsClosed: false,
       // is set to promptResponses then widdled down in case of a tiebreaker event
-      responses: [],
-      // true if tiebreaker card is showing
-      showTiebreaker: false
+      responses: []
     };
   },
   destroyed() {
@@ -86,9 +68,9 @@ export default {
     })
     this.calculatePercentage()
 
-    this.emitCandidateList()
+    this.emitPlayerResponses()
     this.socketInstance.on('broadcast-game-state', () => {
-      this.emitCandidateList()
+      this.emitPlayerResponses()
     })
     this.socketInstance.on('ballot-collector', (playerBallot) => {
       if (this.pollsClosed) return
@@ -96,9 +78,12 @@ export default {
     })
   },
   methods: {
-    emitCandidateList() {
-      this.socketInstance.emit('candidate-list', this.candidates
-        .map(candidate => candidate.player.name))
+    votePercentage(clientId) {
+      const CANDIDATE = this.candidates.find(candidate => candidate.player.clientId === clientId)
+      return CANDIDATE.votes
+    },
+    emitPlayerResponses() {
+      this.socketInstance.emit('candidate-list', this.responses)
     },
     countVotes(playerBallot) {
       // this function serves to recount all votes in ballotBox
@@ -129,7 +114,7 @@ export default {
       this.calculatePercentage()
     },
     calculatePercentage() {
-      // turns candidate votes into percentages for css display
+      // turns candidate votes into percentages
       // 10, 20, 30 -> 16.6, 33.3, 50
       if (!this.candidates.length) return
       const TOTAL_VOTES = this.candidates
@@ -139,8 +124,6 @@ export default {
       this.candidates.forEach(candidate => {
         // gets players' percentage share of the votes cast
         candidate.votes = Math.round((candidate.votes / TOTAL_VOTES) * 100)
-        // consolation prize for fewer than 8% of votes 🥺 😂
-        if (candidate.votes < 8) candidate.votes = 8
       })
     },
     runTiebreaker() {
@@ -154,11 +137,10 @@ export default {
       this.ballotBox = {}
       this.pollsClosed = true
       setTimeout(() => this.pollsClosed = false, 500)
-      this.emitCandidateList()
+      this.emitPlayerResponses()
       this.tackOnTime()
     },
     tackOnTime() {
-      this.showTiebreaker = true
       setTimeout(() => {
         this.$store.state.timeRemaining = 10
         this.startTimer()
@@ -182,39 +164,40 @@ export default {
       if (this.testMode) return
       this.$emit("change-view", Views.recap)
     }
-  },
-  watch: {
-    showTiebreaker(v) {
-      if (!v) return
-      setTimeout(() => this.showTiebreaker = false, 3000)
-    } 
   }
 }
 </script>
 
 <style scoped>
-.voter-bar {
-  background-color: purple; 
-  width: 75px;
-  position: relative; 
-  margin-top: auto;
-  margin-left: 1.5%;
-  transition: 500ms ease-in-out;
-}
-
-.name-tag {
-  top: 0; 
-  position: absolute; 
-  font-weight: bold;
-}
-
-.bar-parent {
-  display: flex; 
-  flex-direction: row; 
-  align-items: center; 
-  justify-content: center;  
-  height: 37vh;
-  margin: 0px 300px 0px 300px;
-  border-bottom: 8px solid black;
-}
+  .background-matte {
+    width: 100vw;
+    height: 100vh;
+    background-color: #FFD37E;
+  }
+  .page-header {
+    width: 100%;
+    height: 175px;
+    background-color: #FFB118;
+    position: relative;
+  }
+  .title {
+    color: white;
+    font-weight: 900;
+    /* scale is a bad way of doing things in this 
+    context but font-size is not working for some reason */
+    transform: scale(5);
+    position: absolute;
+    bottom: 27%;
+  }
+  .sub-title {
+    position: absolute;
+    top: 0.5%;
+    font-size: 35pt;
+    font-weight: 900;
+  }
+  .response-card-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 </style>

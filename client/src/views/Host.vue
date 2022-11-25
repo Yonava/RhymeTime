@@ -110,12 +110,12 @@ export default {
           }
         })
       })
-      this.socket.on('player-join', (joinRequest) => {
+      this.socket.on('player-join', player => {
+        // game has started or room is full, send player to audience
         const ROOM_FULL = this.numOfPlayerSpots <= this.playerList.length
-        // check for duplicate names for joining client here
         if (this.currentView !== Views.waiting || ROOM_FULL) {
           this.socket.emit('kick-player', {
-            clientId: joinRequest.clientId,
+            clientId: player.clientId,
             redirect: {
               name: 'audience',
               query: {
@@ -125,10 +125,12 @@ export default {
           })
           return
         }
-        // blocks duplicate nicknames from joining
-        if (this.playerList.some(player => player.name === joinRequest.playerName)) {
+
+        // blocks duplicate player names
+        const DUPLICATE_NAME = this.playerList.some(p => p.name === player.name)
+        if (DUPLICATE_NAME) {
           this.socket.emit('kick-player', {
-            clientId: joinRequest.clientId,
+            clientId: player.clientId,
             redirect: {
               name: 'join',
               query: {
@@ -139,12 +141,9 @@ export default {
           })
           return
         }
-        this.playerList.push({
-          name: joinRequest.playerName,
-          color: 'black',
-          pfp: '1',
-          clientId: joinRequest.clientId
-        })
+
+        // player is allowed to join
+        this.playerList.push(player)
       })
       this.socket.on('disconnect-event', () => {
         this.socket.emit('host-present')

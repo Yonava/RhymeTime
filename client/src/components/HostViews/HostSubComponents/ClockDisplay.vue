@@ -1,60 +1,56 @@
 <template>
-  <div 
-    class="center pa-4 clock-parent"
-    :style="`background-color: ${backgroundColor}`"
+  <v-progress-circular
+    :value="progress"
+    :size="size"
+    :color="color"
+    style="background: rgba(255,255,255, 0.9); border-radius: 50px"
+    class="clock pa-12"
   >
-    <div class="text-h6 mb-2">
-      {{ title }}
-    </div>
-    <v-progress-circular
-      :value="progress"
-      class="mr-2 pa-12"
-      size="30"
-      :color="color"
+    <div 
+      class="text-h3 black--text" 
+      style="font-weight: 900; z-index: 2;"
     >
-      <div class="text-h3">
-        {{ $store.state.timeRemaining }}
-      </div>
-    </v-progress-circular>
-  </div>
+      {{ timeRemaining }}
+    </div>
+  </v-progress-circular>
 </template>
 
 <script>
 
 export default {
   props: {
-    title: {
+    size: {
       type: String,
       required: false,
-      default: 'Moving On In'
+      default: '27'
     }
-  },
-  data() {
-    return {
-      backgroundColor: 'rgb(245, 245, 245)'
-    }
-  },
-  mounted() {
-    // engages watcher to play red flashing and beep effect
-    this.$watch(() => this.$store.state.timeRemaining, (v) => {
-      if (v <= this.$store.state.almostOutOfTime) {
-        this.backgroundColor = 'rgb(255, 225, 225)'
-        setTimeout(() => {
-          this.backgroundColor = 'rgb(245, 245, 245)'
-        }, 250)
-      }
-    })
   },
   computed: {
+    timeRemaining() {
+      return this.$store.state.timeRemaining
+    },
+    totalTime() {
+      return this.$store.state.totalTime
+    },
     progress() {
-      return (this.$store.state.timeRemaining / this.$store.state.totalTime) * 100
+      return (this.timeRemaining / this.totalTime) * 100
     },
     color() {
-      const RANGE = [0, this.$store.state.totalTime / 2, this.$store.state.totalTime]
-      let rgb = [0, 0, 0]
-      rgb[0] = ((RANGE[2] - this.$store.state.timeRemaining) / (RANGE[2] - RANGE[1])) * 255;
-      rgb[1] = (this.$store.state.timeRemaining/RANGE[1]) * 255; 
+      // at 0 we want the color to be red
+      // at halfway we want the color to be yellow
+      // at totalTime we want the color to be green
+      const RANGE = [0, this.totalTime / 2, this.totalTime]
 
+      let rgb = [0, 0, 0]
+
+      // gets red value from 0 to 1 then multiplies by 255
+      // to get the rgb value of red
+      rgb[0] = ((RANGE[2] - this.timeRemaining) / (RANGE[2] - RANGE[1])) * 255;
+
+      // gets green value from 0 to 255 then multiplies by 255
+      rgb[1] = (this.timeRemaining / RANGE[1]) * 255; 
+
+      // ensures smooth transition from green to red, through yellow
       return `rgb(${rgb.join(',')})`
     }
   }
@@ -62,9 +58,7 @@ export default {
 </script>
 
 <style scoped>
-  .clock-parent {
-    border: 2px solid black; 
-    border-radius: 10px;
+  .clock {
     transition: 250ms; 
   }
 </style>
