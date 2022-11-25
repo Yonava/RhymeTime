@@ -7,7 +7,10 @@
       <div class="content-container">
         <textarea 
           v-model="response"
+          :style="submitted ? 'opacity: 0.5' : ''"
+          :readonly="submitted"
           :placeholder="responseBoxPlaceholder"
+          maxlength="110"
           class="response-text-area text-h5 mt-7" 
         ></textarea>
         <div
@@ -178,6 +181,7 @@ export default {
     font-size: 1.2rem;
     resize: none;
     font-weight: 300;
+    transition: 300ms;
   }
   .header {
     width: 100%;

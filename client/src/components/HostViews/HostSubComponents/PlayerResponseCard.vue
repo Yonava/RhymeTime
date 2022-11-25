@@ -89,7 +89,7 @@ export default {
 
 <style scoped>
 .response-text {
-  font-size: 1.3rem;
+  font-size: 1.7rem;
   line-height: 115%;
   font-weight: 900;
   overflow: hidden;
