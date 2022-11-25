@@ -50,8 +50,8 @@ export default {
   },
   computed: {
     winningResponse() {
-      const LAST_INX = this.winningResponses.length - 1
-      return this.winningResponses[LAST_INX]
+      const LAST_INDEX = this.winningResponses.length - 1
+      return this.winningResponses[LAST_INDEX]
     },
     border() {
       return {
