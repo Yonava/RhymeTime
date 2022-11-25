@@ -59,28 +59,28 @@ export default {
       // playerlist contains player objects for every connected player
       playerList: [
         {
-          player: {
-            name: 'Player 1',
-            color: 'red',
-            pfp: '2',
-            clientId: 1
-          },
+          name: 'Jack',
+          color: 'red',
+          pfp: '2',
+          clientId: 1
         },
         {
-          player: {
-            name: 'Player 2',
-            color: 'blue',
-            pfp: '3',
-            clientId: 2
-          },
+          name: 'Josh',
+          color: 'blue',
+          pfp: '3',
+          clientId: 2
         },
         {
-          player: {
-            name: 'Player 3',
-            color: 'green',
-            pfp: '6',
-            clientId: 3
-          },
+          name: 'Thomas',
+          color: 'green',
+          pfp: '6',
+          clientId: 3
+        },
+        {
+          name: 'Thomas',
+          color: 'green',
+          pfp: '6',
+          clientId: 3
         },
       ],
       // prompt responses each round are stored here. response obj format { player: player, response: string }
@@ -93,7 +93,7 @@ export default {
       winningResponses: [
         {
           player: {
-            name: 'Player 1',
+            name: 'Jack',
             color: 'red',
             pfp: '2',
             clientId: 1
@@ -102,7 +102,7 @@ export default {
         },
         {
           player: {
-            name: 'Player 2',
+            name: 'Josh',
             color: 'blue',
             pfp: '3',
             clientId: 2
@@ -111,7 +111,7 @@ export default {
         },
         {
           player: {
-            name: 'Player 3',
+            name: 'Thomas',
             color: 'green',
             pfp: '6',
             clientId: 3
@@ -120,7 +120,7 @@ export default {
         },
         {
           player: {
-            name: 'Player 2',
+            name: 'Josh',
             color: 'blue',
             pfp: '3',
             clientId: 2

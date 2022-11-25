@@ -10,7 +10,11 @@
     <div class="center">
       <div class="podium-container" style="display: flex;">
         <div class="podium-width-occupier">
-          <div class="third-place-podium"></div>
+          <div class="third-place-podium center">
+            <div class="text-h1 placement-title">
+              3rd
+            </div>
+          </div>
           <div class="center">
             <div class="third-player-card" :style="playerCardYOffset[2]">
               <PlayerCard :player="scoreCard[2].player" />
@@ -18,7 +22,11 @@
           </div>
         </div>
         <div class="podium-width-occupier">
-          <div class="first-place-podium"></div>
+          <div class="first-place-podium center">
+            <div class="text-h1 placement-title">
+              1st
+            </div>
+          </div>
           <div class="center">
             <div class="first-player-card" :style="playerCardYOffset[0]">
               <PlayerCard :player="scoreCard[0].player" />
@@ -26,7 +34,11 @@
           </div>
         </div>
         <div class="podium-width-occupier">
-          <div class="second-place-podium"></div>
+          <div class="second-place-podium center">
+            <div class="text-h1 placement-title">
+              2nd
+            </div>
+          </div>
           <div class="center">
             <div class="second-player-card" :style="playerCardYOffset[1]">
               <PlayerCard :player="scoreCard[1].player" />
@@ -71,7 +83,7 @@ export default {
     // initializes the scorecard
     this.playerList.forEach((player) => {
       this.scoreCard.push({
-        ...player,
+        player,
         score: 0,
       });
     })
@@ -86,11 +98,11 @@ export default {
     this.scoreCard.sort((a, b) => b.score - a.score)
 
     // lift player cards above podium
-    setTimeout(() => {
-      for (let i = 0; i < 3; i++) {
-        this.playerCardYOffset[i].transform = `translateY(-170px)`
-      }
-    }, 1000)
+    for (let i = 2; i >= 0; i--) {
+      setTimeout(() => {
+        this.playerCardYOffset[i].transform = 'translateY(-170px)'
+      }, 1500 * (3 - i))
+    }
   },
 };
 </script>
@@ -103,13 +115,21 @@ export default {
 }
 .second-player-card {
   position: absolute;
-  bottom: 90px;
+  bottom: 80px;
   transition: 750ms ease;
 }
 .first-player-card {
   position: absolute;
-  bottom: 240px;
+  bottom: 190px;
   transition: 750ms ease;
+}
+
+.placement-title {
+  position: absolute;
+  top: 2.5%;
+  color: white;
+  font-weight: 900;
+  -webkit-text-stroke: 3px black;
 }
 
 .end-screen-title {
@@ -134,7 +154,7 @@ export default {
   position: absolute;
   bottom: 0;
   width: 200px;
-  height: 250px;
+  height: 240px;
   background: #C0C0C0;
   z-index: 2;
 }
@@ -142,7 +162,7 @@ export default {
   position: absolute;
   bottom: 0;
   width: 200px;
-  height: 400px;
+  height: 350px;
   background: #FFD700;
   z-index: 2;
 }
