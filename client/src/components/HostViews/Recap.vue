@@ -11,8 +11,14 @@
     </div>
     <img
       :src="pfpSource"
+      alt="Winner's Profile Picture"
       class="pfp"
     />
+    <div class="response-box-container center">
+      <div class="triangle"></div>
+      <div class="response-display-box">
+    </div>
+    </div>
   </div>
 </template>
 
@@ -69,7 +75,25 @@ export default {
   background-color: #FFB118;
 }
 .pfp {
-  width: 25%;
+  width: 17.5%;
   object-fit: cover;
+  border-radius: 15px;
+}
+.triangle {
+  height: 0;
+  width: 0;
+  border: 40px dashed;
+  border-color: transparent transparent #FFD37E transparent;
+}
+.response-box-container {
+  transform: translateY(-27.5px);
+  width: 100%;
+  position: relative;
+}
+.response-display-box {
+  width: 65%;
+  height: 240px;
+  background-color: #FFD37E;
+  border-radius: 15px;
 }
 </style>
