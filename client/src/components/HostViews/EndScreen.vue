@@ -20,16 +20,16 @@
         <div class="podium-width-occupier">
           <div class="first-place-podium"></div>
           <div class="center">
-            <div class="first-player-card" :style="playerCardYOffset[2]">
-              <PlayerCard :player="scoreCard[2].player" />
+            <div class="first-player-card" :style="playerCardYOffset[0]">
+              <PlayerCard :player="scoreCard[0].player" />
             </div>
           </div>
         </div>
         <div class="podium-width-occupier">
           <div class="second-place-podium"></div>
           <div class="center">
-            <div class="second-player-card" :style="playerCardYOffset[2]">
-              <PlayerCard :player="scoreCard[2].player" />
+            <div class="second-player-card" :style="playerCardYOffset[1]">
+              <PlayerCard :player="scoreCard[1].player" />
             </div>
           </div>
         </div>
@@ -85,7 +85,12 @@ export default {
     // sort scorecard by score
     this.scoreCard.sort((a, b) => b.score - a.score)
 
-
+    // lift player cards above podium
+    setTimeout(() => {
+      for (let i = 0; i < 3; i++) {
+        this.playerCardYOffset[i].transform = `translateY(-170px)`
+      }
+    }, 1000)
   },
 };
 </script>
@@ -94,14 +99,17 @@ export default {
 .third-player-card {
   position: absolute;
   bottom: -10px;
+  transition: 750ms ease;
 }
 .second-player-card {
   position: absolute;
   bottom: 90px;
+  transition: 750ms ease;
 }
 .first-player-card {
   position: absolute;
   bottom: 240px;
+  transition: 750ms ease;
 }
 
 .end-screen-title {
@@ -119,7 +127,8 @@ export default {
   bottom: 0;
   width: 200px;
   height: 150px;
-  background: #CD7F32
+  background: #CD7F32;
+  z-index: 2;
 }
 .second-place-podium {
   position: absolute;
@@ -127,6 +136,7 @@ export default {
   width: 200px;
   height: 250px;
   background: #C0C0C0;
+  z-index: 2;
 }
 .first-place-podium {
   position: absolute;
@@ -134,6 +144,7 @@ export default {
   width: 200px;
   height: 400px;
   background: #FFD700;
+  z-index: 2;
 }
 .podium-width-occupier {
   width: 200px;
