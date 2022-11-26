@@ -1,56 +1,67 @@
 <template>
   <div class="center">
-    <header 
-      :style="headerColor"
-      class="center" 
-    >
-      <h1>
-        {{ clientName }}
-      </h1>
-      <v-img
-        :src="selectedPfpSource"
-        class="selected-pfp"
-      ></v-img>
-    </header>
-    <h2 class="my-2">
-      Choose Your Color
-    </h2>
-    <div style="width: 85%">
-      <div class="flex-container">
-        <div 
-          v-for="color in colors" 
-          :key="color"
-        >
-          <div style="position: relative;" >
-            <v-icon 
-              v-if="color === selectedColor"
-              class="check-mark"
-              dark
-            >mdi-check-outline</v-icon>
-            <div
-              @click.stop="selectedColor = color"
-              :style="`background-color: ${color};`"
-              class="frame-item ma-3"
-            ></div>
+    <div v-if="loading">
+      <v-progress-circular
+        size="70"
+        width="7"
+        color="primary"
+        class="loading"
+        indeterminate
+      ></v-progress-circular>
+    </div>
+    <div v-else>
+      <header 
+        :style="headerColor"
+        class="player-waiting-header center" 
+      >
+        <h1 class="player-waiting-title">
+          {{ clientName }}
+        </h1>
+        <v-img
+          :src="selectedPfpSource"
+          class="selected-pfp"
+        ></v-img>
+      </header>
+      <h2 class="player-waiting-subtitle my-2">
+        Choose Your Color
+      </h2>
+      <div style="width: 85%">
+        <div class="flex-container">
+          <div 
+            v-for="color in colors" 
+            :key="color"
+          >
+            <div style="position: relative;" >
+              <v-icon 
+                v-if="color === selectedColor"
+                class="check-mark"
+                dark
+              >mdi-check-outline</v-icon>
+              <div
+                @click.stop="selectedColor = color"
+                :style="`background-color: ${color};`"
+                class="frame-item ma-3"
+              ></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <h2 class="my-2">
-      Take Your Pic
-    </h2>
-    <div style="width: 85%">
-      <div class="flex-container">
-        <div 
-          v-for="i in numOfPfps" 
-          :key="i"
-        >
-          <v-img
-            @click.stop="selectedPfp = i"
-            :src="require(`../../../assets/pfps/${i}.webp`)"
-            :style="pfpSelected(i)"
-            class="frame-item ma-3"
-          ></v-img>
+      <h2 class="player-waiting-subtitle my-2">
+        Take Your Pic
+      </h2>
+      <div style="width: 85%">
+        <div class="flex-container">
+          <div 
+            v-for="i in numOfPfps" 
+            :key="i"
+          >
+            <v-img
+              @click.stop="selectedPfp = i"
+              :src="require(`../../../assets/pfps/${i}.webp`)"
+              :style="pfpSelected(i)"
+              class="frame-item ma-3"
+            ></v-img>
+          </div>
         </div>
       </div>
     </div>
@@ -74,7 +85,7 @@ export default {
     },
     socketOnline: {
       required: true,
-      type: Promise
+      type: Boolean
     }
   },
   emits: [
@@ -92,7 +103,7 @@ export default {
         'red',
         'brown',
         'purple',
-        'yellow',
+        '#d4af37',
         'blue',
         'black',
         'green'
@@ -163,7 +174,13 @@ export default {
 </script>
 
 <style scoped>
-header {
+.loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.player-waiting-header {
   position: relative;
   top: 0;
   height: 80px;
@@ -171,11 +188,12 @@ header {
   color: white;
   transition: 500ms;
 }
-h1 {
+.player-waiting-title {
   font-size: 27pt;
   font-weight: 1000;
 }
-h2 {
+
+.player-waiting-subtitle{
   font-size: 25pt;
   font-weight: 1000;
 }

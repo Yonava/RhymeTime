@@ -103,7 +103,6 @@ export default {
         })
       })
       this.socket.on('player-join', player => {
-        console.log(player.name, 'joined')
         // game has started or room is full, send player to audience
         const ROOM_FULL = this.numOfPlayerSpots <= this.playerList.length
         if (this.currentView !== Views.waiting || ROOM_FULL) {
