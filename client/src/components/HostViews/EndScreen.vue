@@ -25,16 +25,13 @@
           :key="line"
           :style="`background: ${line.player.color};`"
         >
-          <div 
-            class="text-h6 font-weight-black white--text py-2" 
-            style="display: flex; flex-direction: row; align-items: center"
-          >
+          <div class="song-dialog-response-container py-2">
             <img 
               :src="require(`../../../assets/pfps/${line.player.pfp}.webp`)"
               :alt="line.player.name"
-              style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;"
+              class="song-dialog-pfp"
             />
-            <div>
+            <div class="text-h6 font-weight-black white--text">
               {{ line.player.name }} Contributed:
             </div>
           </div>
@@ -45,12 +42,18 @@
           </div>
         </v-card-text>
         <div class="song-dialog-button-container px-5">
-          <div class="text-h5 font-weight-black white--text">
-            Play Again?
+          <div 
+            @click.stop="playAgain"
+            class="text-h5 song-dialog-button"
+          >
+            Play Again!
           </div>
           <v-spacer></v-spacer>
-          <div class="text-h5 font-weight-black white--text">
-            End Party :(
+          <div 
+            @click.stop="endSession"
+            class="text-h5 song-dialog-button"
+          >
+            End Session :(
           </div>
         </div>
       </v-card> 
@@ -69,13 +72,16 @@ export default {
   components: {
     Podium
   },
+  emits: [
+    'restart-game'
+  ],
   data() {
     return {
       // stores players along with their respective song credits
       scoreCard: [],
       // 'view finished song' button
       endScreenTitleStyles: {
-        opacity: 1,
+        opacity: 0,
         cursor: 'default'
       },
       // true if song dialog is open
@@ -99,6 +105,16 @@ export default {
 
     // sort scorecard by score
     this.scoreCard.sort((a, b) => b.score - a.score)
+  },
+  methods: {
+    endSession() {
+      this.$router.push({
+        name: 'Home' 
+      })
+    },
+    playAgain() {
+      this.$emit('restart-game')
+    }
   }
 }
 </script>
@@ -116,7 +132,29 @@ export default {
   justify-content: center;
 }
 
+.song-dialog-button {
+  cursor: pointer;
+  color: white;
+  font-weight: 900;
+}
 
+.song-dialog-button:hover {
+  text-decoration: underline;
+}
+
+.song-dialog-pfp {
+  width: 40px; 
+  height: 40px; 
+  border-radius: 50%; 
+  margin-right: 10px; 
+  object-fit: cover;
+}
+
+.song-dialog-response-container {
+  display: flex; 
+  flex-direction: row; 
+  align-items: center;
+}
 
 .end-screen-title {
   background: rgba(0, 0, 0, 0.2);
