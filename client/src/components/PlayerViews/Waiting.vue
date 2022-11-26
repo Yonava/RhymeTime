@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Loading room details... -->
-    <div v-if="!connectedToRoom">
+    <div v-if="!hasHostResponded">
       <v-progress-circular
         size="70"
         width="7"
@@ -88,6 +88,10 @@ export default {
       type: Boolean
     },
     socketOnline: {
+      required: true,
+      type: Boolean
+    },
+    hasHostResponded: {
       required: true,
       type: Boolean
     }

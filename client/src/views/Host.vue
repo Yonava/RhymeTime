@@ -195,7 +195,12 @@ export default {
       // handle player kicking
       this.socket.emit('kick-player', {
         clientId,
-        redirect: '/'
+        redirect: {
+          name: 'join',
+          query: {
+            room: this.$store.state.roomid
+          }
+        }
       })
       // remove from playerlist and replace with Open Spot
       this.playerList.splice(playerIndex, 1)
