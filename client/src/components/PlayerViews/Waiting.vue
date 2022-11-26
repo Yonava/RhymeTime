@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div v-if="connectedToRoom">
+    <!-- Loading room details... -->
+    <div v-if="!connectedToRoom">
       <v-progress-circular
         size="70"
         width="7"
