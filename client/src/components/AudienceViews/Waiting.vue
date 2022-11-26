@@ -1,7 +1,10 @@
 <template>
   <ViewDecorator viewTitle="The Room You Joined is Full :(">
     <template #view-content>
-      <div class="text-p audience-text-content">
+      <div 
+        style="line-height: 14pt;"
+        class="text-p"
+      >
         Due to all player slots being filled, 
         we have added you as an audience member
         <br><br>
@@ -22,9 +25,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.audience-text-content {
-  line-height: 15pt;
-}
-</style>
