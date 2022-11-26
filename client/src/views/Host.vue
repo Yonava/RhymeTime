@@ -75,13 +75,7 @@ export default {
           color: 'green',
           pfp: '6',
           clientId: 3
-        },
-        {
-          name: 'Thomas',
-          color: 'green',
-          pfp: '6',
-          clientId: 3
-        },
+        }
       ],
       // prompt responses each round are stored here. response obj format { player: player, response: string }
       promptResponses: [],
@@ -91,42 +85,7 @@ export default {
       totalRounds: 3,
       // responses that won in voting round
       winningResponses: [
-        {
-          player: {
-            name: 'Jack',
-            color: 'red',
-            pfp: '2',
-            clientId: 1
-          },
-          response: 'This is a test response'
-        },
-        {
-          player: {
-            name: 'Josh',
-            color: 'blue',
-            pfp: '3',
-            clientId: 2
-          },
-          response: 'This is a test response'
-        },
-        {
-          player: {
-            name: 'Thomas',
-            color: 'green',
-            pfp: '6',
-            clientId: 3
-          },
-          response: 'This is a test response'
-        },
-        {
-          player: {
-            name: 'Josh',
-            color: 'blue',
-            pfp: '3',
-            clientId: 2
-          },
-          response: 'This is a test response'
-        },
+
       ],
       // true if page is not visible (using visibilitychange event listener)
       isPageHidden: false,

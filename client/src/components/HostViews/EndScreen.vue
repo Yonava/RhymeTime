@@ -8,7 +8,10 @@
       </div>
     </header>
     <div class="center">
-      <div class="podium-container" style="display: flex;">
+      <div 
+        class="podium-container" 
+        style="display: flex;"
+      >
         <div class="podium-width-occupier">
           <div class="third-place-podium center">
             <div class="text-h1 placement-title">
@@ -16,7 +19,10 @@
             </div>
           </div>
           <div class="center">
-            <div class="third-player-card" :style="playerCardYOffset[2]">
+            <div 
+              :style="playerCardYOffset[2]"
+              class="third-player-card" 
+            >
               <PlayerCard :player="scoreCard[2].player" />
             </div>
           </div>
@@ -28,7 +34,10 @@
             </div>
           </div>
           <div class="center">
-            <div class="first-player-card" :style="playerCardYOffset[0]">
+            <div 
+              :style="playerCardYOffset[0]"
+              class="first-player-card" 
+            >
               <PlayerCard :player="scoreCard[0].player" />
             </div>
           </div>
@@ -40,10 +49,64 @@
             </div>
           </div>
           <div class="center">
-            <div class="second-player-card" :style="playerCardYOffset[1]">
+            <div 
+              :style="playerCardYOffset[1]"
+              class="second-player-card" 
+            >
               <PlayerCard :player="scoreCard[1].player" />
             </div>
           </div>
+        </div>
+      </div>
+      <div 
+        :style="`left: 0; ${bottomCardYOffset}`" 
+        class="bottom-container"
+      >
+        <div 
+          v-if="scoreCard[3]" 
+          class="center"
+          style="position: absolute; right: 0"
+        >
+          <div class="text-p font-weight-black white--text">
+            {{ scoreCard[3].player.name }} (4th)
+          </div>
+          <img 
+            :src="require(`../../../assets/pfps/${scoreCard[3].player.pfp}.webp`)"
+            :alt="scoreCard[3].player.name"
+            style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"
+          />
+        </div>
+        <div 
+          v-if="scoreCard[5]" 
+          class="center"
+        >
+          <div class="text-p font-weight-black white--text">
+            {{ scoreCard[5].player.name }} (6th)
+          </div>
+          <img 
+            :src="require(`../../../assets/pfps/${scoreCard[5].player.pfp}.webp`)"
+            :alt="scoreCard[5].player.name"
+            style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"
+          />
+        </div>
+      </div>
+      <div 
+        :style="`right: 0; ${bottomCardYOffset}`" 
+        class="bottom-container"
+      >
+        <div 
+          v-if="scoreCard[4]" 
+          class="center"
+          style="position: absolute; left: 0"
+        >
+          <div class="text-p font-weight-black white--text">
+            {{ scoreCard[4].player.name }} (5th)
+          </div>
+          <img 
+            :src="require(`../../../assets/pfps/${scoreCard[4].player.pfp}.webp`)"
+            :alt="scoreCard[4].player.name"
+            style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"
+          />
         </div>
       </div>
     </div>
@@ -76,7 +139,9 @@ export default {
         {
           transform: 'translateY(0px)'
         }
-      ]
+      ],
+      // bottom card y offset
+      bottomCardYOffset: 'transform: translateY(80px)'
     }
   },
   mounted() {
@@ -97,17 +162,35 @@ export default {
     // sort scorecard by score
     this.scoreCard.sort((a, b) => b.score - a.score)
 
+
+    const LIFT_DELAY = 1500
+
     // lift player cards above podium
     for (let i = 2; i >= 0; i--) {
       setTimeout(() => {
         this.playerCardYOffset[i].transform = 'translateY(-170px)'
-      }, 1500 * (3 - i))
+      }, LIFT_DELAY * (3 - i))
     }
+
+    // lift bottom cards
+    setTimeout(() => {
+      this.bottomCardYOffset = 'transform: translateY(0px)'
+    }, LIFT_DELAY * 4)
   },
 };
 </script>
 
 <style scoped>
+.bottom-container {
+  width: 350px; 
+  height: 80px; 
+  position: absolute; 
+  bottom: 0; 
+  display: flex; 
+  flex-direction: row; 
+  justify-content: center;
+  transition: 750ms ease;
+}
 .third-player-card {
   position: absolute;
   bottom: -10px;
