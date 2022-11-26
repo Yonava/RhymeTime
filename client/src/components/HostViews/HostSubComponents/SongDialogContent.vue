@@ -2,7 +2,7 @@
   <v-card>
     <v-card-text
       v-for="line in winningResponses"
-      :key="line"
+      :key="line.response"
       :style="`background: ${line.player.color};`"
     >
       <div class="song-dialog-response-container py-2">

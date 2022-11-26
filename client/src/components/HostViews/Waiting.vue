@@ -22,7 +22,7 @@
         style="width: 3px; height: 65px; background-color: black"
       ></div>
       <div 
-        @click.stop="openSettings"
+        @click.stop="togglePause"
         class="center" 
         style="width: 100px; cursor: pointer"
       >
@@ -39,26 +39,32 @@
       <h3 class="pt-1">
         {{ displayUrl }}
       </h3>
-      <h1 style="font-size: 50px; font-weight: 1000">
+      <h1 
+        style="font-size: 50px"
+        class="font-weight-black"
+      >
         Room {{ roomId }}
       </h1>
-      <!-- Add this -->
-      <!-- lazy-src="" -->
       <v-img
         :src="qrCodeAPI"
         lazy-src="../../../assets/extras/lazyQR.png"
         width="200"
         class="mb-2"
       ></v-img>
-      <h2 style="font-weight: 1000;">
+      <h2 class="font-weight-black">
         {{ joinMessage }}
       </h2>
     </div>
-    <div class="right-side-box pa-3 pl-6">
+    <!-- Game must have 3 players to start -->
+    <div
+      @click.stop="playerList.length >= 3 ? next() : null"
+      :style="`cursor: ${playerList.length >= 3 ? 'pointer' : 'not-allowed'};`"
+      class="right-side-box pa-3 pl-6"
+    >
       <div 
-        @click.stop="next"
-        class="center" 
-        style="cursor: pointer; flex-direction: row"
+        v-if="playerList.length >= 3"
+        class="center"
+        style="flex-direction: row;"
       >
         <p
           class="side-box-txt" 
@@ -69,6 +75,13 @@
           color="black"
         >mdi-play</v-icon>
       </div>
+      <p
+        v-else
+        class="side-box-txt mr-1" 
+        style="font-size: 20pt; opacity: 0.5"
+      >
+        {{ 3 - playerList.length }} More Needed To Start
+      </p>
     </div>
     <div class="player-card-container">
       <div class="player-card-row">
@@ -113,7 +126,6 @@ export default {
   },
   emits: [
     'round-change',
-    'toggle-pause',
     'player-kicked'
   ],
   methods: {
@@ -128,11 +140,6 @@ export default {
     },
     openSettings() {
       this.$emit('toggle-pause')
-    }
-  },
-  data() {
-    return {
-      rounds: 3
     }
   },
   computed: {
@@ -167,13 +174,6 @@ export default {
         default:
           return `Join Now! ${this.numOfOpenSpots} Spots Left`
       }
-    }
-  },
-  watch: {
-    rounds(v) {
-      const NUM = parseInt(v)
-      if (isNaN(NUM) || NUM < 1) return
-      this.$emit('round-change', NUM)
     }
   }
 }

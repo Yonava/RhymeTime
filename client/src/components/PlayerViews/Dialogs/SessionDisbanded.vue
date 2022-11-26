@@ -51,7 +51,7 @@ export default {
         return {
           title: 'Can\'t Connect to Host',
           text: `Sorry, but we couldn't connect you to the 
-          host of rooom ${this.$store.state.roomid}. Double check
+          host of room ${this.$store.state.roomid}. Double check
           all the digits are correct and try again.`
         }
       }
