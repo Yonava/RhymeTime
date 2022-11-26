@@ -194,11 +194,6 @@ export default {
     font-size: 40px; 
     font-weight: 900;
   }
-  .background-matte {
-    width: 100vw;
-    height: 100vh;
-    background-color: #FFD37E;
-  }
   .send-btn {
     width: 100%;
     height: 62px;
