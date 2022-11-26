@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      currentView: Views.recap,
+      currentView: Views.endScreen,
       socket: null
     }
   }

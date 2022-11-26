@@ -6,7 +6,7 @@
           style="line-height: 16pt;"
           class="text-p"
         >
-          Next round starts soon...
+          Next round starting soon...
         </div>
       </template>
     </ViewDecorator>
