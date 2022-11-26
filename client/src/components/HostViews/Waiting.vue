@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="main-qr-box center px-5">
-      <h3 class="url-display pt-1">
+      <h3 class="pt-1">
         {{ displayUrl }}
       </h3>
       <h1 style="font-size: 50px; font-weight: 1000">
@@ -46,6 +46,7 @@
       <!-- lazy-src="" -->
       <v-img
         :src="qrCodeAPI"
+        lazy-src="../../../assets/extras/lazyQR.png"
         width="200"
         class="mb-2"
       ></v-img>
@@ -236,11 +237,8 @@ p.side-box-txt {
   margin: 0%;
   font-size: 15pt;
 }
-.url-display {
-  /* padding-top: 5px; */
-}
 .player-card-container {
-  width: 55%;
+  width: 80%;
   margin: 10px auto;
 }
 .player-card-row {
