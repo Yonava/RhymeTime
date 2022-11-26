@@ -38,6 +38,10 @@
               :style="playerCardYOffset[0]"
               class="first-player-card" 
             >
+              <img 
+                src="../../../assets/extras/crown.svg"
+                class="player-card-pfp"
+              />
               <PlayerCard :player="scoreCard[0].player" />
             </div>
           </div>

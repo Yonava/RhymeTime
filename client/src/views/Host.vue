@@ -75,7 +75,13 @@ export default {
           color: 'green',
           pfp: '6',
           clientId: 3
-        }
+        },
+        {
+          name: 'Chris',
+          color: 'yellow',
+          pfp: '7',
+          clientId: 6
+        }  
       ],
       // prompt responses each round are stored here. response obj format { player: player, response: string }
       promptResponses: [],
