@@ -16,10 +16,9 @@ import ViewDecorator from './PlayerSubComponents/ViewDecorator.vue'
 export default {
   components: {
     ViewDecorator
-  },
+  }
 }
 </script>
-
 
 <style scoped>
 .recap-content {

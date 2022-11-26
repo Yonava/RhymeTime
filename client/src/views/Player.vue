@@ -56,7 +56,7 @@ export default {
       // contains data received from host through pause-state socket endpt
       pauseData: { gamePaused: false, reason: 'not-paused' },
       // used for host to control which view the player is on
-      currentView: Views.recap,
+      currentView: Views.endScreen,
       // false if no host can be found in room, is set to false every rollcall
       hostPresent: true,
       // hostLeft is different as it only turns false when hostPresent has stayed false for more than n seconds

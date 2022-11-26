@@ -18,7 +18,6 @@ export default {
     }
   }
 }
-
 </script>
 
 <style scoped>
@@ -32,8 +31,8 @@ export default {
   background-color: #FFD37E;
 }
 .player-view-header {
-    width: 100%;
-    height: 70px;
-    background-color: #FFB118;
-  }
+  width: 100%;
+  height: 70px;
+  background-color: #FFB118;
+}
 </style>
