@@ -85,21 +85,6 @@ export default {
     justify-content: center;
     align-items: left;
   }
-  .header {
-    width: 100%;
-    height: 70px;
-    background-color: #FFB118;
-  }
-  .player-view-title {
-    font-size: 40px; 
-    font-weight: 900;
-  }
-  .background-matte {
-    width: 100vw;
-    height: 100vh;
-    background-color: #FFD37E;
-  }
-
   /* for transition group component */
   .list-move {
     transition: all 0.5s ease;

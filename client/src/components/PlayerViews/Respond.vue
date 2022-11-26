@@ -1,56 +1,50 @@
 <template>
-  <div class="background-matte">
-    <header class="header center">
-      <h1 class="player-view-title">
-        Respond
-      </h1>
-    </header>
-    <div class="center">
-      <div class="content-container">
-        <textarea 
-          v-model="response"
-          :style="submitted ? 'opacity: 0.5' : ''"
-          :readonly="submitted"
-          :placeholder="responseBoxPlaceholder"
-          maxlength="110"
-          class="response-text-area text-h5 mt-7" 
-        ></textarea>
-        <div
-          :style="includesPrompt ? 'opacity: 0;' : ''"
-          class="prompt-requirements pl-1 mt-2"
-          ref="promptRequirements"
-        >
-          <v-icon 
-            color="white"
-            class="mr-1"
-          >mdi-alert-circle</v-icon>
-          {{ promptRequirements }}
+  <div>
+    <ViewDecorator name="Respond">
+      <template #view-content>
+        <div class="center">
+          <div class="content-container">
+            <textarea 
+              v-model="response"
+              :style="submitted ? 'opacity: 0.5' : ''"
+              :readonly="submitted"
+              :placeholder="responseBoxPlaceholder"
+              maxlength="110"
+              class="response-text-area text-h5 mt-7" 
+            ></textarea>
+            <div
+              :style="includesPrompt ? 'opacity: 0;' : ''"
+              class="prompt-requirements pl-1 mt-2"
+              ref="promptRequirements"
+            >
+              <v-icon 
+                color="white"
+                class="mr-1"
+              >mdi-alert-circle</v-icon>
+              {{ promptRequirements }}
+            </div>
+            <div 
+              @click.stop="submitResponse"
+              :style="sendBtn.color"
+              class="send-btn center mt-12"
+            >
+              <span class="send-btn-text">
+                {{ sendBtn.text }}
+              </span>
+            </div>
+          </div>
         </div>
-        <div 
-          @click.stop="submitResponse"
-          :style="sendBtn.color"
-          class="send-btn center mt-12"
-        >
-          <span class="send-btn-text">
-            {{ sendBtn.text }}
-          </span>
-        </div>
-      </div>
-    </div>
+      </template>
+    </ViewDecorator>
   </div>
 </template>
 
 <script>
+import ViewDecorator from '@/components/PlayerViews/PlayerSubComponents/ViewDecorator'
+
 export default {
-  data() {
-    return {
-      // stores the text that user enters
-      response: '',
-      // true when player submits on their end
-      submitted: false,
-      // true when server verifies it has received the submission
-      submissionReceived: undefined
-    }
+  components: {
+    ViewDecorator
   },
   props: {
     wordsInPrompt: {
@@ -65,6 +59,16 @@ export default {
       type: Number,
       required: true
     },
+  },
+  data() {
+    return {
+      // stores the text that user enters
+      response: '',
+      // true when player submits on their end
+      submitted: false,
+      // true when server verifies it has received the submission
+      submissionReceived: undefined
+    }
   },
   computed: {
     wordDisplay() {
@@ -184,15 +188,6 @@ export default {
     resize: none;
     font-weight: 300;
     transition: 300ms;
-  }
-  .header {
-    width: 100%;
-    height: 70px;
-    background-color: #FFB118;
-  }
-  .player-view-title {
-    font-size: 40px; 
-    font-weight: 900;
   }
   .send-btn {
     width: 100%;
