@@ -3,7 +3,10 @@
     <div class="background-stripe-1"></div>
     <div class="background-stripe-2"></div>
     <header class="center mt-10">
-      <div class="text-h1 end-screen-title font-weight-black white--text px-7 py-5">
+      <div 
+        :style="endScreenTitleStyles"
+        class="text-h1 end-screen-title font-weight-black white--text px-7 py-5"
+      >
         View Finished Song
       </div>
     </header>
@@ -156,7 +159,12 @@ export default {
         'background: #FFD700',
         'background: #C0C0C0',
         'background: #CD7F32'
-      ]
+      ],
+      // 'view finished song' button
+      endScreenTitleStyles: {
+        opacity: 0,
+        cursor: 'default'
+      }
     }
   },
   methods: {
@@ -191,11 +199,12 @@ export default {
 
 
     const LIFT_DELAY = 750
+    const DELAY_BETWEEN_LIFTS = 1000
 
     // lift player cards above podium
     for (let i = 2; i >= 0; i--) {
       // leaves breathing room in between reveals
-      await new Promise((resolve) => setTimeout(() => resolve(), 1000))
+      await new Promise((resolve) => setTimeout(() => resolve(), DELAY_BETWEEN_LIFTS))
 
       // colors the podium
       setTimeout(() => {
@@ -211,6 +220,16 @@ export default {
     // lift bottom cards
     setTimeout(() => {
       this.bottomCardYOffset = 'transform: translateY(0px)'
+      this.endScreenTitleStyles = {
+        opacity: 1,
+      }
+      // delays transition to allow for default class transition
+      setTimeout(() => {
+        this.endScreenTitleStyles = {
+          transition: '300ms',
+          cursor: 'pointer'
+        }
+      }, 100)
     }, LIFT_DELAY * 4)
   },
 };
@@ -254,9 +273,8 @@ export default {
 .end-screen-title {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
-  cursor: pointer;
   z-index: 2;
-  transition: 300ms;
+  transition: 3s;
 }
 .end-screen-title:hover {
   background: rgba(0, 0, 0, 0.5);
