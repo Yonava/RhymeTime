@@ -4,6 +4,7 @@
     <div class="background-stripe-2"></div>
     <header class="center mt-10">
       <div 
+        @click.stop="showSong = !showSong"
         :style="endScreenTitleStyles"
         class="text-h1 end-screen-title font-weight-black white--text px-7 py-5"
       >
@@ -14,6 +15,37 @@
       :scoreCard="scoreCard"
       @update-title-styles="endScreenTitleStyles = $event"
     />
+    <v-dialog
+      v-model="showSong"
+      max-width="600"
+    >
+      <v-card>
+        <v-card-text
+          v-for="line in winningResponses"
+          :key="line"
+          :style="`background: ${line.player.color};`"
+        >
+          <div 
+            class="text-h6 font-weight-black white--text py-2" 
+            style="display: flex; flex-direction: row; align-items: center"
+          >
+            <img 
+              :src="require(`../../../assets/pfps/${line.player.pfp}.webp`)"
+              :alt="line.player.name"
+              style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;"
+            />
+            <div>
+              {{ line.player.name }} Contributed:
+            </div>
+          </div>
+          <div 
+            class="text-h5 white--text"
+          >
+            {{ line.response }}
+          </div>
+        </v-card-text>
+      </v-card> 
+    </v-dialog>
   </div>
 </template>
 
@@ -34,9 +66,11 @@ export default {
       scoreCard: [],
       // 'view finished song' button
       endScreenTitleStyles: {
-        opacity: 0,
+        opacity: 1,
         cursor: 'default'
-      }
+      },
+      // true if song dialog is open
+      showSong: false
     }
   },
   mounted() {
@@ -45,7 +79,7 @@ export default {
       this.scoreCard.push({
         player,
         score: 0,
-      });
+      })
     })
 
     // increments the score of the player who submitted the winning response

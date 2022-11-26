@@ -105,6 +105,60 @@ export default {
       totalRounds: 3,
       // responses that won in voting round
       winningResponses: [
+        {
+          player: {
+            name: 'Jack',
+            color: 'red',
+            pfp: '2',
+            clientId: 1
+          },
+          response: 'I am a response from Jack and I am the best response in the world lol i can go on forever, i am taking up space to porve that yonas ui can handle it'
+        },
+        {
+          player: {
+            name: 'Josh',
+            color: 'blue',
+            pfp: '3',
+            clientId: 2
+          },
+          response: 'I am a response from Joshcan go on forever, i am taking up space to porve that yonas ui cacan go on forever, i am taking up space to porve that yonas ui cacan go on forever, i am taking up space to porve that yonas ui ca'
+        },
+        {
+          player: {
+            name: 'Thomas',
+            color: 'green',
+            pfp: '6',
+            clientId: 3
+          },
+          response: 'I am a response from Thomascan go on forever, i am taking up space to porve that yonas ui cacan go on forever, i am taking up space to porve that yonas ui cacan go on forever, i am taking up space to porve that yonas ui ca'
+        },
+        {
+          player: {
+            name: 'Chris',
+            color: 'yellow',
+            pfp: '7',
+            clientId: 6
+          },
+          response: 'I am a response from Chris'
+        },
+        {
+          player: {
+            name: 'Safi',
+            color: 'orange',
+            pfp: '8',
+            clientId: 4
+          },
+          response: 'I am a response from safi'
+        },
+        {
+          player: {
+            name: 'Yona',
+            color: 'yellow',
+            pfp: '7',
+            clientId: 5
+          },
+          response: 'I am a response from yona'
+        },
       ],
       // true if page is not visible (using visibilitychange event listener)
       isPageHidden: false,
