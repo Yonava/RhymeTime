@@ -162,12 +162,12 @@ export default {
   methods: {
     podiumColorTransition(index) {
       const STARTING_COLOR = this.podiumColor[index].split(' ')[1]
-      // increments color by .25% each iteration until it reaches 100%
-      for (let i = 0; i < 402; i++) {
+      // increments color by .125% each iteration until it reaches 100%
+      for (let i = 0; i < 802; i++) {
         setTimeout(() => {
           this.podiumColor[index] = `background: linear-gradient(to top, ${this.scoreCard[index].player.color} ${i / 4}%, 0%, ${STARTING_COLOR})`
           this.$forceUpdate()
-        }, i * 2)
+        }, i * 1.5)
       }
     }
   },
