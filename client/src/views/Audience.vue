@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      currentView: Views.respond,
+      currentView: Views.recap,
       socket: null
     }
   }
