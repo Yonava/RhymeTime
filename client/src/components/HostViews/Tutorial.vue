@@ -1,19 +1,27 @@
 <template>
   <div class="background-matte center">
-    <h1>Tutorial Animation</h1>
+    <h1 class="tutorial-title">
+      Tutorial Animation
+    </h1>
     <div 
       :style="voteDisplayColor"
       class="vote-display-container center" 
     >
-      <h3>Vote To Skip</h3>
+      <h3 class="skip-vote-text">
+        Vote To Skip
+      </h3>
       <h2 
         class="vote-display-number"
         style="left: 2.5%"
-      >{{ votesForSkip }}</h2>
+      >
+        {{ votesForSkip }}
+      </h2>
       <h2 
         class="vote-display-number"
         style="right: 2.5%"
-      >{{ votesAgainstSkip }}</h2>
+      >
+        {{ votesAgainstSkip }}
+      </h2>
     </div>
   </div>
 </template>
@@ -76,6 +84,7 @@ export default {
       let totalVotes = this.votesForSkip + this.votesAgainstSkip
       let percentAgainst = Math.round((this.votesAgainstSkip / totalVotes) * 100)
       let diff = percentAgainst - this.againstPercentOnDisplay
+      
       if (!diff) return
 
       // milliseconds per 1/4 percent move on display
@@ -107,7 +116,7 @@ export default {
     width: 100vw;
     position: fixed;
   }
-  h1 {
+  .tutorial-title {
     color: white;
     font-size: 60pt;
     font-weight: 1000;
@@ -126,7 +135,7 @@ export default {
     font-size: 32pt;
     position: absolute;
   }
-  h3 {
+  .skip-vote-text {
     color: white;
     font-weight: 1000;
     font-size: 20pt;
