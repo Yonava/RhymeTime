@@ -73,9 +73,9 @@
           {{ scoreCard[3].player.name }} (4th)
         </div>
         <img 
-          :src="require(`../../../../assets/pfps/${scoreCard[3].player.pfp}.webp`)"
+          :src="getPfp(3)"
           :alt="scoreCard[3].player.name"
-          style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"
+          class="bottom-pfp"
         />
       </div>
       <div 
@@ -86,9 +86,9 @@
           {{ scoreCard[5].player.name }} (6th)
         </div>
         <img 
-          :src="require(`../../../../assets/pfps/${scoreCard[5].player.pfp}.webp`)"
+          :src="getPfp(5)"
           :alt="scoreCard[5].player.name"
-          style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"
+          class="bottom-pfp"
         />
       </div>
     </div>
@@ -105,9 +105,9 @@
           {{ scoreCard[4].player.name }} (5th)
         </div>
         <img 
-          :src="require(`../../../../assets/pfps/${scoreCard[4].player.pfp}.webp`)"
+          :src="getPfp(4)"
           :alt="scoreCard[4].player.name"
-          style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;"
+          class="bottom-pfp"
         />
       </div>
     </div>
@@ -127,7 +127,9 @@ export default {
       required: true
     }
   },
-  emits: ['update-title-styles'],
+  emits: [
+    'update-title-styles'
+  ],
   data() {
     return {
       // stores the y offset of the player card
@@ -198,12 +200,21 @@ export default {
           this.$forceUpdate()
         }, i * 1.5)
       }
+    },
+    getPfp(pfp) {
+      return require(`../../../../assets/pfps/${pfp}.webp`)
     }
   },
 }
 </script>
 
 <style scoped>
+.bottom-pfp {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+}
 .bottom-container {
   width: 350px; 
   height: 80px; 
