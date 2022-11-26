@@ -28,7 +28,7 @@ export default {
   },
   data() {
     return {
-      currentView: Views.endScreen,
+      currentView: Views.waiting,
       socket: null
     }
   }

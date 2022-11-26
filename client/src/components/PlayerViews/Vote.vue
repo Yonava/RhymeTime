@@ -1,41 +1,42 @@
 <template>
-  <div class="background-matte">
-    <header class="header center">
-      <h1 class="player-view-title">
-        Drag To Vote
-      </h1>
-    </header>
-    <div class="center mt-6">
-      <div class="content-container">
-        <draggable 
-          v-model="candidates"
-          @change="submitBallot"
-        >
-          <TransitionGroup name="list">
-            <div 
-              v-for="candidate in candidates" 
-              :key="candidate.player.clientId"
+  <div>
+    <ViewDecorator viewTitle="Drag to Vote">
+      <template #view-content>
+        <div class="center mt-6">
+          <div class="content-container">
+            <draggable 
+              v-model="candidates"
+              @change="submitBallot"
             >
-              <PlayerCard
-                :player="candidate.player"
-                :response="candidate.response"
-              />
-            </div>
-          </TransitionGroup>
-        </draggable>
-      </div>
-    </div>
+              <TransitionGroup name="list">
+                <div 
+                  v-for="candidate in candidates" 
+                  :key="candidate.player.clientId"
+                >
+                  <PlayerCard
+                    :player="candidate.player"
+                    :response="candidate.response"
+                  />
+                </div>
+              </TransitionGroup>
+            </draggable>
+          </div>
+        </div>
+      </template>
+    </ViewDecorator>
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
 import PlayerCard from './PlayerSubComponents/PlayerCard.vue'
+import ViewDecorator from './PlayerSubComponents/ViewDecorator.vue'
 
 export default {
   components: {
     draggable,
-    PlayerCard
+    PlayerCard,
+    ViewDecorator
   },
   props: {
     clientId: {
