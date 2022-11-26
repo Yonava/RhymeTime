@@ -63,7 +63,7 @@ export default {
       // stores what round the game is on
       roundCount: 1,
       // number of rounds that are to be played
-      totalRounds: 3,
+      totalRounds: 1,
       // responses that won in voting round
       winningResponses: [],
       // true if page is not visible (using visibilitychange event listener)

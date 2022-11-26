@@ -1,6 +1,6 @@
 <template>
-  <div class="center">
-    <div v-if="loading">
+  <div>
+    <div v-if="connectedToRoom">
       <v-progress-circular
         size="70"
         width="7"
@@ -9,7 +9,10 @@
         indeterminate
       ></v-progress-circular>
     </div>
-    <div v-else>
+    <div 
+      v-else
+      class="center"
+    >
       <header 
         :style="headerColor"
         class="player-waiting-header center" 
@@ -93,8 +96,6 @@ export default {
   ],
   data() {
     return {
-      // loading until player is connected to room
-      loading: true,
       numOfPfps: 8,
       selectedPfp: 1,
       selectedColor: 'orange',
@@ -193,7 +194,7 @@ export default {
   font-weight: 1000;
 }
 
-.player-waiting-subtitle{
+.player-waiting-subtitle {
   font-size: 25pt;
   font-weight: 1000;
 }
