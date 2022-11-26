@@ -44,6 +44,15 @@
             {{ line.response }}
           </div>
         </v-card-text>
+        <div class="song-dialog-button-container px-5">
+          <div class="text-h5 font-weight-black white--text">
+            Play Again?
+          </div>
+          <v-spacer></v-spacer>
+          <div class="text-h5 font-weight-black white--text">
+            End Party :(
+          </div>
+        </div>
       </v-card> 
     </v-dialog>
   </div>
@@ -95,6 +104,20 @@ export default {
 </script>
 
 <style scoped>
+
+.song-dialog-button-container {
+  position: sticky; 
+  bottom: 0; 
+  background: rgba(0, 0, 0, 0.75); 
+  height: 65px; 
+  display: flex; 
+  flex-direction: row; 
+  align-items: center; 
+  justify-content: center;
+}
+
+
+
 .end-screen-title {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
