@@ -7,7 +7,7 @@
       :clientId="clientId"
       :connectedToRoom="connectedToRoom"
       :socketOnline="socketOnline"
-      @connected-to-room="connected = true"
+      @connected-to-room="connectedToRoom = true"
     ></component>
 
     <!-- Dialog Boxes -->

@@ -95,6 +95,13 @@ export default {
   emits: [
     'connected-to-room'
   ],
+  created() {
+    this.selectedPfp = Math.floor(Math.random() * this.numOfPfps) + 1
+    this.selectedColor = this.colors[Math.floor(Math.random() * this.colors.length)]
+    if (!this.connectedToRoom) {
+      this.emitPlayerObject()
+    }
+  },
   data() {
     return {
       numOfPfps: 8,
@@ -131,18 +138,13 @@ export default {
       // if client is already connected to a room
       if (this.connectedToRoom) return
 
-      // selects random starting color
-      const RAND_INDEX = Math.floor(Math.random() * this.colors.length)
-      this.selectedColor = this.colors[RAND_INDEX]
-
-      // selects random starting pfp (ranged 1-8)
-      this.selectedPfp = Math.floor(Math.random() * this.numOfPfps) + 1
       this.socketInstance.emit('player-join', {
         name: this.clientName,
         color: this.selectedColor,
         pfp: this.selectedPfp,
         clientId: this.clientId
       })
+
       this.$emit('connected-to-room')
     },
     emitPlayerObject() {
