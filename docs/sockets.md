@@ -30,7 +30,7 @@ they are added to the playerList
 <b>Data in Payload</b> joinRequest: { redirect: string, clientId: number }
 <br>
 Used by host to kick client from player pool. The object format
-allows the host to specify the route they want to kicked client to redirct to
+allows the host to specify the route they want the kicked client to redirct to
 as well as the clientId to uniquely specificy their request to the client that
 is targeted.
 
