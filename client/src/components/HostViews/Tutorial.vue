@@ -1,5 +1,20 @@
 <template>
   <div class="background-matte center">
+    <div 
+      style="position: fixed; top: 0; left: 0;"
+      class="ma-8"
+    >
+      <v-btn
+        @click.stop="togglePause"
+        color="white"
+        fab
+        small
+      >
+        <v-icon>
+          mdi-pause
+        </v-icon>
+      </v-btn>
+    </div>
     <h1 class="tutorial-title">
       Tutorial Animation
     </h1>
@@ -33,6 +48,9 @@ import { Views } from '@/utils/Views'
 export default {
   mixins: [
     HostMixin
+  ],
+  emits: [
+    'change-view'
   ],
   data() {
     return {
@@ -141,5 +159,5 @@ export default {
     font-size: 20pt;
     position: relative;
     top: -85%
-  } 
+  }
 </style>
