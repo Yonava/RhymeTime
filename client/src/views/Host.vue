@@ -57,26 +57,7 @@ export default {
       // sets the current view of the game, emits to players
       currentView: Views.waiting,
       // playerlist contains player objects for every connected player
-      playerList: [
-        {
-          name: 'Player 1',
-          clientId: 133,
-          color: '#FF0000',
-          pfp: '7'
-        },
-        {
-          name: 'Player 2',
-          clientId: 133,
-          color: '#FF0000',
-          pfp: '7'
-        },
-        {
-          name: 'Player 3',
-          clientId: 133,
-          color: '#FF0000',
-          pfp: '7'
-        }
-      ],
+      playerList: [],
       // prompt responses each round are stored here. response obj format { player: player, response: string }
       promptResponses: [],
       // stores what round the game is on
@@ -122,6 +103,7 @@ export default {
         })
       })
       this.socket.on('player-join', player => {
+        console.log(player.name, 'joined')
         // game has started or room is full, send player to audience
         const ROOM_FULL = this.numOfPlayerSpots <= this.playerList.length
         if (this.currentView !== Views.waiting || ROOM_FULL) {

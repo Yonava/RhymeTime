@@ -77,7 +77,7 @@ export default {
   },
   methods: {
     endSession() {
-      this.$router.replace({ 
+      this.$router.push({ 
         name: 'home' 
       })
     },

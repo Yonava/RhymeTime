@@ -8,7 +8,7 @@
         {{ clientName }}
       </h1>
       <v-img
-        :src="require(`../../../assets/pfps/${selectedPfp}.webp`)"
+        :src="selectedPfpSource"
         class="selected-pfp"
       ></v-img>
     </header>
@@ -67,28 +67,25 @@ export default {
     clientId: {
       required: true,
       type: Number
+    },
+    connectedToRoom: {
+      required: true,
+      type: Boolean
+    },
+    socketOnline: {
+      required: true,
+      type: Promise
     }
   },
-  mounted() {
-    // selects random starting color
-    const RAND_INX = Math.floor(Math.random() * this.colors.length)
-    this.selectedColor = this.colors[RAND_INX]
-
-    // selects random starting pfp
-    this.selectedPfp = Math.floor(Math.random() * this.numOfPfps) + 1 
-  
-    setTimeout(() => {
-      this.socketInstance.emit('player-join', {
-        name: this.clientName,
-        color: this.selectedColor,
-        pfp: this.selectedPfp,
-        clientId: this.clientId
-      })
-    }, 2000);
-  },
+  emits: [
+    'connected-to-room'
+  ],
   data() {
     return {
+      // loading until player is connected to room
+      loading: true,
       numOfPfps: 8,
+      selectedPfp: 1,
       selectedColor: 'orange',
       colors: [
         'orange',
@@ -99,8 +96,7 @@ export default {
         'blue',
         'black',
         'green'
-      ],
-      selectedPfp: 1
+      ]
     }
   },
   computed: {
@@ -112,9 +108,30 @@ export default {
     },
     headerColor() {
       return `background-color: ${this.selectedColor}`
+    },
+    selectedPfpSource() {
+      return require(`../../../assets/pfps/${this.selectedPfp}.webp`)
     }
   },
   methods: {
+    connectToRoom() {
+      // if client is already connected to a room
+      if (this.connectedToRoom) return
+
+      // selects random starting color
+      const RAND_INDEX = Math.floor(Math.random() * this.colors.length)
+      this.selectedColor = this.colors[RAND_INDEX]
+
+      // selects random starting pfp (ranged 1-8)
+      this.selectedPfp = Math.floor(Math.random() * this.numOfPfps) + 1
+      this.socketInstance.emit('player-join', {
+        name: this.clientName,
+        color: this.selectedColor,
+        pfp: this.selectedPfp,
+        clientId: this.clientId
+      })
+      this.$emit('connected-to-room')
+    },
     emitPlayerObject() {
       this.socketInstance.emit('player-object-change', {
         name: this.clientName,
@@ -135,6 +152,11 @@ export default {
     },
     selectedPfp() {
       this.emitPlayerObject()
+    },
+    socketOnline(v) {
+      if (v) {
+        this.connectToRoom()
+      }
     }
   }
 }
