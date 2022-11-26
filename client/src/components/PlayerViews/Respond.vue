@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ViewDecorator name="Respond">
+    <ViewDecorator viewTitle="Respond">
       <template #view-content>
         <div class="center">
           <div class="content-container">
