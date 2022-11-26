@@ -91,7 +91,42 @@ export default {
       totalRounds: 3,
       // responses that won in voting round
       winningResponses: [
-
+        {
+          player: {
+            name: 'Jack',
+            color: 'red',
+            pfp: '2',
+            clientId: 1
+          },
+          response: 'I am a response'
+        },
+        {
+          player: {
+            name: 'Josh',
+            color: 'blue',
+            pfp: '3',
+            clientId: 2
+          },
+          response: 'I am a response'
+        },
+        {
+          player: {
+            name: 'Thomas',
+            color: 'green',
+            pfp: '6',
+            clientId: 3
+          },
+          response: 'I am a response'
+        },
+        {
+          player: {
+            name: 'Chris',
+            color: 'yellow',
+            pfp: '7',
+            clientId: 6
+          },
+          response: 'I am a response'
+        }
       ],
       // true if page is not visible (using visibilitychange event listener)
       isPageHidden: false,

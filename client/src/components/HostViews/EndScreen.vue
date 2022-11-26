@@ -13,7 +13,10 @@
         style="display: flex;"
       >
         <div class="podium-width-occupier">
-          <div class="third-place-podium center">
+          <div 
+            :style="podiumColor[2]"
+            class="third-place-podium center"
+          >
             <div class="text-h1 placement-title">
               3rd
             </div>
@@ -28,7 +31,10 @@
           </div>
         </div>
         <div class="podium-width-occupier">
-          <div class="first-place-podium center">
+          <div 
+            :style="podiumColor[0]"
+            class="first-place-podium center"
+          >
             <div class="text-h1 placement-title">
               1st
             </div>
@@ -38,16 +44,16 @@
               :style="playerCardYOffset[0]"
               class="first-player-card" 
             >
-              <img 
-                src="../../../assets/extras/crown.svg"
-                class="player-card-pfp"
-              />
+              <img src="../../../assets/extras/crown.svg" />
               <PlayerCard :player="scoreCard[0].player" />
             </div>
           </div>
         </div>
         <div class="podium-width-occupier">
-          <div class="second-place-podium center">
+          <div 
+            :style="podiumColor[1]"
+            class="second-place-podium center"
+          >
             <div class="text-h1 placement-title">
               2nd
             </div>
@@ -145,10 +151,27 @@ export default {
         }
       ],
       // bottom card y offset
-      bottomCardYOffset: 'transform: translateY(80px)'
+      bottomCardYOffset: 'transform: translateY(80px)',
+      podiumColor: [
+        'background: #FFD700',
+        'background: #C0C0C0',
+        'background: #CD7F32'
+      ]
     }
   },
-  mounted() {
+  methods: {
+    podiumColorTransition(index) {
+      const STARTING_COLOR = this.podiumColor[index].split(' ')[1]
+      // increments color by .25% each iteration until it reaches 100%
+      for (let i = 0; i < 402; i++) {
+        setTimeout(() => {
+          this.podiumColor[index] = `background: linear-gradient(to top, ${this.scoreCard[index].player.color} ${i / 4}%, 0%, ${STARTING_COLOR})`
+          this.$forceUpdate()
+        }, i * 2)
+      }
+    }
+  },
+  async mounted() {
     // initializes the scorecard
     this.playerList.forEach((player) => {
       this.scoreCard.push({
@@ -167,10 +190,19 @@ export default {
     this.scoreCard.sort((a, b) => b.score - a.score)
 
 
-    const LIFT_DELAY = 1500
+    const LIFT_DELAY = 750
 
     // lift player cards above podium
     for (let i = 2; i >= 0; i--) {
+      // leaves breathing room in between reveals
+      await new Promise((resolve) => setTimeout(() => resolve(), 1000))
+
+      // colors the podium
+      setTimeout(() => {
+        this.podiumColorTransition(i)
+      }, LIFT_DELAY * (2 - i))
+
+      // lifts the player card
       setTimeout(() => {
         this.playerCardYOffset[i].transform = 'translateY(-170px)'
       }, LIFT_DELAY * (3 - i))
@@ -234,7 +266,6 @@ export default {
   bottom: 0;
   width: 200px;
   height: 150px;
-  background: #CD7F32;
   z-index: 2;
 }
 .second-place-podium {
@@ -242,7 +273,6 @@ export default {
   bottom: 0;
   width: 200px;
   height: 240px;
-  background: #C0C0C0;
   z-index: 2;
 }
 .first-place-podium {
@@ -250,7 +280,6 @@ export default {
   bottom: 0;
   width: 200px;
   height: 350px;
-  background: #FFD700;
   z-index: 2;
 }
 .podium-width-occupier {
