@@ -77,8 +77,8 @@ export default {
   },
   methods: {
     endSession() {
-      this.$router.push({
-        name: 'Home' 
+      this.$router.replace({ 
+        name: 'home' 
       })
     },
     playAgain() {

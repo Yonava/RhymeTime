@@ -34,7 +34,7 @@
         <div class="center">
           <div 
             :style="playerCardYOffset[0]"
-            class="first-player-card" 
+            class="first-player-card center" 
           >
             <img src="../../../../assets/extras/crown.svg" />
             <PlayerCard :player="scoreCard[0].player" />

@@ -59,43 +59,23 @@ export default {
       // playerlist contains player objects for every connected player
       playerList: [
         {
-            name: 'Safi',
-            color: 'orange',
-            pfp: '8',
-            clientId: 4
-          },
-           {
-            name: 'Yona',
-            color: 'yellow',
-            pfp: '7',
-            clientId: 5
-          },
-        {
-          name: 'Jack',
-          color: 'red',
-          pfp: '2',
-          clientId: 1
+          name: 'Player 1',
+          clientId: 133,
+          color: '#FF0000',
+          pfp: '7'
         },
         {
-          name: 'Josh',
-          color: 'blue',
-          pfp: '3',
-          clientId: 2
+          name: 'Player 2',
+          clientId: 133,
+          color: '#FF0000',
+          pfp: '7'
         },
         {
-          name: 'Thomas',
-          color: 'green',
-          pfp: '6',
-          clientId: 3
-        },
-        {
-          name: 'Chris',
-          color: 'yellow',
-          pfp: '7',
-          clientId: 6
-        },
-       
-          
+          name: 'Player 3',
+          clientId: 133,
+          color: '#FF0000',
+          pfp: '7'
+        }
       ],
       // prompt responses each round are stored here. response obj format { player: player, response: string }
       promptResponses: [],
@@ -104,17 +84,7 @@ export default {
       // number of rounds that are to be played
       totalRounds: 3,
       // responses that won in voting round
-      winningResponses: [
-        {
-          player: {
-            name: 'Jack',
-            color: 'red',
-            pfp: '2',
-            clientId: 1
-          },
-          response: 'I am a response from Jack and I am the best response in the world lol i can go on forever, i am taking up space to porve that yonas ui can handle it'
-        }
-      ],
+      winningResponses: [],
       // true if page is not visible (using visibilitychange event listener)
       isPageHidden: false,
       // if host selects to pause game
