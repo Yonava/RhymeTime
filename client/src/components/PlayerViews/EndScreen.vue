@@ -2,7 +2,7 @@
   <div>
     <ViewDecorator viewTitle="Thanks For Playing">
       <template #view-content>
-        <div class="text-h4 recap-content font-weight-bold">
+        <div class="text-h4 end-screen-content font-weight-bold">
             This game has concluded, thank you for playing.
             <br><br>
             Take a look at the final scoreboard on the hosts screen.
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style scoped>
-.recap-content {
+.end-screen-content {
   position: fixed;
   top: 50%;
   left: 50%;
