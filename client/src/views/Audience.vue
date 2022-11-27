@@ -2,12 +2,15 @@
   <div>
     <div v-if="receivedCurrentView">
       <v-btn 
+        @click.stop="leaveRoom"
         text 
         color="black"
-        style="position: fixed;"
+        style="position: fixed; top: 0; left: 0; z-index: 1000;"
       >
         <v-icon>mdi-chevron-left</v-icon>
-        <span>Leave Room {{ roomId }}</span>
+        <span>
+          Leave Room {{ roomId }}
+        </span>
       </v-btn>
       <component
         :is="currentView"
@@ -51,9 +54,9 @@ export default {
   },
   data() {
     return {
-      currentView: Views.waiting,
+      currentView: Views.vote,
       socket: null,
-      receivedCurrentView: false
+      receivedCurrentView: true
     }
   },
   mounted() {
@@ -98,6 +101,11 @@ export default {
       this.socket.on('audience-change-view', (view) => {
         this.currentView = view
         this.receivedCurrentView = true
+      })
+    },
+    leaveRoom() {
+      this.$router.push({ 
+        name: 'join'
       })
     }
   }

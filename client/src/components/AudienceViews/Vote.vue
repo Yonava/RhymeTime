@@ -1,42 +1,47 @@
 <template>
   <div>
-    <ViewDecorator viewTitle="Boost A Player">
-      <template #view-content>
-        <div 
-          :style="boostButtonOpacity"
-          class="audience-vote-content pa-3"
-        >
+    <div class="background-blend"></div>
+    <div class="top-background"></div>
+    <div class="my-5"></div>
+    <div style="position: fixed">
+      <ViewDecorator viewTitle="Boost A Player">
+        <template #view-content>
           <div 
-            v-for="player in candidates"
-            :key="player.clientId"
+            :style="boostButtonOpacity"
+            class="audience-vote-content pa-3"
           >
             <div 
-              @click.stop="vote(player)"
-              :style="playerColor(player)"
-              class="circle-vote-button"
+              v-for="player in candidates"
+              :key="player.clientId"
             >
-              {{ player.name }}
+              <div 
+                @click.stop="vote(player)"
+                :style="playerColor(player)"
+                class="circle-vote-button"
+              >
+                {{ player.name }}
+              </div>
             </div>
           </div>
-        </div>
-        <div v-if="boostedPlayer">
-          <div 
-            :style="boostedPlayerColor"
-            class="boosted-player-display pa-3 mx-7"
-          >
-            <img 
-              :src="require(`../../../assets/pfps/${boostedPlayer.pfp}.webp`)"
-              :alt="`${boostedPlayer.name}'s profile picture`"
-              class="boosted-player-pfp"
-            />
-            <div class="text-h5 font-weight-black white--text ml-2">
-              {{ boostedPlayer.name }} Boosted
+          <div v-if="boostedPlayer">
+            <div 
+              :style="boostedPlayerColor"
+              class="boosted-player-display pa-3 mx-7"
+            >
+              <img 
+                :src="require(`../../../assets/pfps/${boostedPlayer.pfp}.webp`)"
+                :alt="`${boostedPlayer.name}'s profile picture`"
+                class="boosted-player-pfp"
+              />
+              <div class="text-h5 font-weight-black white--text ml-2">
+                {{ boostedPlayer.name }} Boosted
+              </div>
+              <v-spacer></v-spacer>
             </div>
-            <v-spacer></v-spacer>
           </div>
-        </div>
-      </template>
-    </ViewDecorator>
+        </template>
+      </ViewDecorator>
+    </div>
   </div>
 </template>
 
@@ -54,15 +59,33 @@ export default {
   },
   data() {
     return {
-      candidates: [],
+      candidates: [
+        {
+          name: 'Player 1',
+          clientId: 123,
+          pfp: '1',
+          color: '#FF0000'
+        }
+      ],
       // player user has selected to boost
       boostedPlayer: null
     }
   },
   mounted() {
     this.socketInstance.on('candidate-list', (newCandidates) => {
+      // right now, boosterPlayer gets incorrectly reset in the edge case
+      // were a player rejoins mid-match and pings 'get-game-state'
       this.boostedPlayer = null
-      this.candidates = newCandidates
+
+      // remove response property from candidates
+      this.candidates = newCandidates.map((candidate) => {
+        return {
+          name: candidate.player.name,
+          clientId: candidate.player.clientId,
+          pfp: candidate.player.pfp,
+          color: candidate.player.color
+        }
+      })
     })
   },
   computed: {
@@ -127,5 +150,14 @@ export default {
   height: 60px;
   border-radius: 10px;
   object-fit: cover;
+}
+
+.top-background {
+  position: fixed;
+  top: 0;
+  background-color: #FFB118 ;
+  width: 100%;
+  height: 35px;
+  z-index: 1;
 }
 </style>

@@ -72,7 +72,7 @@ export default {
       // if host selects to pause game
       manuallyPaused: false,
       // number of player spots offered in room
-      numOfPlayerSpots: 0,
+      numOfPlayerSpots: 6,
       // how many members are in the audience
       audienceCount: 0
     }
