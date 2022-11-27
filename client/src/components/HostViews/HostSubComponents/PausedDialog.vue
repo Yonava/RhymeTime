@@ -5,6 +5,8 @@
   >
     <v-card class="pause-card pa-3">
       <div class="center">
+
+        <!-- join audience bubble -->
         <div class="center">
           <div class="pause-card-header center px-4 py-3">
             <div 
@@ -21,6 +23,8 @@
             </v-card-title>
           </div>
           <div class="triangle-down mb-2"></div>
+
+          <!-- join audience qr code -->
           <v-img
             :src="qrCodeAPI"
             lazy-src="../../../../assets/extras/lazyQR.png"
@@ -29,18 +33,34 @@
           ></v-img>
         </div>
         <div class="divider mt-3 mb-2"></div>
-        Round
-        <v-progress-circular
-          :value="gameProgress"
-          color="blue"
-          size="50"
-        >
-          {{ roundCount }}/{{ totalRounds }}
-        </v-progress-circular>
+
+        <!-- round number & players -->
+        <div class="text-h5 font-weight-black mb-2">
+          Game Info
+        </div>
+        <div>
+          <div class="text-h6 font-weight-black">
+            <span class="mr-3">Round:</span>
+            <v-progress-circular
+              :value="gameProgress"
+              color="#FFB118"
+              size="63"
+              width="10"
+            >
+              <div class="text-h6 font-weight-black black--text">
+                {{ roundCount }}/{{ totalRounds }}
+              </div>
+            </v-progress-circular>
+          </div>
+        </div>
         <div class="ma-2">
           Players In Room: {{ playersPresent }}
         </div>
+
+
         <div class="divider ma-2"></div>
+        
+        <!-- Volume Settings -->
         <div class="text-h5 font-weight-black mb-2">
           Volume Settings
         </div>
@@ -48,6 +68,7 @@
           <div class="text-h6 font-weight-black">
             Music:
           </div>
+
           <v-slider
             v-model="musicVolume"
             color="green"
@@ -58,7 +79,7 @@
           >
             <template #prepend>
               <v-icon
-                @click.stop="musicVolume ? musicVolume = 0 : musicVolume = 100"
+                @click.stop="toggleMusicVolume"
                 color="black"
               >{{ volumeIcon(musicVolume) }}</v-icon>
             </template>
@@ -78,24 +99,12 @@
           >
             <template #prepend>
               <v-icon
-                @click.stop="sfxVolume ? sfxVolume = 0 : sfxVolume = 100"
+                @click.stop="toggleSfxVolume"
                 color="black"
               >{{ volumeIcon(sfxVolume) }}</v-icon>
             </template>
           </v-slider>
         </div>
-        <v-card-actions> 
-          <div 
-            @click.stop="exit"
-            style="cursor: pointer; position: absolute; left: 0"
-            class="ml-3"
-          >
-            <v-icon color="red">
-              mdi-arrow-left-bold-circle
-            </v-icon>
-            Disband Game
-          </div>
-        </v-card-actions>
       </div>
     </v-card>
     
@@ -182,6 +191,20 @@ export default {
     }
   },
   methods: {
+    toggleMusicVolume() {
+      if (this.musicVolume) {
+        this.musicVolume = 0
+      } else {
+        this.musicVolume = 100
+      }
+    },
+    toggleSfxVolume() {
+      if (this.sfxVolume) {
+        this.sfxVolume = 0
+      } else {
+        this.sfxVolume = 100
+      }
+    },
     calculateGameProgress() {
       const PERCENT_COMPLETED = (this.roundCount / this.totalRounds) * 100
       this.gameProgress = Math.round(PERCENT_COMPLETED)
