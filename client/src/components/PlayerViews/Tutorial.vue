@@ -1,25 +1,30 @@
 <template>
-  <div class="background-matte">
-    <header class="header center">
-      <h1 class="player-view-title">Tutorial Playing</h1>
-    </header>
-    <div class="center mt-6">
-      <div 
-        @click.stop="wantsToSkip = !wantsToSkip"
-        :style="skipBtnColor"
-        class="skip-btn center"
-      >
-        <span class="skip-btn-text">
-          {{ skipBtnText }}
-        </span>
-      </div>
-    </div>
+  <div>
+    <ViewDecorator viewTitle="Tutorial Playing">
+      <template #view-content>
+        <div class="center mt-6">
+          <div 
+            @click.stop="wantsToSkip = !wantsToSkip"
+            :style="skipBtnColor"
+            class="skip-btn center"
+          >
+            <span class="skip-btn-text">
+              {{ skipBtnText }}
+            </span>
+          </div>
+        </div>
+      </template>
+    </ViewDecorator>
   </div>
 </template>
 
 <script>
+import ViewDecorator from '@/components/PlayerViews/PlayerSubComponents/ViewDecorator'
+
 export default {
-  name: 'intro',
+  components: {
+    ViewDecorator
+  },
   props: {
     socketInstance: {
       required: true,
@@ -55,20 +60,6 @@ export default {
 </script>
 
 <style scoped>
-  .header {
-    width: 100%;
-    height: 70px;
-    background-color: #FFB118;
-  }
-  .player-view-title {
-    font-size: 40px; 
-    font-weight: 900;
-  }
-  .background-matte {
-    width: 100vw;
-    height: 100vh;
-    background-color: #FFD37E;
-  }
   .skip-btn {
     width: 85%;
     height: 62px;

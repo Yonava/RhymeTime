@@ -5,7 +5,9 @@
       :wordsInPrompt="wordsInPrompt"
       :socketInstance="socket"
       :clientId="clientId"
-      @connect-socket="connectSocket"
+      :connectedToRoom="connectedToRoom"
+      :socketOnline="socketOnline"
+      @connected-to-room="connected = true"
     ></component>
 
     <!-- Dialog Boxes -->
@@ -47,6 +49,10 @@ export default {
     return {
       // stores socket instance
       socket: null,
+      // used to determine if player is connected to a room
+      connectedToRoom: false,
+      // used to determine if player is connected to server
+      socketOnline: false,
       // contains data received from host through pause-state socket endpt
       pauseData: { gamePaused: false, reason: 'not-paused' },
       // used for host to control which view the player is on
@@ -79,13 +85,17 @@ export default {
       if (this.socket?.connected) return
       this.socket = io(SOCKET_URL)
       this.socket.on('connect', () => {
-        this.socket.emit('join-room', this.roomId, response => {
+        this.socket.emit('join-room', this.roomId, (response) => {
           if (response === 'connected') {
+            this.establishSocketListeners()
             this.hostCountdown()
             this.socket.emit('get-game-state')
+            this.socketOnline = true
           }
         })
       })
+    },
+    establishSocketListeners() {
       this.socket.on('pause-state', pausedState => {
         this.pauseData = pausedState
       })

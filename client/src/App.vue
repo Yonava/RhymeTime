@@ -27,12 +27,6 @@
 import { SoundTrack } from './utils/Soundboard'
 
 export default {
-  data() {
-    return {
-      password: localStorage.password,
-      key: "open sesame"
-    };
-  },
   computed: {
     blockedAudio: {
       get() {
@@ -54,13 +48,4 @@ export default {
 
 <style>
 @import url("@/styles.css");
-
-.input-box {
-  position: fixed;
-  bottom: 10%;
-}
-.close-sesame {
-  position: fixed;
-  bottom: 0;
-}
 </style>

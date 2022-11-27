@@ -7,9 +7,9 @@
       :src="pfpSource"
       class="pfp"
       aspect-ratio="1"
-      max-width="70"
+      min-width="70"
     ></v-img>
-    <h1 class="player-name ml-4">
+    <h1 class="player-name text-h5 ml-3">
       {{ player.name }}
     </h1>
     <v-spacer></v-spacer>
@@ -31,7 +31,10 @@
       <v-card
         :color="player.color"
       >
-        <v-card-title class="white--text text-h4">
+        <v-card-title 
+          style="word-break: break-word;" 
+          class="white--text text-h4"
+        >
           {{ player.name }}'s Response
         </v-card-title>
         <v-card-text class="white--text text-h5">
@@ -91,7 +94,6 @@ export default {
   }
   .player-name {
     color: white;
-    font-size: 2.25rem;
     font-weight: 900;
   }
 </style>

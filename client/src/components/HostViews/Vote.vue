@@ -7,8 +7,12 @@
       >
         <Clock />
       </div>
-      <h2 class="sub-title">It Is Time To</h2>
-      <h1 class="title">Vote</h1>
+      <h2 class="sub-title">
+        It Is Time To
+      </h2>
+      <h1 class="title">
+        Vote
+      </h1>
     </header>
     <div class="response-card-container mt-4">
       <div 
