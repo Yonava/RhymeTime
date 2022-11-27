@@ -27,8 +27,8 @@
             width="200"
             style="mix-blend-mode: multiply"
           ></v-img>
-          <div class="divider ma-2"></div>
         </div>
+        <div class="divider mt-3 mb-2"></div>
         Round
         <v-progress-circular
           :value="gameProgress"
@@ -41,68 +41,48 @@
           Players In Room: {{ playersPresent }}
         </div>
         <div class="divider ma-2"></div>
-        <div class="text-h6 mb-2">
+        <div class="text-h5 font-weight-black mb-2">
           Volume Settings
         </div>
         <div style="width: 85%">
-          <v-row 
-            dense 
-            align="center" 
-            justify="center"
+          <div class="text-h6 font-weight-black">
+            Music:
+          </div>
+          <v-slider
+            v-model="musicVolume"
+            color="green"
+            track-color="red"
+            min="0"
+            max="100"
+            thumb-label
           >
-            <v-col cols="10">
-              <v-slider
-                v-model="sfxVolume"
-                color="green"
-                track-color="red"
-                min="0"
-                max="100"
-              >
-                <template #prepend>
-                  <v-icon
-                    @click.stop="sfxVolume ? sfxVolume = 0 : sfxVolume = 100"
-                    large
-                    color="black"
-                  >{{ volumeIcon(sfxVolume) }}</v-icon>
-                </template>
-              </v-slider>   
-            </v-col>
-            <v-col 
-              cols="2"
-              class="font-weight-black mb-5"
-            >
-              SFX
-            </v-col>
-          </v-row>
-          <v-row 
-            dense 
-            align="center" 
-            justify="center"
+            <template #prepend>
+              <v-icon
+                @click.stop="musicVolume ? musicVolume = 0 : musicVolume = 100"
+                color="black"
+              >{{ volumeIcon(musicVolume) }}</v-icon>
+            </template>
+          </v-slider>
+
+          <div class="text-h6 font-weight-black">
+            Sound Effects:
+          </div>
+
+          <v-slider
+            v-model="sfxVolume"
+            color="green"
+            track-color="red"
+            min="0"
+            max="100"
+            thumb-label
           >
-            <v-col cols="10">
-              <v-slider
-                v-model="musicVolume"
-                color="green"
-                track-color="red"
-                min="0"
-                max="100"
-              >
-                <template #prepend>
-                  <v-icon
-                    @click.stop="musicVolume ? musicVolume = 0 : musicVolume = 100"
-                    large
-                    color="black"
-                  >{{ volumeIcon(musicVolume) }}</v-icon>
-                </template>
-              </v-slider>
-            </v-col>
-            <v-col 
-              cols="2"
-              class="font-weight-black mb-5"
-            >
-              Music
-            </v-col>
-          </v-row>
+            <template #prepend>
+              <v-icon
+                @click.stop="sfxVolume ? sfxVolume = 0 : sfxVolume = 100"
+                color="black"
+              >{{ volumeIcon(sfxVolume) }}</v-icon>
+            </template>
+          </v-slider>
         </div>
         <v-card-actions> 
           <div 
@@ -114,14 +94,6 @@
               mdi-arrow-left-bold-circle
             </v-icon>
             Disband Game
-          </div>
-          <div 
-            @click.stop="show = false"
-            style="cursor: pointer"
-          >
-            <v-icon x-large>
-              mdi-play
-            </v-icon> 
           </div>
         </v-card-actions>
       </div>
@@ -237,7 +209,7 @@ export default {
 <style scoped>
 .pause-card-header {
   background: #FFB118;
-  border-radius: 10px ;
+  border-radius: 10px;
 }
 .pause-card {
   border: 10px solid #FFB118;
@@ -249,8 +221,9 @@ export default {
   border-top: 20px solid #FFB118;
 }
 .divider {
-  width: 90%;
-  height: 1px;
+  width: 95%;
+  border-radius: 5px;
+  height: 4px;
   background-color: rgb(47, 47, 47);
 }
 </style>
