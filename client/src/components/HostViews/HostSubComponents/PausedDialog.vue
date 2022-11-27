@@ -4,44 +4,51 @@
     max-width="500"
   >
     <v-card class="pause-card pt-2">
-      <div class="center">
-
-        <!-- join audience bubble -->
-        <div class="center">
-          <div class="pause-card-header center px-4 py-3">
-            <div 
-              class="text-h6 mb-2"
-              style="line-height: 1;"
-            >
-              Playing In Room {{ $store.state.roomid }}
-            </div>
-            <v-card-title 
-              style="word-break: break-word; line-height: 0.8" 
-              class="text-h4 font-weight-black pa-0"
-            >
-              Join The Audience
-            </v-card-title>
+      <!-- join audience bubble -->
+      <div 
+        v-if="currentView !== Views.waiting"
+        class="center"
+      >
+        <div class="pause-card-header center px-4 py-3">
+          <div 
+            class="text-h6 mb-2"
+            style="line-height: 1;"
+          >
+            Playing In Room {{ $store.state.roomid }}
           </div>
-          <div class="triangle-down mb-2"></div>
-
-          <!-- join audience qr code -->
-          <v-img
-            :src="qrCodeAPI"
-            lazy-src="../../../../assets/extras/lazyQR.png"
-            width="175px"
-            height="175px"
-            style="mix-blend-mode: multiply"
-          ></v-img>
+          <v-card-title 
+            style="word-break: break-word; line-height: 0.8" 
+            class="text-h4 font-weight-black pa-0"
+          >
+            Join The Audience
+          </v-card-title>
         </div>
-        <div class="divider mt-3 mb-2"></div>
+        <div class="triangle-down mb-2"></div>
 
+        <!-- join audience qr code -->
+        <v-img
+          :src="qrCodeAPI"
+          lazy-src="../../../../assets/extras/lazyQR.png"
+          width="175px"
+          height="175px"
+          style="mix-blend-mode: multiply"
+        ></v-img>
+      </div>
+
+      <div class="center">
+        <div class="divider mt-3 mb-2"></div>
+      </div>
+
+      <div class="center">
         <!-- round number & players -->
         <div class="text-h5 font-weight-black mb-2">
           Game Info
         </div>
         <div class="center">
           <div class="text-h6 font-weight-black">
-            <span class="mr-3">Round:</span>
+            <span class="mr-3">
+              Round:
+            </span>
             <v-progress-circular
               :value="gameProgress"
               color="#FFB118"
@@ -68,17 +75,69 @@
                   width="25px"
                   height="25px"
                 />
-                <div class="text-h6 font-weight-black white--text ml-2">
+                <div class="text-h6 font-weight-black white--text ml-2 pr-1">
                   {{ player.name }}
                 </div>
               </div>
             </div>
           </div>
         </div>
-        
-        <div class="divider ma-2"></div>
-        
-        <!-- Volume Settings -->
+      </div>
+
+      <!-- adjust round count -->
+      <div 
+        v-if="currentView === Views.waiting"
+        class="text-h2 font-weight-black"
+      >
+        Settings
+      </div>
+      <div class="center">
+        <div 
+          v-if="currentView === Views.waiting" 
+          class="divider my-3"
+        ></div>
+      </div>
+      <div 
+        v-if="currentView === Views.waiting"
+        class="center"
+      >
+        <div class="text-h5 font-weight-black">
+          How Many Rounds?
+        </div>
+        <div class="text-h1 font-weight-black">
+          {{ totalRounds }}
+        </div>
+        <div>
+          <v-btn
+            @click.stop="decrementTotalRounds"
+            :disabled="totalRounds <= 1"
+            class="mx-2"
+            color="#FFB118"
+            depressed
+          >
+            <v-icon>mdi-minus</v-icon>
+          </v-btn>
+          <v-btn
+            @click.stop="incrementTotalRounds"
+            :disabled="totalRounds >= 9"
+            class="mx-2"
+            color="#FFB118"
+            depressed
+          >
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </div>
+        <div class="text-h6 font-weight-black mt-3">
+          3-5 Recommended
+        </div>
+      </div>
+      
+      <div class="center">
+        <div class="divider my-3"></div>
+      </div>
+      
+      <!-- Volume Settings -->
+      <div class="center">
         <div class="text-h5 font-weight-black">
           Volume Settings
         </div>
@@ -130,6 +189,7 @@
 
 <script>
 import { SoundTrack } from '../../../utils/Soundboard'
+import { Views } from '../../../utils/Views'
 
 export default {
   props: {
@@ -148,14 +208,20 @@ export default {
     playerList: {
       type: Array,
       required: true
+    },
+    currentView: {
+      type: String,
+      required: true
     }
   },
   emits: [
-    'unpause'
+    'unpause',
+    'update-total-rounds'
   ],
   data() {
     return {
       gameProgress: 0,
+      Views
     }
   },
   computed: {
@@ -199,6 +265,12 @@ export default {
     }
   },
   methods: {
+    incrementTotalRounds() {
+      this.$emit('update-total-rounds', this.totalRounds + 1)
+    },
+    decrementTotalRounds() {
+      this.$emit('update-total-rounds', this.totalRounds - 1)
+    },
     getPlayerPfp(pfp) {
       return require(`../../../../assets/pfps/${pfp}.webp`)
     },
@@ -247,12 +319,13 @@ export default {
 
 <style scoped>
 .player-container-parent {
-  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   align-content: center;
+  display: flex;
+  cursor: default;
 }
 .player-container {
   display: flex;
@@ -269,6 +342,7 @@ export default {
 .pause-card {
   border: 10px solid #FFB118;
   background: #ffe3aa;  
+  position: relative;
 }
 .triangle-down {
   border-left: 20px solid transparent;

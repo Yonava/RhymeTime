@@ -21,6 +21,8 @@
       :roundCount="roundCount"
       :totalRounds="totalRounds"
       :playerList="playerList"
+      :currentView="currentView"
+      @update-total-rounds="totalRounds = $event"
       @unpause="manuallyPaused = false"
     />
   </div>
@@ -56,50 +58,13 @@ export default {
       // sets the current view of the game, emits to players
       currentView: Views.waiting,
       // playerlist contains player objects for every connected player
-      playerList: [
-        {
-          name: 'Player 1',
-          clientId: '123',
-          color: 'red',
-          pfp: '1'
-        },
-        {
-          name: 'Player 2',
-          clientId: '456',
-          color: 'blue',
-          pfp: '2'
-        },
-        {
-          name: 'Player 3',
-          clientId: '789',
-          color: 'green',
-          pfp: '3'
-        },
-        {
-          name: 'Player 4',
-          clientId: '101',
-          color: 'orange',
-          pfp: '4'
-        },
-        {
-          name: 'Player 5',
-          clientId: '112',
-          color: 'purple',
-          pfp: '5'
-        },
-        {
-          name: 'Player 6',
-          clientId: '131',
-          color: 'pink',
-          pfp: '6'
-        }
-      ],
+      playerList: [],
       // prompt responses each round are stored here. response obj format { player: player, response: string }
       promptResponses: [],
       // stores what round the game is on
       roundCount: 1,
       // number of rounds that are to be played
-      totalRounds: 1,
+      totalRounds: 4,
       // responses that won in voting round
       winningResponses: [],
       // true if page is not visible (using visibilitychange event listener)
