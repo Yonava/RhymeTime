@@ -1,14 +1,15 @@
 <template>
   <div 
     :style="cardColor"
-    class="player-card pa-4"
+    class="player-card pa-2"
   >
-    <v-img
-      :src="pfpSource"
-      class="pfp"
-      aspect-ratio="1"
-      min-width="70"
-    ></v-img>
+    <div class="pfp-container">
+      <img
+        :src="pfpSource"
+        :alt="player.name"
+        class="pfp"
+      />
+    </div>
     <h1 class="player-name text-h5 ml-3">
       {{ player.name }}
     </h1>
@@ -72,6 +73,7 @@ export default {
 
 <style scoped>
   .view-response-text {
+    margin: 0;
     font-size: .75rem;
     color: white;
     font-weight: 900;
@@ -83,14 +85,26 @@ export default {
     cursor: pointer;
   }
   .player-card {
-    width: 100%;
+    width: 95%;
+    max-width: 400px;
+    height: 70px;
     border-radius: 10px;
     display: flex;
     align-items: center;
+    flex-direction: row;
     cursor: grab;
+    position: relative; 
+  }
+  .pfp-container {
+    height: 55px;
+    width: 55px;
+    position: relative;
   }
   .pfp {
-    border-radius: 10px;
+    border-radius: 7px;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
   }
   .player-name {
     color: white;

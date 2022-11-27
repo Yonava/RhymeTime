@@ -4,6 +4,7 @@
     max-width="500"
   >
     <v-card class="pause-card pt-2">
+
       <!-- join audience bubble -->
       <div 
         v-if="currentView !== Views.waiting"
@@ -35,12 +36,18 @@
         ></v-img>
       </div>
 
-      <div class="center">
+      <div
+        v-if="currentView !== Views.waiting"
+        class="center"
+      >
         <div class="divider mt-3 mb-2"></div>
       </div>
 
-      <div class="center">
-        <!-- round number & players -->
+      <!-- round number & players -->
+      <div 
+        v-if="currentView !== Views.waiting"
+        class="center"
+      >
         <div class="text-h5 font-weight-black mb-2">
           Game Info
         </div>
@@ -87,7 +94,7 @@
       <!-- adjust round count -->
       <div 
         v-if="currentView === Views.waiting"
-        class="text-h2 font-weight-black"
+        class="text-h2 font-weight-black center"
       >
         Settings
       </div>
