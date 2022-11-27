@@ -1,5 +1,5 @@
 <template>
-  <div class="center"> 
+  <div> 
     <component
       :is="currentView"
       :wordsInPrompt="wordsInPrompt"
