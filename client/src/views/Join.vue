@@ -60,7 +60,9 @@ export default {
       // error messages to be displayed to users inside the join card
       switch (this.$route.query.err) {
         case 'nickname_taken':
-          return 'Someone in the room you joined has the same nickname. Try something unique, original, spunky...'
+          return "Someone in the room you joined has the same nickname. Try something unique, original, spunky..."
+        case 'audience_no_host':
+          return "Unfortunately, we weren't able to find a host. Try joining a different room."
         default:
           return ''
       }

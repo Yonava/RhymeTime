@@ -1,11 +1,23 @@
 <template>
   <div>
-    <component
+    <div 
       v-if="receivedCurrentView"
-      :is="currentView"
-      :socketInstance="socket"
-    ></component>
-    <div v-else>
+      class="center"
+    >
+      <v-btn text color="red">
+        <v-icon>mdi-chevron-left</v-icon>
+        <span>Leave Room</span>
+      </v-btn>
+      <component
+        :is="currentView"
+        :socketInstance="socket"
+      ></component>
+    </div>
+    <div 
+      v-else
+      class="center"
+      style="width: 100vw; height: 100vh;"
+    >
       <v-progress-circular
         indeterminate
         color="orange"
@@ -25,6 +37,7 @@ import recap from '../components/AudienceViews/Recap.vue'
 import endScreen from '../components/AudienceViews/EndScreen.vue'
 
 import { Views } from '../utils/Views'
+import io from 'socket.io-client'
 
 export default {
   components: {
@@ -41,6 +54,21 @@ export default {
       socket: null,
       receivedCurrentView: false
     }
+  },
+  mounted() {
+    // if client has not received a view from the host in 4 seconds
+    // send user back to join page
+    setTimeout(() => {
+      if (!this.receivedCurrentView) {
+        this.$router.push({
+          name: 'join',
+          query: {
+            room: this.roomId,
+            err: 'audience_no_host'
+          }
+        })
+      }
+    }, 4000)
   },
   computed: {
     roomId() {
