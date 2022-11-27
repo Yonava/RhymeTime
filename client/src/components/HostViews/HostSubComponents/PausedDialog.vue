@@ -3,7 +3,7 @@
     v-model="show"
     max-width="500"
   >
-    <v-card class="pause-card pa-3">
+    <v-card class="pause-card pt-2">
       <div class="center">
 
         <!-- join audience bubble -->
@@ -28,7 +28,8 @@
           <v-img
             :src="qrCodeAPI"
             lazy-src="../../../../assets/extras/lazyQR.png"
-            width="200"
+            width="175px"
+            height="175px"
             style="mix-blend-mode: multiply"
           ></v-img>
         </div>
@@ -38,30 +39,47 @@
         <div class="text-h5 font-weight-black mb-2">
           Game Info
         </div>
-        <div>
+        <div class="center">
           <div class="text-h6 font-weight-black">
             <span class="mr-3">Round:</span>
             <v-progress-circular
               :value="gameProgress"
               color="#FFB118"
-              size="63"
-              width="10"
+              size="57"
+              width="8"
             >
               <div class="text-h6 font-weight-black black--text">
                 {{ roundCount }}/{{ totalRounds }}
               </div>
             </v-progress-circular>
           </div>
+          <div class="player-container-parent mt-2 mb-1">
+            <div 
+              v-for="player in playerList" 
+              :key="player.clientId"
+            >
+              <div 
+                :style="backgroundColor(player.color)"
+                class="player-container mx-1 my-1"
+              >
+                <v-img
+                  :src="getPlayerPfp(player.pfp)"
+                  style="border-radius: 50%;"
+                  width="25px"
+                  height="25px"
+                />
+                <div class="text-h6 font-weight-black white--text ml-2">
+                  {{ player.name }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="ma-2">
-          Players In Room: {{ playersPresent }}
-        </div>
-
-
+        
         <div class="divider ma-2"></div>
         
         <!-- Volume Settings -->
-        <div class="text-h5 font-weight-black mb-2">
+        <div class="text-h5 font-weight-black">
           Volume Settings
         </div>
         <div style="width: 85%">
@@ -107,13 +125,11 @@
         </div>
       </div>
     </v-card>
-    
   </v-dialog>
 </template>
 
 <script>
 import { SoundTrack } from '../../../utils/Soundboard'
-import { Views } from '../../../utils/Views'
 
 export default {
   props: {
@@ -132,17 +148,14 @@ export default {
     playerList: {
       type: Array,
       required: true
-    },
-    currentView: {
-      type: String,
-      required: true
     }
   },
-  emits: ['unpause'],
+  emits: [
+    'unpause'
+  ],
   data() {
     return {
       gameProgress: 0,
-      Views
     }
   },
   computed: {
@@ -162,11 +175,6 @@ export default {
         this.$store.state.sfxVolume = newVolume
       }
     },
-    playersPresent() {
-      const PLAYER_NAMES = this.playerList.map(player => player.name)
-      if (!PLAYER_NAMES.length) return 'No Players In Room'
-      return PLAYER_NAMES.join(', ')
-    },
     url() {
       return `
         ${
@@ -177,7 +185,7 @@ export default {
       `
     },
     qrCodeAPI() {
-      return `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${this.url}`
+      return `https://api.qrserver.com/v1/create-qr-code/?size=125x125&data=${this.url}`
     },
     show: {
       get() {
@@ -191,6 +199,18 @@ export default {
     }
   },
   methods: {
+    getPlayerPfp(pfp) {
+      return require(`../../../../assets/pfps/${pfp}.webp`)
+    },
+    backgroundColor(color) {
+      return {
+        backgroundColor: color
+      }
+    },
+    calculateGameProgress() {
+      // cannot be computed because of progress bar animation
+      this.gameProgress = Math.round((this.roundCount / this.totalRounds) * 100)
+    },
     toggleMusicVolume() {
       if (this.musicVolume) {
         this.musicVolume = 0
@@ -204,10 +224,6 @@ export default {
       } else {
         this.sfxVolume = 100
       }
-    },
-    calculateGameProgress() {
-      const PERCENT_COMPLETED = (this.roundCount / this.totalRounds) * 100
-      this.gameProgress = Math.round(PERCENT_COMPLETED)
     },
     volumeIcon(volume) {
       if (volume > 70) return 'mdi-volume-high'
@@ -230,6 +246,22 @@ export default {
 </script>
 
 <style scoped>
+.player-container-parent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.player-container {
+  display: flex;
+  align-items: center;
+  padding: 0 7.5px;
+  border-radius: 50px;
+  height: 35px;
+  box-shadow: 2px 4px 5px 0px rgba(0, 0, 0, 0.3);
+}
 .pause-card-header {
   background: #FFB118;
   border-radius: 10px;
@@ -244,7 +276,7 @@ export default {
   border-top: 20px solid #FFB118;
 }
 .divider {
-  width: 95%;
+  width: 90%;
   border-radius: 5px;
   height: 4px;
   background-color: rgb(47, 47, 47);

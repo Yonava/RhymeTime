@@ -18,7 +18,6 @@
     ></component>
     <PauseMenu
       :visible="manuallyPaused" 
-      :currentView="currentView"
       :roundCount="roundCount"
       :totalRounds="totalRounds"
       :playerList="playerList"
@@ -57,7 +56,44 @@ export default {
       // sets the current view of the game, emits to players
       currentView: Views.waiting,
       // playerlist contains player objects for every connected player
-      playerList: [],
+      playerList: [
+        {
+          name: 'Player 1',
+          clientId: '123',
+          color: 'red',
+          pfp: '1'
+        },
+        {
+          name: 'Player 2',
+          clientId: '456',
+          color: 'blue',
+          pfp: '2'
+        },
+        {
+          name: 'Player 3',
+          clientId: '789',
+          color: 'green',
+          pfp: '3'
+        },
+        {
+          name: 'Player 4',
+          clientId: '101',
+          color: 'orange',
+          pfp: '4'
+        },
+        {
+          name: 'Player 5',
+          clientId: '112',
+          color: 'purple',
+          pfp: '5'
+        },
+        {
+          name: 'Player 6',
+          clientId: '131',
+          color: 'pink',
+          pfp: '6'
+        }
+      ],
       // prompt responses each round are stored here. response obj format { player: player, response: string }
       promptResponses: [],
       // stores what round the game is on
