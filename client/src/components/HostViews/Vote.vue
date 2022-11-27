@@ -2,8 +2,23 @@
   <div class="background-matte">
     <header class="page-header center">
       <div 
+        style="position: fixed; top: 0; left: 0;"
+        class="ma-8"
+      >
+        <v-btn
+          @click.stop="togglePause"
+          color="white"
+          fab
+          small
+        >
+          <v-icon>
+            mdi-pause
+          </v-icon>
+        </v-btn>
+      </div>
+      <div 
         class="ma-3"
-        style="position: absolute; top: 0; right: 0;"
+        style="position: fixed; top: 0; right: 0;"
       >
         <Clock />
       </div>
@@ -73,6 +88,7 @@ export default {
     })
     this.socketInstance.on('ballot-collector', (playerBallot) => {
       if (this.pollsClosed) return
+      console.log('ballot received', playerBallot)
       this.countVotes(playerBallot)
     })
   },

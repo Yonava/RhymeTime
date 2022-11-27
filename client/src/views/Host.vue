@@ -18,10 +18,11 @@
     ></component>
     <PauseMenu
       :visible="manuallyPaused" 
-      :currentView="currentView"
       :roundCount="roundCount"
       :totalRounds="totalRounds"
       :playerList="playerList"
+      :currentView="currentView"
+      @update-total-rounds="totalRounds = $event"
       @unpause="manuallyPaused = false"
     />
   </div>
@@ -63,7 +64,7 @@ export default {
       // stores what round the game is on
       roundCount: 1,
       // number of rounds that are to be played
-      totalRounds: 1,
+      totalRounds: 4,
       // responses that won in voting round
       winningResponses: [],
       // true if page is not visible (using visibilitychange event listener)
@@ -195,7 +196,9 @@ export default {
       // handle player kicking
       this.socket.emit('kick-player', {
         clientId,
-        redirect: '/'
+        redirect: {
+          name: 'join'
+        }
       })
       // remove from playerlist and replace with Open Spot
       this.playerList.splice(playerIndex, 1)

@@ -88,7 +88,7 @@ Used by player to send their submitted prompt response to host
 Used by host to send a new prompt to players
 
 ### candidate-list
-<b>Sender</b> `Host Client` -> <b>Recipient</b> `Player Client`
+<b>Sender</b> `Host Client` -> <b>Recipient</b> `Player Client` and `Audience Client`
 <br>
 <b>Data in Payload</b> list: []Response -> { response: string, player: Player }
 <br>

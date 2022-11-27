@@ -12,6 +12,7 @@
                 <div 
                   v-for="candidate in candidates" 
                   :key="candidate.player.clientId"
+                  class="center"
                 >
                   <PlayerCard
                     :player="candidate.player"
@@ -51,7 +52,12 @@ export default {
     return {
       // contains response objects of players 
       // that have submitted a response { player: Player, response: string }
-      candidates: []
+      candidates: [
+        // test data
+        { player: { name: 'test1', color: 'red', pfp: '1', clientId: 1 }, response: 'test1' },
+        { player: { name: 'test2', color: 'black', pfp: '2', clientId: 2 }, response: 'test1' },
+        { player: { name: 'test3', color: 'green', pfp: '3', clientId: 3 }, response: 'test1' },
+      ]
     }
   },
   mounted() {

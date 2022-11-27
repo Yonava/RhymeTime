@@ -3,6 +3,21 @@
     class="background-matte center"
     :style="border"
   >
+    <div 
+      style="position: fixed; top: 0; left: 0;"
+      class="ma-8"
+    >
+      <v-btn
+        @click.stop="togglePause"
+        color="white"
+        fab
+        small
+      >
+        <v-icon>
+          mdi-pause
+        </v-icon>
+      </v-btn>
+    </div>
     <div class="text-h2 font-weight-black">
       Round Winner
     </div>

@@ -7,11 +7,15 @@
       :clientId="clientId"
       :connectedToRoom="connectedToRoom"
       :socketOnline="socketOnline"
-      @connected-to-room="connected = true"
+      :hasHostResponded="hasHostResponded"
+      @connected-to-room="connectedToRoom = true"
     ></component>
 
     <!-- Dialog Boxes -->
-    <host-left :visible="hostLeft" />
+    <SessionDisbanded 
+      :visible="hostLeft" 
+      :hasHostResponded="hasHostResponded"
+    />
     <game-paused 
       :visible="pauseData.gamePaused" 
       :reason="pauseData.reason" 
@@ -28,7 +32,7 @@ import recap from '../components/PlayerViews/Recap.vue'
 import endScreen from '../components/PlayerViews/EndScreen.vue'
 
 // dialogs
-import HostLeft from '../components/PlayerViews/Dialogs/HostLeft.vue'
+import SessionDisbanded from '../components/PlayerViews/Dialogs/SessionDisbanded.vue'
 import GamePaused from '../components/PlayerViews/Dialogs/GamePaused.vue'
 
 import { Views } from '../utils/Views'
@@ -42,7 +46,7 @@ export default {
     tutorial,
     recap,
     endScreen,
-    HostLeft,
+    SessionDisbanded,
     GamePaused
   },
   data() {
@@ -61,6 +65,8 @@ export default {
       hostPresent: true,
       // hostLeft is different as it only turns false when hostPresent has stayed false for more than n seconds
       hostLeft: false,
+      // true once first host ping has been received
+      hasHostResponded: false,
       // rhyming words in prompt
       wordsInPrompt: [],
       // id that the client stores so host can uniquely identify it
@@ -108,6 +114,7 @@ export default {
       })
       this.socket.on('host-present', () => {
         this.hostPresent = true
+        this.hasHostResponded = true
       })
       this.socket.on('new-words', (newWords) => {
         this.wordsInPrompt = newWords
