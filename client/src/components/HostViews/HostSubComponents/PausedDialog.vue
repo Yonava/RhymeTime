@@ -3,22 +3,29 @@
     v-model="show"
     max-width="500"
   >
-    <v-card class="pa-3">
+    <v-card class="pause-card pa-3">
       <div class="center">
-        <div 
-          v-if="currentView !== Views.waiting"
-          class="center"
-        >
-          <v-card-title 
-            style="word-break: break-word" 
-            class="text-h5 pa-0 mt-2"
-          >
-            Room {{ $store.state.roomid }}
-          </v-card-title>
+        <div class="center">
+          <div class="pause-card-header center px-4 py-3">
+            <div 
+              class="text-h6 mb-2"
+              style="line-height: 1;"
+            >
+              Playing In Room {{ $store.state.roomid }}
+            </div>
+            <v-card-title 
+              style="word-break: break-word; line-height: 0.8" 
+              class="text-h4 font-weight-black pa-0"
+            >
+              Join The Audience
+            </v-card-title>
+          </div>
+          <div class="triangle-down mb-2"></div>
           <v-img
             :src="qrCodeAPI"
+            lazy-src="../../../../assets/extras/lazyQR.png"
             width="200"
-            class="my-4"
+            style="mix-blend-mode: multiply"
           ></v-img>
           <div class="divider ma-2"></div>
         </div>
@@ -34,7 +41,9 @@
           Players In Room: {{ playersPresent }}
         </div>
         <div class="divider ma-2"></div>
-        <div class="text-h6 mb-2">Volume Settings</div>
+        <div class="text-h6 mb-2">
+          Volume Settings
+        </div>
         <div style="width: 85%">
           <v-row 
             dense 
@@ -44,18 +53,26 @@
             <v-col cols="10">
               <v-slider
                 v-model="sfxVolume"
-                :prepend-icon="volumeIcon(sfxVolume)"
-                @click:prepend="sfxVolume ? sfxVolume = 0 : sfxVolume = 100"
                 color="green"
                 track-color="red"
                 min="0"
                 max="100"
-              ></v-slider>   
+              >
+                <template #prepend>
+                  <v-icon
+                    @click.stop="sfxVolume ? sfxVolume = 0 : sfxVolume = 100"
+                    large
+                    color="black"
+                  >{{ volumeIcon(sfxVolume) }}</v-icon>
+                </template>
+              </v-slider>   
             </v-col>
             <v-col 
               cols="2"
-              class="mb-5"
-            >SFX</v-col>
+              class="font-weight-black mb-5"
+            >
+              SFX
+            </v-col>
           </v-row>
           <v-row 
             dense 
@@ -65,23 +82,30 @@
             <v-col cols="10">
               <v-slider
                 v-model="musicVolume"
-                :prepend-icon="volumeIcon(musicVolume)"
-                @click:prepend="musicVolume ? musicVolume = 0 : musicVolume = 100"
                 color="green"
                 track-color="red"
                 min="0"
                 max="100"
-              ></v-slider>
+              >
+                <template #prepend>
+                  <v-icon
+                    @click.stop="musicVolume ? musicVolume = 0 : musicVolume = 100"
+                    large
+                    color="black"
+                  >{{ volumeIcon(musicVolume) }}</v-icon>
+                </template>
+              </v-slider>
             </v-col>
             <v-col 
               cols="2"
-              class="mb-5"
-            >Music</v-col>
+              class="font-weight-black mb-5"
+            >
+              Music
+            </v-col>
           </v-row>
         </div>
         <v-card-actions> 
           <div 
-            v-if="currentView !== Views.waiting"
             @click.stop="exit"
             style="cursor: pointer; position: absolute; left: 0"
             class="ml-3"
@@ -160,14 +184,7 @@ export default {
     playersPresent() {
       const PLAYER_NAMES = this.playerList.map(player => player.name)
       if (!PLAYER_NAMES.length) return 'No Players In Room'
-      if (PLAYER_NAMES.length === 1) return PLAYER_NAMES[0]
-      let playersInGame = ''
-      for (let i = 0; i < PLAYER_NAMES.length; i++) {
-        if (PLAYER_NAMES.length - 1 === i) playersInGame += ', and '
-        else if (i !== 0) playersInGame += ', '
-        playersInGame += PLAYER_NAMES[i]
-      }
-      return playersInGame
+      return PLAYER_NAMES.join(', ')
     },
     url() {
       return `
@@ -218,6 +235,19 @@ export default {
 </script>
 
 <style scoped>
+.pause-card-header {
+  background: #FFB118;
+  border-radius: 10px ;
+}
+.pause-card {
+  border: 10px solid #FFB118;
+  background: #ffe3aa;  
+}
+.triangle-down {
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid #FFB118;
+}
 .divider {
   width: 90%;
   height: 1px;
