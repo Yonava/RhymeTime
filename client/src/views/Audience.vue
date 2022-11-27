@@ -1,12 +1,13 @@
 <template>
   <div>
-    <div 
-      v-if="receivedCurrentView"
-      class="center"
-    >
-      <v-btn text color="red">
+    <div v-if="receivedCurrentView">
+      <v-btn 
+        text 
+        color="black"
+        style="position: fixed;"
+      >
         <v-icon>mdi-chevron-left</v-icon>
-        <span>Leave Room</span>
+        <span>Leave Room {{ roomId }}</span>
       </v-btn>
       <component
         :is="currentView"
@@ -56,6 +57,7 @@ export default {
     }
   },
   mounted() {
+    this.connectSocket()
     // if client has not received a view from the host in 4 seconds
     // send user back to join page
     setTimeout(() => {

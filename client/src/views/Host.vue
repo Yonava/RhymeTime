@@ -72,7 +72,9 @@ export default {
       // if host selects to pause game
       manuallyPaused: false,
       // number of player spots offered in room
-      numOfPlayerSpots: 6
+      numOfPlayerSpots: 0,
+      // how many members are in the audience
+      audienceCount: 0
     }
   },
   destroyed() {
@@ -156,6 +158,12 @@ export default {
         this.socket.emit('change-view', this.currentView)
         this.emitPausePackage()
         // figure out best way to send over new-words, and candidate-list
+      })
+      this.socket.on('audience-broadcast-current-view', () => {
+        this.socket.emit('audience-change-view', this.currentView)
+        // called only once by the audience client on join,
+        // TODO: find an efficient way to decrement audience count
+        this.audienceCount++
       })
     },
     modelVisibility() {
