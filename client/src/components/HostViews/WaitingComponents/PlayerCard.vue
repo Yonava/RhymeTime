@@ -3,13 +3,16 @@
     class="player-card center" 
     :style="color"
   >
-    <div style="width: 30%">
+    <div 
+      v-if="playerPfp"
+      class="center"
+      style="width: 30%;"
+    >
       <transition name="slide-in">
         <component :is="pfpSwitch ? 'PlayerPfp1':'PlayerPfp2'">
           <template>
             <img
-              v-if="playerPfp"
-              :src="require(`../../../../assets/pfps/${playerPfp}.webp`)"
+              :src="pfpSource"
               class="pfp"
             />
           </template>
@@ -17,7 +20,12 @@
       </transition>
     </div>
     <div style="width: 60%; text-align: center">
-      <h1 :style="`font-weight: 1000; ${nameTxtColor}`">{{ playerName }}</h1>
+      <h1 
+        :style="nameTxtColor"
+        class="font-weight-black"
+      >
+        {{ playerName }}
+      </h1>
     </div>
     <div 
       v-if="playerClientId"
@@ -78,7 +86,10 @@ export default {
       return `background-color: ${this.playerColor}`
     },
     nameTxtColor() {
-      return `color: ${this.playerColor === 'white' ? 'black' : 'white'}`
+      return `color: ${this.playerClientId ? 'white' : 'black'}`
+    },
+    pfpSource() {
+      return require(`../../../../assets/pfps/${this.playerPfp}.webp`)
     }
   },
   methods: {
@@ -99,15 +110,17 @@ export default {
     width: 370px;
     height: 150px;
     position: relative;
-    flex-direction: row;
     border-radius: 10px;
     transition: 500ms;
     overflow: hidden;
+    flex-direction: row;
   }
   .pfp {
+    margin-left: 5px;
+    margin-top: 5px;
     border-radius: 10px;
-    width: 120px;
-    aspect-ratio: 1/1;
+    width: 130px;
+    height: 130px;
     object-fit: cover;
   }
   .kick-overlay {
@@ -127,9 +140,6 @@ export default {
   
   .slide-in-enter, .slide-out-leave-to {
   transform: translateY(300px);
-  }
-  .slide-in-enter-to, .slide-in-leave-from {
-    transform: translateY(-60px);
   }
   .slide-in-enter-active, .slide-in-leave-active {
     transition: all 250ms;
