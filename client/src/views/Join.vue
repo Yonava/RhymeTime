@@ -20,7 +20,8 @@
       <div class="px-5">
         <div
           v-if="errorMessage"
-          class="red--text text-p font-weight-bold"
+          class="red--text text-h6 font-weight-bold"
+          style="line-height: 1.2;"
         >
           {{ errorMessage }}
         </div>
@@ -31,6 +32,7 @@
           v-model="$store.state.nickname"
           class="input-field font-weight-black white--black text-p pa-1"
           type="text" 
+          ref="nickname"
         />
         <div class="my-2"></div>
         <div class="font-weight-black text-h6">
@@ -40,6 +42,7 @@
           v-model="$store.state.roomid"
           class="input-field font-weight-black white--black text-p pa-1"
           type="text"
+          ref="roomid"
         />
         <div 
           class="text-h6 font-weight-bold red--text mt-2"
@@ -75,11 +78,19 @@ export default {
       // make sure roomid is a number 
       if (isNaN(this.$store.state.roomid)) {
         this.inputError = 'Room code invalid'
+        this.$refs.roomid.focus()
+        return
+      }
+      // make sure roomid is a number 
+      if (!this.$store.state.roomid) {
+        this.inputError = 'Enter a room code'
+        this.$refs.roomid.focus()
         return
       }
       // make sure nickname is not empty
       if (!this.$store.state.nickname.length || this.$store.state.nickname.length > 8) {
         this.inputError = 'Nickname must be between 1 and 8 characters'
+        this.$refs.nickname.focus()
         return
       }
       this.$router.push({ 
