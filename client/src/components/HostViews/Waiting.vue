@@ -126,7 +126,8 @@ export default {
   },
   emits: [
     'round-change',
-    'player-kicked'
+    'player-kicked',
+    'toggle-pause'
   ],
   methods: {
     next() {

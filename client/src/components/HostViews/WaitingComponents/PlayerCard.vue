@@ -3,17 +3,29 @@
     class="player-card center" 
     :style="color"
   >
-    <!-- <transition name="slide"> -->
-      <v-img
-        v-if="playerPfp"
-        :src="require(`../../../../assets/pfps/${playerPfp}.webp`)"
-        class="pfp"
-        aspect-ratio="1"
-        max-width="125px"
-      ></v-img>
-    <!-- </transition> -->
+    <div 
+      v-if="playerPfp"
+      class="center"
+      style="width: 30%;"
+    >
+      <transition name="slide-in">
+        <component :is="pfpSwitch ? 'PlayerPfp1':'PlayerPfp2'">
+          <template>
+            <img
+              :src="pfpSource"
+              class="pfp"
+            />
+          </template>
+        </component>
+      </transition>
+    </div>
     <div style="width: 60%; text-align: center">
-      <h1 :style="`font-weight: 1000; ${nameTxtColor}`">{{ playerName }}</h1>
+      <h1 
+        :style="nameTxtColor"
+        class="font-weight-black"
+      >
+        {{ playerName }}
+      </h1>
     </div>
     <div 
       v-if="playerClientId"
@@ -34,7 +46,14 @@
 </template>
 
 <script>
+import PlayerPfp1 from './PlayerPfp1'
+import PlayerPfp2 from './PlayerPfp2'
+
 export default {
+  components: {
+    PlayerPfp1,
+    PlayerPfp2
+  },
   props: {
     playerColor: {
       required: false,
@@ -57,17 +76,30 @@ export default {
       default: 0
     }
   },
+  data() {
+    return {
+      pfpSwitch: true,
+    }
+  },
   computed: {
     color() {
       return `background-color: ${this.playerColor}`
     },
     nameTxtColor() {
-      return `color: ${this.playerColor === 'white' ? 'black' : 'white'}`
+      return `color: ${this.playerClientId ? 'white' : 'black'}`
+    },
+    pfpSource() {
+      return require(`../../../../assets/pfps/${this.playerPfp}.webp`)
     }
   },
   methods: {
     kickPlayer() {
       this.$emit('player-kicked', this.playerClientId)
+    }
+  },
+  watch: {
+    playerPfp() {
+      this.pfpSwitch = !this.pfpSwitch
     }
   }
 }
@@ -78,12 +110,19 @@ export default {
     width: 370px;
     height: 150px;
     position: relative;
-    flex-direction: row;
     border-radius: 10px;
     transition: 500ms;
+    overflow: hidden;
+    flex-direction: row;
+    border: 2px solid black;
   }
   .pfp {
+    margin-left: 5px;
+    margin-top: 5px;
     border-radius: 10px;
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
   }
   .kick-overlay {
     position: absolute;
@@ -98,17 +137,16 @@ export default {
   .player-card:hover .kick-overlay {
     opacity: 1;
   }
+
+  
   .slide-in-enter, .slide-out-leave-to {
-    transform: translateX(-100vw);
+  transform: translateY(300px);
   }
-  .slide-in-enter-to, .slide-in-leave-from, .slide-out-enter-to, .slide-out-leave-from {
-    transform: translateX(0);
+  .slide-in-enter-active, .slide-in-leave-active {
+    transition: all 250ms;
+    position: absolute;
   }
-  .slide-in-enter-active, .slide-in-leave-active, .slide-out-enter-active, .slide-out-leave-active {
-    transition: all 1s;
-    position: fixed;
-  }
-  .slide-in-leave-to, .slide-out-enter {
-    transform: translateX(100vw);
+  .slide-in-leave-to {
+    transform: translateY(-360px);
   }
 </style>
