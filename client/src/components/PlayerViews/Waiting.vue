@@ -5,7 +5,7 @@
       <v-progress-circular
         size="70"
         width="7"
-        color="primary"
+        color="orange"
         class="loading"
         indeterminate
       ></v-progress-circular>

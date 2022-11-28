@@ -55,6 +55,20 @@ Allows host to send a confirmation to players in room to confirm that the host i
 <br>
 Used for players to tell the host that they need the current state of the game to stay in sync. Called when player joins mid-game or player has disconnected breifly before reconnecting again
 
+### audience-get-current-view
+<b>Sender</b> `Audience Client` -> <b>Recipient</b> `Host Client`
+<br>
+<b>Data in Payload</b> none
+<br>
+Used for audience to tell the host that they need the current view to stay in sync. Called when audience client joins or disconnects breifly before reconnecting again
+
+### audience-change-view
+<b>Sender</b> `Host Client` -> <b>Recipient</b> `Audience Client`
+<br>
+<b>Data in Payload</b> View: string
+<br>
+For host to send the current view to audience members only
+
 ### pause-state
 <b>Sender</b> `Host Client` -> <b>Recipient</b> `Player Client`
 <br>

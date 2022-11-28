@@ -60,6 +60,14 @@ io.on('connection', socket => {
     socket.to(roomId).emit('broadcast-game-state')
   })
 
+  socket.on('audience-get-current-view', () => {
+    socket.to(roomId).emit('audience-broadcast-current-view')
+  })
+
+  socket.on('audience-change-view', (view) => {
+    socket.to(roomId).emit('audience-change-view', view)
+  })
+
   // emitted by host to tell players if the game is paused, 
   // and what the reason for the pause is
   socket.on('pause-state', (pauseState) => {

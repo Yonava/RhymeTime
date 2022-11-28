@@ -43,30 +43,53 @@
         <div class="divider mt-3 mb-2"></div>
       </div>
 
-      <!-- round number & players -->
+      <!-- game information -->
       <div 
         v-if="currentView !== Views.waiting"
         class="center"
       >
-        <div class="text-h5 font-weight-black mb-2">
+        <div class="text-h5 font-weight-black">
           Game Info
         </div>
         <div class="center">
-          <div class="text-h6 font-weight-black">
-            <span class="mr-3">
-              Round:
-            </span>
-            <v-progress-circular
-              :value="gameProgress"
-              color="#FFB118"
-              size="57"
-              width="8"
-            >
-              <div class="text-h6 font-weight-black black--text">
-                {{ roundCount }}/{{ totalRounds }}
+
+          <div style="display: flex; flex-direction: row; align-items: center">
+
+            <!-- audience count display -->
+            <div class="center">
+              <v-icon 
+                color="black"
+                x-large
+              >
+                mdi-account-group
+              </v-icon>
+              <div 
+                class="text-h6 font-weight-black"
+                style="line-height: 1;"
+              >
+                {{ audienceText }}
               </div>
-            </v-progress-circular>
+            </div>
+            <div class="mx-3"></div>
+            <!-- round count display -->
+            <div class="text-h6 font-weight-black">
+              <span class="mr-2">
+                Round:
+              </span>
+              <v-progress-circular
+                :value="gameProgress"
+                color="#FFB118"
+                size="57"
+                width="8"
+              >
+                <div class="text-h6 font-weight-black black--text">
+                  {{ roundCount }}/{{ totalRounds }}
+                </div>
+              </v-progress-circular>
+            </div>
           </div>
+          
+          <!-- players in game display -->
           <div class="player-container-parent mt-2 mb-1">
             <div 
               v-for="player in playerList" 
@@ -219,7 +242,11 @@ export default {
     currentView: {
       type: String,
       required: true
-    }
+    },
+    audienceCount: {
+      type: Number,
+      required: true
+    },
   },
   emits: [
     'unpause',
@@ -268,6 +295,13 @@ export default {
         if (!value) {
           this.$emit('unpause')
         }
+      }
+    },
+    audienceText() {
+      if (!this.audienceCount) {
+        return 'Nobody In Audience'
+      } else {
+        return `${this.audienceCount} In Audience`
       }
     }
   },
