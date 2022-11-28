@@ -1,5 +1,24 @@
 <template>  
   <div>
+    <div
+      style="position: fixed; top: 0; left: 0; z-index: 99; background: rgba(0,0,0,0.1); border-radius: 10px; border: 1px dashed black; display: flex; flex-direction: column;"
+      class="room-id-display center ma-2 px-2 py-1"
+    >
+    <div style=" display: flex; flex-direction: row">
+      <div
+        v-for="(i, index) in 'RhymeTime'"
+        :key="i.id"
+        :style="`animation-delay: ${index * 0.33}s; line-height: 1;`"
+        :class="`${rhymetimeTextAnimation} white--text font-weight-black text-p`"
+      >{{ i }}</div>
+    </div>
+      <div 
+        class="white--text font-weight-black text-h4"
+        style="line-height: 1"
+      >
+        {{ roomId || '5031' }} 
+      </div>
+    </div>
     <component
       :is="currentView"
       :playerList="playerList"
@@ -8,6 +27,7 @@
       :winningResponses="winningResponses"
       :isPaused="isPaused"
       :numOfPlayerSpots="numOfPlayerSpots"
+      @toggle-pause="manuallyPaused = !manuallyPaused"
       @round-winner="winningResponses.push($event)"
       @change-view="currentView = $event"
       @round-over="roundOver"
@@ -74,7 +94,9 @@ export default {
       // number of player spots offered in room
       numOfPlayerSpots: 6,
       // how many members are in the audience
-      audienceCount: 0
+      audienceCount: 0,
+      // contains the class for the rhymetime text animation
+      rhymetimeTextAnimation: 'rhymetime-text-animation',
     }
   },
   destroyed() {
@@ -89,6 +111,13 @@ export default {
         this.manuallyPaused = !this.manuallyPaused
       }
     })
+    // controls the rhymetime text animation
+    setInterval(() => {
+      this.rhymetimeTextAnimation = ''
+      setTimeout(() => {
+        this.rhymetimeTextAnimation = 'rhymetime-text-animation'
+      }, 100)
+    }, 8000)
   },
   computed: {
     isPaused() {
@@ -96,6 +125,9 @@ export default {
     },
     pausePlayIcon() {
       return this.isPaused ? 'mdi-play' : 'mdi-pause'
+    },
+    roomId() {
+      return this.$store.state.roomid
     }
   },
   methods: {
@@ -104,7 +136,7 @@ export default {
       if (this.socket?.connected) return
       this.socket = io(SOCKET_URL)
       this.socket.on('connect', () => { 
-        this.socket.emit('join-room', this.$store.state.roomid, (response) => {
+        this.socket.emit('join-room', this.roomId, (response) => {
           if (response === 'connected') {
             this.socket.emit('host-present')
           }
@@ -119,7 +151,7 @@ export default {
             redirect: {
               name: 'audience',
               query: {
-                room: this.$store.state.roomid
+                room: this.roomId
               }
             }
           })
@@ -135,7 +167,7 @@ export default {
               name: 'join',
               query: {
                 err: 'nickname_taken',
-                room: this.$store.state.roomid
+                room: this.roomId
               }
             }
           })
@@ -174,9 +206,6 @@ export default {
     modelVisibility() {
       this.isPageHidden = document.visibilityState === 'hidden'
     },
-    forceDisconnect() {
-      this.socket.disconnect()
-    },
     // called by 'recap' when the round recap is over
     roundOver() {
       if (this.roundCount === this.totalRounds) {
@@ -185,10 +214,8 @@ export default {
 
       // resets responses for new round
       this.promptResponses = []
-
       this.roundCount++
       this.currentView = Views.respond
-      // make sessionStorage back-up of game state here
     },
     restartGame() {
       this.roundCount = 1
@@ -232,3 +259,20 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.rhymetime-text-animation {
+  animation: move-text 750ms ease-in-out;
+}
+@keyframes move-text {
+  0% { 
+    transform: translateY(0px);
+  }
+  50% { 
+    transform: translateY(-4px);
+  }
+  100% { 
+    transform: translateY(0px);
+  }
+}
+</style>
