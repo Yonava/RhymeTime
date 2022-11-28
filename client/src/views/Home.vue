@@ -10,12 +10,10 @@
     </div>
     <div class="sound-bar-container">
       <div 
-        v-for="i in 10"
+        v-for="i in 14"
         :key="i"
         class="sound-bar"
-        :style="{ height: `${(i * 10)}px` }"
-      ></div>
-      
+      ></div> 
     </div>
   </div>
 </template>
@@ -23,15 +21,30 @@
 <script>
 export default {
   name: 'HomeView',
+  data() {
+    return {
+      cursorXPos: 0,
+      cursorYPos: 0,
+    }
+  },
   mounted() {
     // redirects mobile users to /join
     if (!this.$vuetify.breakpoint.mdAndUp) {
       this.$router.push({ 
         name: 'join' 
       })
+      return
     }
+    document.addEventListener('mousemove', this.updateCursorPos)
+  },
+  destroyed() {
+    document.removeEventListener('mousemove', this.updateCursorPos)
   },
   methods: {
+    updateCursorPos(ev) {
+      this.cursorXPos = ev.clientX
+      this.cursorYPos = Math.abs(ev.clientY - 770)
+    },
     host() {
       this.$store.state.roomid = Math
         .random()
@@ -45,6 +58,36 @@ export default {
     join() {
       this.$router.push({ 
         name: 'join' 
+      })
+    }
+  },
+  watch: {
+    cursorXPos() {
+      const bars = document.getElementsByClassName('sound-bar')
+      const heights = []
+      for (let i = 0; i < bars.length; i++) {
+        const bar = bars[i]
+        const barWidth = bar.offsetWidth
+        const barXPos = bar.offsetLeft
+        const barCenter = barXPos + barWidth / 2
+        const distance = Math.abs(barCenter - this.cursorXPos)
+        const height = Math.min(200, (this.cursorXPos) / (distance))
+        heights.push({
+          bar,
+          height,
+        })
+      }
+      const tallestBar = heights.reduce((prev, curr) => {
+        return prev.height > curr.height ? prev : curr
+      })
+      heights.forEach(({ bar, height }) => {
+        if (height === tallestBar.height) {
+          bar.style.height = `${height}px`
+          bar.style.backgroundColor = '#fff'
+        } else {
+          bar.style.height = `${height * 10 * (this.cursorYPos/200)}px`
+          bar.style.backgroundColor = '#FFD37E'
+        }
       })
     }
   }
