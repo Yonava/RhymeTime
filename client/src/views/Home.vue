@@ -44,6 +44,14 @@ import { SoundTrack } from '../utils/Soundboard'
 
 export default {
   name: 'HomeView',
+  mounted() {
+    // redirects mobile users to /join
+    if (!this.$vuetify.breakpoint.mdAndUp) {
+      this.$router.push({ 
+        name: 'join' 
+      })
+    }
+  },
   methods: {
     playTune(track) {
       SoundTrack.playNew(track)
@@ -57,10 +65,14 @@ export default {
         .toString()
         .substring(2, 6)
       
-      this.$router.push({ name: 'host' })
+      this.$router.push({ 
+        name: 'host' 
+      })
     },
     join() {
-      this.$router.push({ name: 'join' })
+      this.$router.push({ 
+        name: 'join' 
+      })
     }
   }
 }
