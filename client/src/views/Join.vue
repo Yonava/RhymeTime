@@ -1,44 +1,57 @@
 <template>
-  <v-card 
-    class="fix-to-middle" 
-    width="350"
-  >
-    <!-- test comment1 -->
-    <v-card-title>
-      Join A Room
-    </v-card-title>
-    <div class="px-5">
-      <span
-        v-if="errorMessage"
-        class="red--text"
-      >{{ errorMessage }}</span>
-      <v-text-field
-        v-model="$store.state.nickname"
-        label="Enter a nickname"
-      ></v-text-field>
-      <v-text-field
-        v-model="$store.state.roomid"
-        label="Enter a room ID"
-      ></v-text-field>
+  <div class="background-matte center">
+    <div 
+      class="text-h2 mb-4 font-weight-black white--text"
+      style="-webkit-text-stroke: black 1px;"
+    >
+      RhymeTime
     </div>
-    <v-card-actions>
-      <v-btn 
-        @click="play"
-        :disabled="!canJoin"
-        color="purple"
-        class="white--text"
-        block
-      >jump in!</v-btn>
-    </v-card-actions>
-    <v-card-actions>
-      <v-btn 
-        @click="$router.push('/')"
-        block 
-        color="red" 
-        dark 
-      >go back :(</v-btn>
-    </v-card-actions>
-  </v-card>
+    <v-card 
+      class="fix-to-middle" 
+      width="350"
+      elevation="10"
+      color="#ffebc3"
+    >
+      <!-- test comment1 -->
+      <v-card-title class="center">
+        <div class="text-h4 font-weight-black">
+          Join A Room
+        </div>
+      </v-card-title>
+      <div class="px-5">
+        <span
+          v-if="errorMessage"
+          class="red--text"
+        >{{ errorMessage }}</span>
+        <div class="font-weight-black text-h6">
+          Nickname:
+        </div>
+        <input 
+          v-model="$store.state.nickname"
+          class="input-field font-weight-black white--black text-p pa-1"
+          type="text" 
+        />
+        <div class="my-2"></div>
+        <div class="font-weight-black text-h6">
+          Room Code:
+        </div>
+        <input 
+          v-model="$store.state.roomid"
+          class="input-field font-weight-black white--black text-p pa-1"
+          type="number" 
+        />
+      </div>
+      <div class="center">
+        <div 
+          @click="play"
+          class="font-weight-black text-h5 my-3 px-4 py-2"
+          style="background: #FFB118; border-radius: 10px; width: 90%; text-align: center; cursor: pointer; border: 2px solid black;"
+        >
+          Ready To Rhyme!
+        </div>
+      </div>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -48,7 +61,9 @@ export default {
   },
   methods: {
     play() {
-      this.$router.push({ name: 'play' })
+      this.$router.push({ 
+        name: 'play' 
+      })
     }
   },
   computed: {
@@ -72,10 +87,16 @@ export default {
 </script>
 
 <style scoped>
-  .fix-to-middle {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  .background-matte {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: #FFB118;
+  }
+
+  .input-field {
+    border: 2px solid black; 
+    border-radius: 5px; 
+    background-color: #ffd98c;
   }
 </style>

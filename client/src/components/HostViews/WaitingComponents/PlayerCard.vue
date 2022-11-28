@@ -114,6 +114,7 @@ export default {
     transition: 500ms;
     overflow: hidden;
     flex-direction: row;
+    border: 2px solid black;
   }
   .pfp {
     margin-left: 5px;
