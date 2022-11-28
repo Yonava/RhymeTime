@@ -8,7 +8,6 @@
       :winningResponses="winningResponses"
       :isPaused="isPaused"
       :numOfPlayerSpots="numOfPlayerSpots"
-      @toggle-pause="manuallyPaused = !manuallyPaused"
       @round-winner="winningResponses.push($event)"
       @change-view="currentView = $event"
       @round-over="roundOver"
@@ -85,6 +84,11 @@ export default {
   mounted() {
     this.connectSocket()
     document.addEventListener('visibilitychange', this.modelVisibility)
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'p') {
+        this.manuallyPaused = !this.manuallyPaused
+      }
+    })
   },
   computed: {
     isPaused() {

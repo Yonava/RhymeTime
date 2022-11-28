@@ -41,9 +41,6 @@ export default {
       required: true
     }
   },
-  emits: [
-    'toggle-pause'
-  ],
   mounted() {
     
     if (this.testMode && this.$parent.currentView !== this.testView) this.$emit('change-view', this.testView)
@@ -108,11 +105,11 @@ export default {
     },
     pauseGame() {
       this.stopTimer()
-      SoundTrack.pause()
+      // SoundTrack.pause()
     },
     unpauseGame() {
       if (!this.testMode) this.startTimer()
-      SoundTrack.play()
+      // SoundTrack.play()
     },
     togglePause() {
       this.$emit('toggle-pause')
