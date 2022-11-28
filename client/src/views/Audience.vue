@@ -54,9 +54,9 @@ export default {
   },
   data() {
     return {
-      currentView: Views.vote,
+      currentView: Views.waiting,
       socket: null,
-      receivedCurrentView: true
+      receivedCurrentView: false
     }
   },
   mounted() {

@@ -22,6 +22,7 @@
       :totalRounds="totalRounds"
       :playerList="playerList"
       :currentView="currentView"
+      :audienceCount="audienceCount"
       @update-total-rounds="totalRounds = $event"
       @unpause="manuallyPaused = false"
     />
