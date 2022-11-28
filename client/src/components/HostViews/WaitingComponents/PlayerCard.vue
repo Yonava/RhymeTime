@@ -3,15 +3,19 @@
     class="player-card center" 
     :style="color"
   >
-    <!-- <transition name="slide"> -->
-      <v-img
-        v-if="playerPfp"
-        :src="require(`../../../../assets/pfps/${playerPfp}.webp`)"
-        class="pfp"
-        aspect-ratio="1"
-        max-width="125px"
-      ></v-img>
-    <!-- </transition> -->
+    <div style="width: 30%">
+      <transition name="slide-in">
+        <component :is="pfpSwitch ? 'PlayerPfp1':'PlayerPfp2'">
+          <template>
+            <img
+              v-if="playerPfp"
+              :src="require(`../../../../assets/pfps/${playerPfp}.webp`)"
+              class="pfp"
+            />
+          </template>
+        </component>
+      </transition>
+    </div>
     <div style="width: 60%; text-align: center">
       <h1 :style="`font-weight: 1000; ${nameTxtColor}`">{{ playerName }}</h1>
     </div>
@@ -34,7 +38,14 @@
 </template>
 
 <script>
+import PlayerPfp1 from './PlayerPfp1'
+import PlayerPfp2 from './PlayerPfp2'
+
 export default {
+  components: {
+    PlayerPfp1,
+    PlayerPfp2
+  },
   props: {
     playerColor: {
       required: false,
@@ -57,6 +68,11 @@ export default {
       default: 0
     }
   },
+  data() {
+    return {
+      pfpSwitch: true,
+    }
+  },
   computed: {
     color() {
       return `background-color: ${this.playerColor}`
@@ -68,6 +84,11 @@ export default {
   methods: {
     kickPlayer() {
       this.$emit('player-kicked', this.playerClientId)
+    }
+  },
+  watch: {
+    playerPfp() {
+      this.pfpSwitch = !this.pfpSwitch
     }
   }
 }
@@ -81,9 +102,13 @@ export default {
     flex-direction: row;
     border-radius: 10px;
     transition: 500ms;
+    overflow: hidden;
   }
   .pfp {
     border-radius: 10px;
+    width: 120px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
   }
   .kick-overlay {
     position: absolute;
@@ -98,17 +123,19 @@ export default {
   .player-card:hover .kick-overlay {
     opacity: 1;
   }
+
+  
   .slide-in-enter, .slide-out-leave-to {
-    transform: translateX(-100vw);
+  transform: translateY(300px);
   }
-  .slide-in-enter-to, .slide-in-leave-from, .slide-out-enter-to, .slide-out-leave-from {
-    transform: translateX(0);
+  .slide-in-enter-to, .slide-in-leave-from {
+    transform: translateY(-60px);
   }
-  .slide-in-enter-active, .slide-in-leave-active, .slide-out-enter-active, .slide-out-leave-active {
-    transition: all 1s;
-    position: fixed;
+  .slide-in-enter-active, .slide-in-leave-active {
+    transition: all 250ms;
+    position: absolute;
   }
-  .slide-in-leave-to, .slide-out-enter {
-    transform: translateX(100vw);
+  .slide-in-leave-to {
+    transform: translateY(-360px);
   }
 </style>

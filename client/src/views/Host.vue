@@ -1,22 +1,24 @@
 <template>  
   <div>
-    <div
-      style="position: fixed; top: 0; left: 0; z-index: 99; background: rgba(0,0,0,0.1); border-radius: 10px; border: 1px dashed black; display: flex; flex-direction: column;"
+    <div 
+      v-if="currentView !== Views.waiting"
       class="room-id-display center ma-2 px-2 py-1"
     >
-    <div style=" display: flex; flex-direction: row">
-      <div
-        v-for="(i, index) in 'RhymeTime'"
-        :key="i.id"
-        :style="`animation-delay: ${index * 0.33}s; line-height: 1;`"
-        :class="`${rhymetimeTextAnimation} white--text font-weight-black text-p`"
-      >{{ i }}</div>
-    </div>
+      <div style="display: flex; flex-direction: row">
+        <div
+          v-for="(letter, index) in 'RhymeTime'"
+          :key="letter.id"
+          :style="`animation-delay: ${index * 0.3}s; line-height: 1;`"
+          :class="`${rhymetimeTextAnimation} white--text font-weight-black text-p`"
+        >
+          {{ letter }}
+        </div>
+      </div>
       <div 
         class="white--text font-weight-black text-h4"
         style="line-height: 1"
       >
-        {{ roomId || '5031' }} 
+        {{ roomId }} 
       </div>
     </div>
     <component
@@ -97,6 +99,8 @@ export default {
       audienceCount: 0,
       // contains the class for the rhymetime text animation
       rhymetimeTextAnimation: 'rhymetime-text-animation',
+
+      Views
     }
   },
   destroyed() {
@@ -261,8 +265,19 @@ export default {
 </script>
 
 <style scoped>
+.room-id-display {
+  position: fixed;
+  top: 0; 
+  left: 0; 
+  z-index: 99; 
+  background: rgba(0,0,0,0.1); 
+  border-radius: 10px; 
+  border: 1px solid black; 
+  display: flex; 
+  flex-direction: column;
+}
 .rhymetime-text-animation {
-  animation: move-text 750ms ease-in-out;
+  animation: move-text 1s ease-in-out;
 }
 @keyframes move-text {
   0% { 
