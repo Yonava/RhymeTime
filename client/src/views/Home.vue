@@ -7,6 +7,25 @@
       <div class="rhymetime text-h1 font-weight-black white--text">
         RhymeTime
       </div>
+      <div class="button-container mt-4">
+        <div class="host-button">
+          <div 
+            @click.stop="host"
+            class="text-h4 font-weight-black"
+          >
+            Host A Game
+          </div>
+        </div>
+        <v-spacer></v-spacer>
+        <div class="join-button">
+          <div 
+            @click.stop="join"
+            class="text-h4 font-weight-black"
+          >
+            Join A Game
+          </div>
+        </div>
+      </div>
     </div>
     <div class="sound-bar-container">
       <div 
@@ -129,5 +148,36 @@ export default {
     margin-left: 6px;
     margin-right: 6px;
     margin-top: auto;
+  }
+  .button-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+  }
+  .join-button {
+    cursor: pointer;
+    user-select: none;
+    transition: 400ms;
+    background-color: #ffc758;
+    border-radius: 10px;
+    padding: 10px 20px;
+  }
+  .join-button:hover {
+    transform: scale(1.1);
+    background: #53cf19;
+    box-shadow: 4px 2px 20px 1px black;
+  }
+  .host-button {
+    cursor: pointer;
+    user-select: none;
+    transition: 400ms;
+    background-color: #ffc758;
+    border-radius: 10px;
+    padding: 10px 20px;
+  }
+  .host-button:hover {
+     transform: scale(1.1);
+    background: #9a88d1;
+    box-shadow: 4px 2px 20px 1px black;
   }
 </style>
