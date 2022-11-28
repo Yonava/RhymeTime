@@ -1,47 +1,26 @@
 <template>
-  <div class="home">
-    <v-container 
-      fluid
-      fill-height
-    >
-      <v-row 
-        class="mt-1" 
-        align="center" 
-        justify="center"
-      >
-        <div class="text-h4">
-          Welcome To RhymeTime
-        </div>
-      </v-row>
-      <v-row 
-        class="mt-5" 
-        align="center" 
-        justify="center"
-      >
-        <v-btn
-          @click.once="host"
-          color="blue"
-          class="ma-3"
-          dark
-        >
-          Host A Game
-        </v-btn>
-        <v-btn
-          @click.once="join"
-          color="green"
-          class="ma-3"
-          dark
-        >
-          Join Active Session
-        </v-btn>
-      </v-row>
-    </v-container>
+  <div class="background-matte center">
+    <div>
+      <div class="welcometo text-h3 font-weight-black">
+        Welcome To
+      </div>
+      <div class="rhymetime text-h1 font-weight-black white--text">
+        RhymeTime
+      </div>
+    </div>
+    <div class="sound-bar-container">
+      <div 
+        v-for="i in 10"
+        :key="i"
+        class="sound-bar"
+        :style="{ height: `${(i * 10)}px` }"
+      ></div>
+      
+    </div>
   </div>
 </template>
 
 <script>
-import { SoundTrack } from '../utils/Soundboard'
-
 export default {
   name: 'HomeView',
   mounted() {
@@ -53,12 +32,6 @@ export default {
     }
   },
   methods: {
-    playTune(track) {
-      SoundTrack.playNew(track)
-    },
-    pauseTune() {
-      SoundTrack.pause()
-    },
     host() {
       this.$store.state.roomid = Math
         .random()
@@ -77,3 +50,41 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .background-matte {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-color: #FFB118;
+  }
+  .rhymetime {
+    cursor: default;
+    user-select: none;
+    transition: 400ms;
+  }
+  .rhymetime:hover {
+    transform: scale(1.2);
+  }
+  .welcometo {
+    cursor: default;
+    user-select: none;
+    transition: 400ms;
+  }
+  .sound-bar-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+  }
+  .sound-bar {
+    width: 75px;
+    background-color: #FFD37E;
+    border-radius: 10px 10px 0 0;
+    margin-left: 6px;
+    margin-right: 6px;
+    margin-top: auto;
+  }
+</style>
