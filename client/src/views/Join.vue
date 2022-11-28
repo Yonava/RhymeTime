@@ -12,17 +12,18 @@
       elevation="10"
       color="#ffebc3"
     >
-      <!-- test comment1 -->
-      <v-card-title class="center">
+      <v-card-title class="center pt-4 pb-2">
         <div class="text-h4 font-weight-black">
           Join A Room
         </div>
       </v-card-title>
       <div class="px-5">
-        <span
+        <div
           v-if="errorMessage"
-          class="red--text"
-        >{{ errorMessage }}</span>
+          class="red--text text-p font-weight-bold"
+        >
+          {{ errorMessage }}
+        </div>
         <div class="font-weight-black text-h6">
           Nickname:
         </div>
@@ -38,14 +39,19 @@
         <input 
           v-model="$store.state.roomid"
           class="input-field font-weight-black white--black text-p pa-1"
-          type="number" 
+          type="text"
         />
+        <div 
+          class="text-h6 font-weight-bold red--text mt-2"
+          style="line-height: 1.2"
+        >
+          {{ inputError }}
+        </div>
       </div>
       <div class="center">
         <div 
           @click="play"
-          class="font-weight-black text-h5 my-3 px-4 py-2"
-          style="background: #FFB118; border-radius: 10px; width: 90%; text-align: center; cursor: pointer; border: 2px solid black;"
+          class="ready-button font-weight-black text-h5 mb-3 mt-6 px-4 py-2"
         >
           Ready To Rhyme!
         </div>
@@ -56,11 +62,26 @@
 
 <script>
 export default {
+  data() {
+    return {
+      inputError: "",
+    }
+  },
   mounted() {
     this.$store.state.roomid = this.$route.query.room || ''
   },
   methods: {
     play() {
+      // make sure roomid is a number 
+      if (isNaN(this.$store.state.roomid)) {
+        this.inputError = 'Room code invalid'
+        return
+      }
+      // make sure nickname is not empty
+      if (!this.$store.state.nickname.length || this.$store.state.nickname.length > 8) {
+        this.inputError = 'Nickname must be between 1 and 8 characters'
+        return
+      }
       this.$router.push({ 
         name: 'play' 
       })
@@ -82,6 +103,15 @@ export default {
           return ''
       }
     }
+  },
+  watch: {
+    inputError() {
+      if (this.inputError) {
+        setTimeout(() => {
+          this.inputError = ''
+        }, 3000)
+      }
+    }
   }
 }
 </script>
@@ -98,5 +128,14 @@ export default {
     border: 2px solid black; 
     border-radius: 5px; 
     background-color: #ffd98c;
+  }
+
+  .ready-button {
+    background: #FFB118; 
+    border-radius: 10px; 
+    width: 90%; 
+    text-align: center; 
+    cursor: pointer; 
+    border: 2px solid black;
   }
 </style>
