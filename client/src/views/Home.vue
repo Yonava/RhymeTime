@@ -29,7 +29,7 @@
     </div>
     <div class="sound-bar-container">
       <div 
-        v-for="i in 14"
+        v-for="i in 18"
         :key="i"
         class="sound-bar"
       ></div> 
@@ -83,31 +83,51 @@ export default {
   watch: {
     cursorXPos() {
       const bars = document.getElementsByClassName('sound-bar')
-      const heights = []
+
+      // iterates through all the bars and stores each bars respective distance
+      // from the cursors X position
+      const distances = []
       for (let i = 0; i < bars.length; i++) {
         const bar = bars[i]
         const barWidth = bar.offsetWidth
         const barXPos = bar.offsetLeft
         const barCenter = barXPos + barWidth / 2
-        const distance = Math.abs(barCenter - this.cursorXPos)
-        const height = Math.min(200, (this.cursorXPos) / (distance))
-        heights.push({
-          bar,
-          height,
-        })
+
+        // determine bar closest to cursorXPos
+        distances.push(Math.abs(barCenter - this.cursorXPos))
       }
-      const tallestBar = heights.reduce((prev, curr) => {
-        return prev.height > curr.height ? prev : curr
-      })
-      heights.forEach(({ bar, height }) => {
-        if (height === tallestBar.height) {
-          bar.style.height = `${height}px`
-          bar.style.backgroundColor = '#fff'
-        } else {
-          bar.style.height = `${height * 10 * (this.cursorYPos/200)}px`
-          bar.style.backgroundColor = '#FFD37E'
+
+      // finds bar closest to cursorX
+      let closestBar = distances.indexOf(Math.min(...distances))
+      
+      // uses percentage of cursorY height as a multiplier for max height
+      const CURSOR_Y_PERCENT = this.cursorYPos / 770
+      const MAX_HEIGHT = 500 * CURSOR_Y_PERCENT
+
+      // sets styles for closest
+      bars[closestBar].style.height = `${MAX_HEIGHT}px`
+      bars[closestBar].style.opacity = 1
+
+      // iterates down to all other bars
+      let [left, right] = [closestBar - 1, closestBar + 1]
+      let [maxLeft, maxRight] = [false, false]
+      
+      while (!maxLeft || !maxRight) {
+        
+        if (left === -1) maxLeft = true
+        if (right === bars.length) maxRight = true
+
+        if (!maxLeft) {
+          bars[left].style.height = `${MAX_HEIGHT - ((closestBar - left) * 14)}px`
+          bars[left].style.opacity = `${1 - (Math.abs(closestBar - left) / 15) - .2}`
+          left--
         }
-      })
+        if (!maxRight) {
+          bars[right].style.height = `${MAX_HEIGHT - ((right - closestBar) * 14)}px`
+          bars[right].style.opacity = `${1 - (Math.abs(closestBar - right) / 15) - .2}`
+          right++
+        }
+      }
     }
   }
 }
@@ -143,11 +163,13 @@ export default {
   }
   .sound-bar {
     width: 75px;
-    background-color: #FFD37E;
     border-radius: 10px 10px 0 0;
     margin-left: 6px;
     margin-right: 6px;
     margin-top: auto;
+    height: 20px;
+    transition: 200ms;
+    background-color: white;
   }
   .button-container {
     display: flex;
