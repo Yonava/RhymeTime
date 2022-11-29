@@ -112,7 +112,6 @@ export default {
         name: 'join'
       })
     }
-    console.log('socket created')
     // connect to socket
     this.connectSocket()
   },

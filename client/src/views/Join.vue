@@ -71,6 +71,11 @@ export default {
     }
   },
   mounted() {
+    if (localStorage.getItem('room-token')) {
+      this.$router.push({
+        name: 'play'
+      })
+    }
     this.$store.state.roomid = this.$route.query.room || ''
   },
   methods: {
