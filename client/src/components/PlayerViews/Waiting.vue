@@ -149,6 +149,8 @@ export default {
         clientId: this.clientId
       })
 
+      // TODO: make request to endpoint to receive jwt
+
       this.$emit('connected-to-room')
     },
     emitPlayerObject() {

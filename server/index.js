@@ -1,16 +1,18 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const db = require('mysql');
+// const db = require('mysql');
+
+app.use(express.json());
+app.use(cors());
 
 const server = require('http').Server(app);
 exports.server = server;
 
 require('./sockets');
 
-app.use(bodyParser.json());
-app.use(cors());
+const token = require('./api/tokens');
+app.use('/api/tokens', token);
 
 const PORT = process.env.PORT || 1010;
 
