@@ -19,7 +19,6 @@
       :socketInstance="socket"
       :clientId="clientId"
       :connectedToRoom="connectedToRoom"
-      :socketOnline="socketOnline"
       :connectedViaToken="connectedViaToken"
       @connected-to-room="connectedToRoom = true"
     ></component>
@@ -69,8 +68,6 @@ export default {
       socket: null,
       // used to determine if player is connected to a room
       connectedToRoom: false,
-      // used to determine if player is connected to server
-      socketOnline: false,
       // contains data received from host through pause-state socket endpt
       pauseData: { gamePaused: false, reason: 'not-paused' },
       // used for host to control which view the player is on
@@ -108,7 +105,7 @@ export default {
         return console.log('all good!')
       } catch (err) {
         console.log(err)
-        localStorage.removeItem('roomid')
+        localStorage.removeItem('room-token')
       }
     }
     console.log('socket created')
@@ -134,7 +131,6 @@ export default {
             this.establishSocketListeners()
             this.hostCountdown()
             this.socket.emit('get-game-state')
-            this.socketOnline = true
           }
         })
       })

@@ -74,10 +74,6 @@ export default {
       required: true,
       type: Boolean
     },
-    socketOnline: {
-      required: true,
-      type: Boolean
-    },
     connectedViaToken: {
       required: true,
       type: Boolean
@@ -90,7 +86,7 @@ export default {
     this.selectedPfp = Math.floor(Math.random() * this.numOfPfps) + 1
     this.selectedColor = this.colors[Math.floor(Math.random() * this.colors.length)]
     if (!this.connectedToRoom) {
-      this.emitPlayerObject()
+      this.connectToRoom()
     }
   },
   data() {
@@ -126,8 +122,7 @@ export default {
   },
   methods: {
     connectToRoom() {
-      // if client is already connected to a room
-      if (this.connectedToRoom) return
+      
       // true if client is rejoining
       if (this.connectedViaToken) return
       
@@ -171,11 +166,6 @@ export default {
     },
     selectedPfp() {
       this.emitPlayerObject()
-    },
-    socketOnline(v) {
-      if (v) {
-        this.connectToRoom()
-      }
     }
   }
 }
