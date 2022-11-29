@@ -4,19 +4,18 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
 router.post('/sign', async (req, res) => {
-  console.log(req.body)
   const { clientId, roomId } = req.body;
   let authToken = jwt.sign({
-    clientId: clientId,
-    roomId: roomId
+    clientId,
+    roomId
   }, process.env.JWT, {
-    expiresIn: '45s'
+    expiresIn: '30m'
   });
   
   res.json(authToken);
 });
 
-router.post('/verify/:token', async (req, res) => { 
+router.get('/verify/:token', async (req, res) => { 
   // verify token
   jwt.verify(req.params.token, process.env.JWT, (error, decoded) => {
     if (error) {
