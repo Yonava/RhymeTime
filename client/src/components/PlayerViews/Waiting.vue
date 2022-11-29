@@ -1,71 +1,56 @@
 <template>
-  <div>
-    <!-- Loading room details... -->
-    <div v-if="!hasHostResponded">
-      <v-progress-circular
-        size="70"
-        width="7"
-        color="orange"
-        class="loading"
-        indeterminate
-      ></v-progress-circular>
-    </div>
-    <div 
-      v-else
-      class="center"
+  <div class="center">
+    <header 
+      :style="headerColor"
+      class="player-waiting-header center" 
     >
-      <header 
-        :style="headerColor"
-        class="player-waiting-header center" 
-      >
-        <h1 class="player-waiting-title">
-          {{ clientName }}
-        </h1>
-        <v-img
-          :src="selectedPfpSource"
-          class="selected-pfp"
-        ></v-img>
-      </header>
-      <h2 class="player-waiting-subtitle my-2">
-        Choose Your Color
-      </h2>
-      <div style="width: 85%">
-        <div class="flex-container">
-          <div 
-            v-for="color in colors" 
-            :key="color"
-          >
-            <div style="position: relative;" >
-              <v-icon 
-                v-if="color === selectedColor"
-                class="check-mark"
-                dark
-              >mdi-check-outline</v-icon>
-              <div
-                @click.stop="selectedColor = color"
-                :style="`background-color: ${color};`"
-                class="frame-item ma-3"
-              ></div>
-            </div>
+      <h1 class="player-waiting-title">
+        {{ clientName }}
+      </h1>
+      <v-img
+        :src="selectedPfpSource"
+        class="selected-pfp"
+      ></v-img>
+    </header>
+    <h2 class="player-waiting-subtitle my-2">
+      Choose Your Color
+    </h2>
+    <div style="width: 85%">
+      <div class="flex-container">
+        <div 
+          v-for="color in colors" 
+          :key="color"
+        >
+          <div style="position: relative;" >
+            <v-icon 
+              v-if="color === selectedColor"
+              class="check-mark"
+              dark
+            >mdi-check-outline</v-icon>
+            <div
+              @click.stop="selectedColor = color"
+              :style="`background-color: ${color};`"
+              class="frame-item ma-3"
+            ></div>
           </div>
         </div>
       </div>
-      <h2 class="player-waiting-subtitle my-2">
-        Take Your Pic
-      </h2>
-      <div style="width: 85%">
-        <div class="flex-container">
-          <div 
-            v-for="i in numOfPfps" 
-            :key="i"
-          >
-            <v-img
-              @click.stop="selectedPfp = i"
-              :src="require(`../../../assets/pfps/${i}.webp`)"
-              :style="pfpSelected(i)"
-              class="frame-item ma-3"
-            ></v-img>
-          </div>
+    </div>
+    <h2 class="player-waiting-subtitle my-2">
+      Take Your Pic
+    </h2>
+    <div style="width: 85%">
+      <div class="flex-container">
+        <div 
+          v-for="i in numOfPfps" 
+          :key="i"
+        >
+          <v-img
+            @click.stop="selectedPfp = i"
+            :src="require(`../../../assets/pfps/${i}.webp`)"
+            :style="pfpSelected(i)"
+            class="frame-item ma-3"
+          ></v-img>
         </div>
       </div>
     </div>
@@ -73,6 +58,8 @@
 </template>
 
 <script>
+import Tokens from '../../api/tokens'
+
 export default {
   props: {
     socketInstance: {
@@ -91,7 +78,7 @@ export default {
       required: true,
       type: Boolean
     },
-    hasHostResponded: {
+    connectedViaToken: {
       required: true,
       type: Boolean
     }
@@ -141,6 +128,10 @@ export default {
     connectToRoom() {
       // if client is already connected to a room
       if (this.connectedToRoom) return
+      // true if client is rejoining
+      if (this.connectedViaToken) return
+      
+      console.log('asking host to join!')
 
       this.socketInstance.emit('player-join', {
         name: this.clientName,
@@ -149,9 +140,16 @@ export default {
         clientId: this.clientId
       })
 
-      // TODO: make request to endpoint to receive jwt
-
-      this.$emit('connected-to-room')
+      Tokens.generate(this.roomId, this.clientId)
+        .then(token => {
+          localStorage.setItem('room-token', token)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        .finally(() => {
+          this.$emit('connected-to-room')
+        })
     },
     emitPlayerObject() {
       this.socketInstance.emit('player-object-change', {
@@ -184,12 +182,6 @@ export default {
 </script>
 
 <style scoped>
-.loading {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
 .player-waiting-header {
   position: relative;
   top: 0;

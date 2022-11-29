@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default class Tokens {
-  static async generate({ clientId, roomId }) {
+  static async generate(roomId, clientId) {
     try {
       const response = await axios({
         method: 'post',
@@ -10,9 +10,9 @@ export default class Tokens {
           clientId, 
           roomId 
         },
-        timeout: 5000
+        timeout: 10000
       })
-      
+
       return Promise.resolve(response.data)
     } catch (error) {
       return Promise.reject(error)
@@ -23,7 +23,7 @@ export default class Tokens {
       const response = await axios({
         method: 'get',
         url: `/api/tokens/verify/${token}`,
-        timeout: 5000
+        timeout: 10000
       })
 
       if (response.data?.error) {
