@@ -101,12 +101,16 @@ export default {
         this.$store.state.roomid = roomId
         this.clientId = clientId
         this.connectedViaToken = true
-        console.log('connected via token')
-        return console.log('all good!')
+        console.log('all good!')
       } catch (err) {
         console.log(err)
         localStorage.removeItem('room-token')
       }
+    } else if (!this.$store.state.roomid) {
+      // if no room id is defined, generate a new one
+      this.$router.push({ 
+        name: 'join'
+      })
     }
     console.log('socket created')
     // connect to socket

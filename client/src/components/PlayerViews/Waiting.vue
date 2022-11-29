@@ -83,10 +83,20 @@ export default {
     'connected-to-room'
   ],
   created() {
-    this.selectedPfp = Math.floor(Math.random() * this.numOfPfps) + 1
-    this.selectedColor = this.colors[Math.floor(Math.random() * this.colors.length)]
-    if (!this.connectedToRoom) {
+    // connectedToRoom for the play again case
+    // connectedViaToken for the accidental disconnect/refresh case
+    if (!this.connectedToRoom && !this.connectedViaToken) {
       this.connectToRoom()
+    } else if (this.connectedViaToken) {
+      this.selectedPfp = localStorage.getItem('player-pfp')
+      this.selectedColor = localStorage.getItem('player-color')
+      this.$store.state.nickname = localStorage.getItem('player-name')
+    }
+
+    if (!this.connectedViaToken) {
+      this.selectedPfp = Math.floor(Math.random() * this.numOfPfps) + 1
+      this.selectedColor = this.colors[Math.floor(Math.random() * this.colors.length)]
+      this.savePlayerDataLocally()
     }
   },
   data() {
@@ -122,10 +132,7 @@ export default {
   },
   methods: {
     connectToRoom() {
-      
-      // true if client is rejoining
-      if (this.connectedViaToken) return
-      
+    
       console.log('asking host to join!')
 
       this.socketInstance.emit('player-join', {
@@ -158,14 +165,21 @@ export default {
       if (pfp === this.selectedPfp) {
         return `border: 9px dashed ${this.selectedColor}`
       } else return ''
+    },
+    savePlayerDataLocally() {
+      localStorage.setItem('player-name', this.clientName)
+      localStorage.setItem('player-color', this.selectedColor)
+      localStorage.setItem('player-pfp', this.selectedPfp)
     }
   },
   watch: {
     selectedColor() {
       this.emitPlayerObject()
+      this.savePlayerDataLocally()
     },
     selectedPfp() {
       this.emitPlayerObject()
+      this.savePlayerDataLocally()
     }
   }
 }
