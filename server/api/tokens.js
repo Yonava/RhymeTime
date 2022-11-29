@@ -7,23 +7,27 @@ router.post('/sign', async (req, res) => {
   console.log(req.body)
   const { clientId, roomId } = req.body;
   let authToken = jwt.sign({
-    cliendId: clientId,
+    clientId: clientId,
     roomId: roomId
-  }, process.env.JWT, {expiresIn: '1h'});
+  }, process.env.JWT, {
+    expiresIn: '45s'
+  });
   
   res.json(authToken);
-  
 });
 
 router.post('/verify/:token', async (req, res) => { 
   // verify token
-  jwt.verify(req.params.token, process.env.JWT, (err, decoded) => {
-    if (err) {
+  jwt.verify(req.params.token, process.env.JWT, (error, decoded) => {
+    if (error) {
       res.json({
-        error: err
+        error
       });
     } else {
-      res.json(decoded);
+      res.json({ 
+        roomId: decoded.roomId, 
+        clientId: decoded.clientId
+      });
     }
   });
 });
