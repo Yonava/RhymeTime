@@ -4,17 +4,27 @@
     persistent
     max-width="290"
   >
-    <v-card>
-      <v-card-title class="text-h5">
+    <v-card color="orange">
+      <div
+        class="text-h5 font-weight-black white--text d-flex justify-center align-center flex-row py-5 px-5"
+        style="word-break: break-word; line-height: 1.1;"
+      >
+        <v-icon large color="white" class="mr-2">
+          {{ cardContent.icon }}
+        </v-icon>
         {{ cardContent.title }}
-      </v-card-title>
-      <v-card-text>
+      </div>
+      <v-card-text 
+        class="text-h6"
+        style="line-height: 1.2; color: black"
+      >
         {{ cardContent.text }}
       </v-card-text>
       <v-card-actions>
         <v-btn
           @click.stop="backOut"
-          color="red white--text"
+          color="orange lighten-3"
+          class="black--text font-weight-black"
           block
         >
           Back Out
@@ -45,20 +55,22 @@ export default {
         return {
           title: 'Host Jumped Ship!',
           text: `It looks like the host of your room left. 
-          Ask your host to create a new room to keep playing.`
+          Ask your host to create a new room to keep playing.`,
+          icon: 'mdi-account-arrow-left'
         }
       } else {
         return {
           title: 'Can\'t Connect to Host',
           text: `Sorry, but we couldn't connect you to the 
-          host of room ${this.$store.state.roomid}. Double check
-          all the digits are correct and try again.`
+          host. Double check your room code.`,
+          icon: 'mdi-lan-disconnect'
         }
       }
     }
   },
   methods: {
     backOut() {
+      localStorage.removeItem('room-token')
       if (this.hasHostResponded) {
         this.$router.push({ 
           name: 'join' 

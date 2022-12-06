@@ -101,7 +101,6 @@ export default {
         this.$store.state.roomid = roomId
         this.clientId = clientId
         this.connectedViaToken = true
-        console.log('all good!')
       } catch (err) {
         console.log(err)
         localStorage.removeItem('room-token')
