@@ -138,6 +138,8 @@ export default {
           return "Someone in the room you joined has the same nickname. Try something unique, original, spunky..."
         case 'audience_no_host':
           return "Unfortunately, we weren't able to find a host. Try joining a different room."
+        case 'exception':
+          return "Something went wrong. Sorry about that. Try joining a different room."
         default:
           return ''
       }

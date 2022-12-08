@@ -88,9 +88,23 @@ export default {
     if (!this.connectedToRoom && !this.connectedViaToken) {
       this.connectToRoom()
     } else if (this.connectedViaToken) {
-      this.selectedPfp = localStorage.getItem('player-pfp')
-      this.selectedColor = localStorage.getItem('player-color')
-      this.$store.state.nickname = localStorage.getItem('player-name')
+      // ensure all localStorage data is defined
+      let name = localStorage.getItem('player-name')
+      let color = localStorage.getItem('player-color')
+      let pfp = localStorage.getItem('player-pfp')
+
+      if (!name || !color || !pfp) {
+        this.$router.push({ 
+          name: 'join',
+          query: {
+            err: 'exception'
+          }
+        })
+      } else {
+        this.$store.state.nickname = name
+        this.selectedColor = color
+        this.selectedPfp = pfp
+      }
     }
 
     if (!this.connectedViaToken) {
@@ -132,9 +146,6 @@ export default {
   },
   methods: {
     connectToRoom() {
-    
-      console.log('asking host to join!')
-
       this.socketInstance.emit('player-join', {
         name: this.clientName,
         color: this.selectedColor,
@@ -144,7 +155,11 @@ export default {
 
       Tokens.generate(this.roomId, this.clientId)
         .then(token => {
-          localStorage.setItem('room-token', token)
+          try {
+            localStorage.setItem('room-token', token)
+          } catch (err) {
+            console.log(err)
+          }
         })
         .catch(err => {
           console.log(err)
@@ -167,9 +182,13 @@ export default {
       } else return ''
     },
     savePlayerDataLocally() {
-      localStorage.setItem('player-name', this.clientName)
-      localStorage.setItem('player-color', this.selectedColor)
-      localStorage.setItem('player-pfp', this.selectedPfp)
+      try {
+        localStorage.setItem('player-name', this.clientName)
+        localStorage.setItem('player-color', this.selectedColor)
+        localStorage.setItem('player-pfp', this.selectedPfp)
+      } catch (err) {
+        console.log(err)
+      }
     }
   },
   watch: {

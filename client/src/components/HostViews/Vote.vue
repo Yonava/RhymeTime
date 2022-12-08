@@ -73,7 +73,6 @@ export default {
     })
     this.socketInstance.on('ballot-collector', (playerBallot) => {
       if (this.pollsClosed) return
-      console.log('ballot received', playerBallot)
       this.countVotes(playerBallot)
     })
   },
