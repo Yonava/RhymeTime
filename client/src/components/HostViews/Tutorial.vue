@@ -1,8 +1,6 @@
 <template>
   <div class="background-matte center">
-    <h1 class="tutorial-title">
-      Tutorial Animation
-    </h1>
+    <component :is="tutorialFrame" />
     <div 
       :style="voteDisplayColor"
       class="vote-display-container center" 
@@ -118,11 +116,6 @@ export default {
     height: 100vh;
     width: 100vw;
     position: fixed;
-  }
-  .tutorial-title {
-    color: white;
-    font-size: 60pt;
-    font-weight: 1000;
   }
   .vote-display-container {
     width: 85vw;
