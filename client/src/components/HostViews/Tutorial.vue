@@ -1,6 +1,6 @@
 <template>
   <div class="background-matte center">
-    <component :is="tutorialFrame" />
+    <component :is="tutorialFrame.name" />
     <div 
       :style="voteDisplayColor"
       class="vote-display-container center" 
@@ -39,8 +39,21 @@ export default {
     return {
       players: [],
       votesForSkip: 0,
+      againstPercentOnDisplay: 100,
 
-      againstPercentOnDisplay: 100
+      tutorialFrames: [
+        {
+          name: 'pt1',
+          dur: 5000
+        },
+        {
+          name: ''
+        }
+      ],
+      tutorialFrame: {
+        name: 'pt1',
+        dur: 5000
+      }
     }
   },
   mounted() {
