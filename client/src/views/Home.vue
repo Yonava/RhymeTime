@@ -198,7 +198,7 @@ export default {
     padding: 10px 20px;
   }
   .host-button:hover {
-     transform: scale(1.1);
+    transform: scale(1.1);
     background: #9a88d1;
     box-shadow: 4px 2px 20px 1px black;
   }

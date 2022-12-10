@@ -6,6 +6,13 @@
     >
       RhymeTime
     </div>
+    <div 
+      v-if="rejoinId"
+      @click="rejoin"
+      class="rejoin-button text-h6 font-weight-black px-2"
+    >
+      Rejoin {{ rejoinId }}?
+    </div>
     <v-card 
       class="fix-to-middle" 
       width="350"
@@ -64,16 +71,37 @@
 </template>
 
 <script>
+import Tokens from '../api/tokens.js'
+
 export default {
   data() {
     return {
       inputError: "",
+      // if user has valid token and can rejoin, this will be set to the roomid
+      rejoinId: null,
     }
   },
-  mounted() {
+  async mounted() {
+    
     this.$store.state.roomid = this.$route.query.room || ''
+
+    let token = localStorage.getItem('room-token')
+    if (token) {
+      try {
+        let tokenData = await Tokens.verify(token)
+        this.rejoinId = tokenData.roomId ?? null
+      } catch (err) {
+        localStorage.removeItem('room-token')
+        console.warn(err)
+      }
+    }
   },
   methods: {
+    rejoin() {
+      this.$router.push({ 
+        name: 'play' 
+      })
+    },
     play() {
       // make sure roomid is a number 
       if (isNaN(this.$store.state.roomid)) {
@@ -110,6 +138,8 @@ export default {
           return "Someone in the room you joined has the same nickname. Try something unique, original, spunky..."
         case 'audience_no_host':
           return "Unfortunately, we weren't able to find a host. Try joining a different room."
+        case 'exception':
+          return "Something went wrong. Sorry about that. Try joining a different room."
         default:
           return ''
       }
@@ -148,5 +178,14 @@ export default {
     text-align: center; 
     cursor: pointer; 
     border: 2px solid black;
+  }
+  
+  .rejoin-button {
+    background:#ffd98c;
+    border-radius: 5px; 
+    text-align: center; 
+    cursor: pointer; 
+    margin-bottom: 20px;
+    box-shadow: 1px 1px 4px black;
   }
 </style>
