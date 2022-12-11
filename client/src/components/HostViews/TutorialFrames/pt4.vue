@@ -2,7 +2,7 @@
   <div class="center">
     <div 
       :style="titleStyle"
-      class="text-h2 white--text font-weight-bold trans"
+      class="text-h2 white--text font-weight-black trans"
     >
       Player Voting
     </div>

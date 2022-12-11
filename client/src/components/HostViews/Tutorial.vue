@@ -100,7 +100,7 @@ export default {
         }
       ],
       // this is the index of the current frame
-      frameIndex: 3,
+      frameIndex: 4,
       // this holds the audio element for the tutorial voiceover
       voAudio: null,
       // this is the flag for whether the tutorial has started

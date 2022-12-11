@@ -61,10 +61,22 @@ export default {
     return {
       candidates: [
         {
-          name: 'Player 1',
+          name: 'Yona',
           clientId: 123,
-          pfp: '1',
-          color: '#FF0000'
+          pfp: '2',
+          color: 'blue'
+        },
+        {
+          name: 'Josh',
+          clientId: 123,
+          pfp: '4',
+          color: 'green'
+        },
+        {
+          name: 'Jack',
+          clientId: 123,
+          pfp: '3',
+          color: 'red'
         }
       ],
       // player user has selected to boost

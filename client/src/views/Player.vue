@@ -1,7 +1,7 @@
 <template>
   <div> 
     <!-- Loading screen -->
-    <!-- <div 
+    <div 
       v-if="!hasHostResponded"
       class="loading-container center"
     >
@@ -11,8 +11,9 @@
         color="orange"
         indeterminate
       ></v-progress-circular>
-    </div> -->
+    </div>
     <component
+      v-else
       :is="currentView"
       :wordsInPrompt="wordsInPrompt"
       :socketInstance="socket"
@@ -23,14 +24,14 @@
     ></component>
 
     <!-- Dialog Boxes -->
-    <!-- <SessionDisbanded 
+    <SessionDisbanded 
       :visible="hostLeft" 
       :hasHostResponded="hasHostResponded"
     />
     <game-paused 
       :visible="pauseData.gamePaused" 
       :reason="pauseData.reason" 
-    /> -->
+    />
   </div>
 </template>
 
