@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import frameMixin from './frameMixin'
+import frameMixin from './frameMixin.vue'
 
 export default {
   name: 'pt1',
@@ -63,9 +63,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.trans-op {
-  transition: opacity 500ms;
-}
-</style>

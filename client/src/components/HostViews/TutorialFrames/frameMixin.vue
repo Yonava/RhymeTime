@@ -1,3 +1,4 @@
+<script>
 export default {
   props: {
     isPaused: {
@@ -25,3 +26,10 @@ export default {
     }, TIME_STAGGER)
   },
 }
+</script>
+
+<style scoped>
+.trans-op {
+  transition: opacity 500ms;
+}
+</style>

@@ -1,10 +1,12 @@
 <template>
   <div class="background-matte center">
-    <component 
-      :is="tutorialFrames[frameIndex].name" 
-      :isPaused="isPaused"
-      :playerList="playerList"
-    />
+    <transition name="slide-in">
+      <component 
+        :is="tutorialFrames[frameIndex].name" 
+        :isPaused="isPaused"
+        :playerList="playerList"
+      />
+    </transition>
     <div 
       :style="voteDisplayColor"
       class="vote-display-container center" 
@@ -240,23 +242,39 @@ export default {
   }
   .vote-display-container {
     width: 85vw;
-    height: 75px;
+    height: 60px;
     bottom: 5%;
     position: fixed;
     border-radius: 50px;
     transition: 500ms;
   }
   .vote-display-number {
-    font-weight: 1000;
+    font-weight: 900;
     color: white;
     font-size: 32pt;
     position: absolute;
   }
   .skip-vote-text {
     color: white;
-    font-weight: 1000;
+    font-weight: 900;
     font-size: 20pt;
     position: relative;
-    top: -85%
+    top: -90%;
   }
+
+  
+.slide-in-enter, .slide-out-leave-to {
+  transform: translateX(-100vw);
+}
+.slide-in-enter-to, .slide-in-leave-from, .slide-out-enter-to, .slide-out-leave-from {
+  transform: translateX(0);
+}
+.slide-in-enter-active, .slide-in-leave-active, .slide-out-enter-active, .slide-out-leave-active {
+  transition: all 300ms;
+  position: fixed;
+}
+.slide-in-leave-to, .slide-out-enter {
+  transform: translateX(100vw);
+}
+  
 </style>
