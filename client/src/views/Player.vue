@@ -1,7 +1,7 @@
 <template>
   <div> 
     <!-- Loading screen -->
-    <div 
+    <!-- <div 
       v-if="!hasHostResponded"
       class="loading-container center"
     >
@@ -11,9 +11,8 @@
         color="orange"
         indeterminate
       ></v-progress-circular>
-    </div>
+    </div> -->
     <component
-      v-else
       :is="currentView"
       :wordsInPrompt="wordsInPrompt"
       :socketInstance="socket"
@@ -24,14 +23,14 @@
     ></component>
 
     <!-- Dialog Boxes -->
-    <SessionDisbanded 
+    <!-- <SessionDisbanded 
       :visible="hostLeft" 
       :hasHostResponded="hasHostResponded"
     />
     <game-paused 
       :visible="pauseData.gamePaused" 
       :reason="pauseData.reason" 
-    />
+    /> -->
   </div>
 </template>
 
@@ -71,7 +70,7 @@ export default {
       // contains data received from host through pause-state socket endpt
       pauseData: { gamePaused: false, reason: 'not-paused' },
       // used for host to control which view the player is on
-      currentView: Views.waiting,
+      currentView: Views.vote,
       // false if no host can be found in room, is set to false every rollcall
       hostPresent: false,
       // hostLeft is different as it only turns false when hostPresent has stayed false for more than n seconds

@@ -96,11 +96,11 @@ export default {
         },
         {
           name: 'pt7',
-          dur: 3_500
+          dur: 3_000
         }
       ],
       // this is the index of the current frame
-      frameIndex: 0,
+      frameIndex: 3,
       // this holds the audio element for the tutorial voiceover
       voAudio: null,
       // this is the flag for whether the tutorial has started
@@ -168,7 +168,9 @@ export default {
             clearInterval(tutorialPlayer)
             SoundTrack.setVolume(100)
             // move to the next view
-            this.next()
+            setTimeout(() => {
+              this.next()
+            }, 1_500)
           } else {
             // play the voiceover for the next frame
             let audioFile = require(`../../../assets/voiceovers/tutorial/pt${this.frameIndex + 1}.mp3`)
