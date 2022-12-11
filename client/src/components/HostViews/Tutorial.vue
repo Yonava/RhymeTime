@@ -72,35 +72,35 @@ export default {
       tutorialFrames: [
         {
           name: 'pt1',
-          dur: 11000
+          dur: 11_000
         },
         {
           name: 'pt2',
-          dur: 15000
+          dur: 15_000
         },
         {
           name: 'pt3',
-          dur: 33000
+          dur: 33_000
         },
         {
           name: 'pt4',
-          dur: 18000
+          dur: 18_000
         },
         {
           name: 'pt5',
-          dur: 11000
+          dur: 11_000
         },
         {
           name: 'pt6',
-          dur: 17000
+          dur: 17_000
         },
         {
           name: 'pt7',
-          dur: 3500
+          dur: 3_500
         }
       ],
       // this is the index of the current frame
-      frameIndex: 0,
+      frameIndex: 2,
       // this holds the audio element for the tutorial voiceover
       voAudio: null,
       // this is the flag for whether the tutorial has started
@@ -141,7 +141,7 @@ export default {
   methods: {
     async playTutorial() {
       let audioLoaded = false
-      this.voAudio = new Audio(require('../../../assets/voiceovers/tutorial/pt1.mp3'))
+      this.voAudio = new Audio(require(`../../../assets/voiceovers/tutorial/pt${this.frameIndex + 1}.mp3`))
       // play the voiceover for the first frame
       await this.voAudio.play()
         .then(() => {
@@ -191,7 +191,7 @@ export default {
     
       // check if everyone is on board to skip
       if (this.players.length === this.votesForSkip) {
-        setTimeout(() => this.next(), 1500)
+        setTimeout(() => this.next(), 1_500)
       }
     },
     addVotesToDisplay() {

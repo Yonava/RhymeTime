@@ -30,6 +30,6 @@ export default {
 
 <style scoped>
 .trans-op {
-  transition: opacity 500ms;
+  transition: opacity 2s;
 }
 </style>
