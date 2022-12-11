@@ -1,6 +1,10 @@
 <template>
   <div class="background-matte center">
-    <component :is="tutorialFrames[frameIndex].name" />
+    <component 
+      :is="tutorialFrames[frameIndex].name" 
+      :isPaused="isPaused"
+      :playerList="playerList"
+    />
     <div 
       :style="voteDisplayColor"
       class="vote-display-container center" 
@@ -90,7 +94,7 @@ export default {
         },
         {
           name: 'pt7',
-          dur: 5000
+          dur: 3500
         }
       ],
       // this is the index of the current frame
