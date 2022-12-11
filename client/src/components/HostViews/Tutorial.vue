@@ -1,6 +1,6 @@
 <template>
   <div class="background-matte center">
-    <component :is="tutorialFrame.name" />
+    <component :is="tutorialFrames[frameIndex].name" />
     <div 
       :style="voteDisplayColor"
       class="vote-display-container center" 
@@ -28,6 +28,14 @@
 import HostMixin from './HostMixin'
 import { Views } from '@/utils/Views'
 
+import pt1 from './TutorialFrames/pt1'
+import pt2 from './TutorialFrames/pt2'
+import pt3 from './TutorialFrames/pt3'
+import pt4 from './TutorialFrames/pt4'
+import pt5 from './TutorialFrames/pt5'
+import pt6 from './TutorialFrames/pt6'
+import pt7 from './TutorialFrames/pt7'
+
 export default {
   mixins: [
     HostMixin
@@ -35,34 +43,71 @@ export default {
   emits: [
     'change-view'
   ],
+  components: {
+    pt1,
+    pt2,
+    pt3,
+    pt4,
+    pt5,
+    pt6,
+    pt7
+  },
   data() {
     return {
+      // this is the list of players in the game
       players: [],
+      // this is the number of players who have voted to skip
       votesForSkip: 0,
+      // this is the percentage of the display that is red
       againstPercentOnDisplay: 100,
 
+      // this is the list of frames to play in the tutorial
       tutorialFrames: [
         {
           name: 'pt1',
-          dur: 5000
+          dur: 10000
         },
         {
-          name: ''
+          name: 'pt2',
+          dur: 14000
+        },
+        {
+          name: 'pt3',
+          dur: 32000
+        },
+        {
+          name: 'pt4',
+          dur: 17000
+        },
+        {
+          name: 'pt5',
+          dur: 10000
+        },
+        {
+          name: 'pt6',
+          dur: 16000
+        },
+        {
+          name: 'pt7',
+          dur: 2000
         }
       ],
-      tutorialFrame: {
-        name: 'pt1',
-        dur: 5000
-      }
+      // this is the index of the current frame
+      frameIndex: 0,
+      // this holds the audio element for the tutorial voiceover
+      voAudio: null
     }
   },
   mounted() {
+    // add players from player list to local array
     this.playerList.forEach(player => {
       this.players.push({
         playerName: player.name,
         wantsToSkip: false
       })
     })
+
+    // listen for skip votes
     this.socketInstance.on('skip-vote', (vote) => {
       for (let i = 0; i < this.players.length; i++) {
         if (this.players[i].playerName === vote.playerName) {
@@ -72,6 +117,9 @@ export default {
         }
       }
     })
+
+    // start the tutorial
+    this.playTutorialFrames()
   },
   computed: {
     votesAgainstSkip() {
@@ -82,6 +130,33 @@ export default {
     }
   },
   methods: {
+    playTutorialFrames() {
+
+      // check if browser has permission to play audio
+      if (this.frameIndex === -1) {
+        const audio = new Audio()
+        audio.play()
+        .then(() => {
+          audio.pause()
+          audio.currentTime = 0
+        })
+        .catch(() => {
+          this.togglePause()
+          this.frameIndex = 0;
+        })
+      }
+
+      // if we've reached the end of the tutorial, move on
+      if (this.frameIndex === this.tutorialFrames.length) {
+        this.next()
+        return
+      }
+      // otherwise, play the next frame
+      setTimeout(() => {
+        this.frameIndex++
+        this.playTutorialFrames()
+      }, this.tutorialFrames[this.frameIndex].dur)
+    },
     reComputeSkipCount() {
       let votesForSkip = 0
       this.players.forEach(player => {

@@ -8,9 +8,9 @@ export default {
       // for interval idempotence
       timerRunning: false,
       // for developing ui only. make sure this is set to false in prod
-      testMode: false,
+      testMode: true,
       // component that you want to test
-      testView: Views.waiting
+      testView: Views.tutorial
     }
   },
   components: {
@@ -63,6 +63,7 @@ export default {
         SoundTrack.playNew('waiting')
         break
       case Views.tutorial:
+        SoundTrack.playNew('respond')
         break
       case Views.endScreen:
         break
