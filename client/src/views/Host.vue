@@ -80,7 +80,44 @@ export default {
       // sets the current view of the game, emits to players
       currentView: Views.waiting,
       // playerlist contains player objects for every connected player
-      playerList: [],
+      playerList: [
+        {
+          name: 'Host',
+          clientId: '123',
+          pfp: '1',
+          color: 'red'
+        },
+        {
+          name: 'Player 1',
+          clientId: '456',
+          pfp: '2',
+          color: 'blue'
+        },
+        {
+          name: 'Player 2',
+          clientId: '789',
+          pfp: '3',
+          color: 'green'
+        },
+        {
+          name: 'Player 3',
+          clientId: '101112',
+          pfp: '4',
+          color: 'yellow'
+        },
+        {
+          name: 'Player 4',
+          clientId: '131415',
+          pfp: '5',
+          color: 'purple'
+        },
+        {
+          name: 'Player 5',
+          clientId: '161718',
+          pfp: '6',
+          color: 'orange'
+        }
+      ],
       // prompt responses each round are stored here. response obj format { player: player, response: string }
       promptResponses: [],
       // stores what round the game is on
@@ -111,7 +148,7 @@ export default {
     this.connectSocket()
     document.addEventListener('visibilitychange', this.modelVisibility)
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'p') {
+      if (event.key.toLowerCase() === 'p') {
         this.manuallyPaused = !this.manuallyPaused
       }
     })

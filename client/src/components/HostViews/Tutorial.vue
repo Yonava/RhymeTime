@@ -27,6 +27,7 @@
 <script>
 import HostMixin from './HostMixin'
 import { Views } from '@/utils/Views'
+import { SoundTrack } from '@/utils/Soundboard'
 
 import pt1 from './TutorialFrames/pt1'
 import pt2 from './TutorialFrames/pt2'
@@ -65,37 +66,39 @@ export default {
       tutorialFrames: [
         {
           name: 'pt1',
-          dur: 10000
+          dur: 11000
         },
         {
           name: 'pt2',
-          dur: 14000
+          dur: 15000
         },
         {
           name: 'pt3',
-          dur: 32000
+          dur: 33000
         },
         {
           name: 'pt4',
-          dur: 17000
+          dur: 18000
         },
         {
           name: 'pt5',
-          dur: 10000
+          dur: 11000
         },
         {
           name: 'pt6',
-          dur: 16000
+          dur: 17000
         },
         {
           name: 'pt7',
-          dur: 2000
+          dur: 5000
         }
       ],
       // this is the index of the current frame
       frameIndex: 0,
       // this holds the audio element for the tutorial voiceover
-      voAudio: null
+      voAudio: null,
+      // this is the flag for whether the tutorial has started
+      tutorialStarted: false
     }
   },
   mounted() {
@@ -119,7 +122,7 @@ export default {
     })
 
     // start the tutorial
-    this.playTutorialFrames()
+    this.playTutorial()
   },
   computed: {
     votesAgainstSkip() {
@@ -130,32 +133,48 @@ export default {
     }
   },
   methods: {
-    playTutorialFrames() {
-
-      // check if browser has permission to play audio
-      if (this.frameIndex === -1) {
-        const audio = new Audio()
-        audio.play()
+    async playTutorial() {
+      let audioLoaded = false
+      this.voAudio = new Audio(require('../../../assets/voiceovers/tutorial/pt1.mp3'))
+      // play the voiceover for the first frame
+      await this.voAudio.play()
         .then(() => {
-          audio.pause()
-          audio.currentTime = 0
+          this.tutorialStarted = true
+          audioLoaded = true
+          SoundTrack.setVolume(10)
         })
-        .catch(() => {
+        .catch(err => {
+          console.log(err)
           this.togglePause()
-          this.frameIndex = 0;
         })
-      }
-
-      // if we've reached the end of the tutorial, move on
-      if (this.frameIndex === this.tutorialFrames.length) {
-        this.next()
-        return
-      }
-      // otherwise, play the next frame
-      setTimeout(() => {
-        this.frameIndex++
-        this.playTutorialFrames()
-      }, this.tutorialFrames[this.frameIndex].dur)
+      if (!audioLoaded) return
+      let tutorialPlayer = setInterval(() => {
+        // check if we're paused
+        if (this.isPaused) return
+        // check if we're done with the tutorial frame
+        if (this.tutorialFrames[this.frameIndex].dur > 0) {
+          this.tutorialFrames[this.frameIndex].dur -= 50
+        } else {
+          // move to the next frame
+          this.frameIndex++
+          // check if we're done with the tutorial
+          if (this.frameIndex === this.tutorialFrames.length) {
+            clearInterval(tutorialPlayer)
+            SoundTrack.setVolume(100)
+            // move to the next view
+            this.next()
+          } else {
+            // play the voiceover for the next frame
+            let audioFile = require(`../../../assets/voiceovers/tutorial/pt${this.frameIndex + 1}.mp3`)
+            this.voAudio = new Audio(audioFile)
+            this.voAudio.play()
+              .catch(err => {
+                console.log(err)
+                this.togglePause()
+              })
+          }
+        }
+      }, 50)
     },
     reComputeSkipCount() {
       let votesForSkip = 0
@@ -193,6 +212,16 @@ export default {
   watch: {
     votesForSkip() {
       this.addVotesToDisplay()
+    },
+    isPaused(v) {
+      // for edge case when audio fails to load
+      if (!v && !this.tutorialStarted) {
+        this.playTutorial()
+      } else if (v && this.tutorialStarted) {
+        this.voAudio.pause()
+      } else if (this.tutorialStarted) {
+        this.voAudio.play()
+      }
     }
   }
 }

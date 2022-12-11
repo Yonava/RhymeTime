@@ -5,12 +5,7 @@
 </template>
 
 <script>
-import pt7 from '../../../../assets/voiceovers/tutorial/pt7.mp3'
-
 export default {
-  name: 'pt7',
-  mounted() {
-    new Audio(pt7).play()
-  }
+  name: 'pt7'
 }
 </script>

@@ -33,6 +33,7 @@ export class SoundTrack {
     if (!state.track?.pause()) return
     state.track.pause()
   }
+  // allows for volume adjustment from 0-100
   static setVolume(newVolume) {
     // validates new volume
     const VOL = parseInt(newVolume)
