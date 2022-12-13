@@ -124,6 +124,11 @@ export default {
     // start the tutorial
     this.playTutorial()
   },
+  destroyed() {
+    // make sure the tutorial is stopped
+    clearInterval(this.tutorialPlayer)
+    if (this.voAudio) this.voAudio.pause()
+  },
   computed: {
     votesAgainstSkip() {
       return this.players.length - this.votesForSkip
@@ -148,7 +153,7 @@ export default {
           this.togglePause()
         })
       if (!audioLoaded) return
-      let tutorialPlayer = setInterval(() => {
+      this.tutorialPlayer = setInterval(() => {
         // check if we're paused
         if (this.isPaused) return
         // check if we're done with the tutorial frame
@@ -159,7 +164,7 @@ export default {
           this.frameIndex++
           // check if we're done with the tutorial
           if (this.frameIndex === this.tutorialFrames.length) {
-            clearInterval(tutorialPlayer)
+            clearInterval(this.tutorialPlayer)
             SoundTrack.setVolume(100)
             // move to the next view
             setTimeout(() => {
