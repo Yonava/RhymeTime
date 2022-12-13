@@ -11,7 +11,9 @@
       <h2 class="sub-title">
         Rhyme These {{ words.length }} Words with Eachother
       </h2>
-      <h1 class="title text-capitalize">{{ wordDisplay }}</h1>
+      <h1 class="title text-capitalize">
+        {{ wordDisplay }}
+      </h1>
     </header>
     <div class="response-card-container mt-4">
       <div 
@@ -33,6 +35,7 @@ import ResponseCard from './HostSubComponents/PlayerResponseCard.vue'
 import { playEffect } from '@/utils/Soundboard'
 import { Views } from '@/utils/Views'
 import Clock from './HostSubComponents/ClockDisplay.vue'
+import { getWordPair } from '@/utils/wordPairs'
 
 export default {
   mixins: [
@@ -51,13 +54,7 @@ export default {
     }
   },
   mounted() {
-    const RHYMING_PAIRS = [
-      ['ground', 'pound', 'round'], 
-      ['crown', 'grown'], 
-      ['paid', 'afraid', 'laid'], 
-      ['elaborate', 'vacate']
-    ]
-    this.words = RHYMING_PAIRS[Math.floor(Math.random() * RHYMING_PAIRS.length)]
+    this.words = getWordPair()
     this.socketInstance.emit('new-words', this.words)
 
     this.socketInstance.on('broadcast-game-state', () => {
