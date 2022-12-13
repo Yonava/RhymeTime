@@ -128,6 +128,7 @@ export default {
     // make sure the tutorial is stopped
     clearInterval(this.tutorialPlayer)
     if (this.voAudio) this.voAudio.pause()
+    SoundTrack.setVolume(100)
   },
   computed: {
     votesAgainstSkip() {
