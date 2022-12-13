@@ -115,9 +115,11 @@ export default {
         this.$refs.roomid.focus()
         return
       }
-      // make sure nickname is not empty
-      if (!this.$store.state.nickname.length || this.$store.state.nickname.length > 8) {
-        this.inputError = 'Nickname must be between 1 and 8 characters'
+      // make sure nickname is not empty and is less than n characters
+      const MAX_NICK_LENGTH = 5
+      const NICK_LEN = this.$store.state.nickname.length
+      if (!NICK_LEN || NICK_LEN >= MAX_NICK_LENGTH) {
+        this.inputError = `Nickname must be between 1 and ${MAX_NICK_LENGTH} characters`
         this.$refs.nickname.focus()
         return
       }
