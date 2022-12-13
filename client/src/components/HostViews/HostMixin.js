@@ -10,7 +10,7 @@ export default {
       // for developing ui only. make sure this is set to false in prod
       testMode: false,
       // component that you want to test
-      testView: Views.waiting
+      testView: Views.tutorial
     }
   },
   components: {
@@ -63,6 +63,7 @@ export default {
         SoundTrack.playNew('waiting')
         break
       case Views.tutorial:
+        SoundTrack.playNew('respond')
         break
       case Views.endScreen:
         break
@@ -105,11 +106,11 @@ export default {
     },
     pauseGame() {
       this.stopTimer()
-      // SoundTrack.pause()
+      SoundTrack.pause()
     },
     unpauseGame() {
       if (!this.testMode) this.startTimer()
-      // SoundTrack.play()
+      SoundTrack.play()
     },
     togglePause() {
       this.$emit('toggle-pause')

@@ -80,7 +80,46 @@ export default {
       // sets the current view of the game, emits to players
       currentView: Views.waiting,
       // playerlist contains player objects for every connected player
-      playerList: [],
+      playerList: [
+        /* UNCOMMENT FOR TESTING
+        {
+          name: 'Jack',
+          clientId: '123',
+          pfp: '3',
+          color: 'red'
+        },
+        {
+          name: 'Josh',
+          clientId: '456',
+          pfp: '4',
+          color: 'green'
+        },
+        {
+          name: 'Yona',
+          clientId: '789',
+          pfp: '2',
+          color: 'blue'
+        },
+        {
+          name: 'William',
+          clientId: '101112',
+          pfp: '1',
+          color: 'yellow'
+        },
+        {
+          name: 'Prof. Banae',
+          clientId: '131415',
+          pfp: '1',
+          color: 'purple'
+        },
+        {
+          name: 'Prof. Datta',
+          clientId: '161718',
+          pfp: '1',
+          color: 'orange'
+        }
+        */
+      ],
       // prompt responses each round are stored here. response obj format { player: player, response: string }
       promptResponses: [],
       // stores what round the game is on
@@ -111,10 +150,11 @@ export default {
     this.connectSocket()
     document.addEventListener('visibilitychange', this.modelVisibility)
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'p') {
+      if (event.key.toLowerCase() === 'p') {
         this.manuallyPaused = !this.manuallyPaused
       }
     })
+
     // controls the rhymetime text animation
     setInterval(() => {
       this.rhymetimeTextAnimation = ''

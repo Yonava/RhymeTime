@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       cursorXPos: 0,
-      cursorYPos: 0,
+      cursorYPos: 0
     }
   },
   mounted() {
@@ -59,10 +59,17 @@ export default {
   destroyed() {
     document.removeEventListener('mousemove', this.updateCursorPos)
   },
+  computed: {
+    documentHeight() {
+      return document.documentElement.scrollHeight
+    }
+  },
   methods: {
     updateCursorPos(ev) {
       this.cursorXPos = ev.clientX
-      this.cursorYPos = Math.abs(ev.clientY - 770)
+      // inverts cursor Y so that the higher the cursor is on the page,
+      // the higher cursorYPos will be
+      this.cursorYPos = this.documentHeight - ev.clientY
     },
     host() {
       this.$store.state.roomid = Math
@@ -101,10 +108,12 @@ export default {
       let closestBar = distances.indexOf(Math.min(...distances))
       
       // uses percentage of cursorY height as a multiplier for max height
-      const CURSOR_Y_PERCENT = this.cursorYPos / 770
-      const MAX_HEIGHT = 500 * CURSOR_Y_PERCENT
+      const CURSOR_Y_PERCENT = this.cursorYPos / this.documentHeight
+      // ensures that the highest bar is 100px below the cursor
+      // as to not interfere with cursor behavior
+      const MAX_HEIGHT = (this.documentHeight * CURSOR_Y_PERCENT) - 100
 
-      // sets styles for closest
+      // sets the bar closest to the cursor to max height and full opacity
       bars[closestBar].style.height = `${MAX_HEIGHT}px`
       bars[closestBar].style.opacity = 1
 
