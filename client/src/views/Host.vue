@@ -81,42 +81,44 @@ export default {
       currentView: Views.waiting,
       // playerlist contains player objects for every connected player
       playerList: [
+        /* UNCOMMENT FOR TESTING
         {
-          name: 'Host',
+          name: 'Jack',
           clientId: '123',
-          pfp: '1',
+          pfp: '3',
           color: 'red'
         },
         {
-          name: 'Player 1',
+          name: 'Josh',
           clientId: '456',
+          pfp: '4',
+          color: 'green'
+        },
+        {
+          name: 'Yona',
+          clientId: '789',
           pfp: '2',
           color: 'blue'
         },
         {
-          name: 'Player 2',
-          clientId: '789',
-          pfp: '3',
-          color: 'green'
-        },
-        {
-          name: 'Player 3',
+          name: 'William',
           clientId: '101112',
-          pfp: '4',
+          pfp: '1',
           color: 'yellow'
         },
         {
-          name: 'Player 4',
+          name: 'Prof. Banae',
           clientId: '131415',
-          pfp: '5',
+          pfp: '1',
           color: 'purple'
         },
         {
-          name: 'Player 5',
+          name: 'Prof. Datta',
           clientId: '161718',
-          pfp: '6',
+          pfp: '1',
           color: 'orange'
         }
+        */
       ],
       // prompt responses each round are stored here. response obj format { player: player, response: string }
       promptResponses: [],
@@ -152,6 +154,7 @@ export default {
         this.manuallyPaused = !this.manuallyPaused
       }
     })
+
     // controls the rhymetime text animation
     setInterval(() => {
       this.rhymetimeTextAnimation = ''

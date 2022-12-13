@@ -10,7 +10,7 @@
       :style="gifStyle"
       class="tutorial-gif trans"
       src="../../../../assets/extras/audienceBoostDemo.gif" 
-      alt="player vote demo"
+      alt="audience boost demo"
     >
   </div>
 </template>

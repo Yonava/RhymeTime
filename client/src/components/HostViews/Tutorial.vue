@@ -41,7 +41,6 @@ import pt3 from './TutorialFrames/pt3'
 import pt4 from './TutorialFrames/pt4'
 import pt5 from './TutorialFrames/pt5'
 import pt6 from './TutorialFrames/pt6'
-import pt7 from './TutorialFrames/pt7'
 
 export default {
   mixins: [
@@ -56,8 +55,7 @@ export default {
     pt3,
     pt4,
     pt5,
-    pt6,
-    pt7
+    pt6
   },
   data() {
     return {
@@ -92,11 +90,7 @@ export default {
         },
         {
           name: 'pt6',
-          dur: 17_000
-        },
-        {
-          name: 'pt7',
-          dur: 3_000
+          dur: 21_000
         }
       ],
       // this is the index of the current frame
@@ -170,7 +164,7 @@ export default {
             // move to the next view
             setTimeout(() => {
               this.next()
-            }, 1_500)
+            }, 4_000)
           } else {
             // play the voiceover for the next frame
             let audioFile = require(`../../../assets/voiceovers/tutorial/pt${this.frameIndex + 1}.mp3`)

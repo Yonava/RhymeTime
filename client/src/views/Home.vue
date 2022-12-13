@@ -109,9 +109,9 @@ export default {
       
       // uses percentage of cursorY height as a multiplier for max height
       const CURSOR_Y_PERCENT = this.cursorYPos / this.documentHeight
-      // ensures that the highest bar is at least 60px below the cursor
+      // ensures that the highest bar is 100px below the cursor
       // as to not interfere with cursor behavior
-      const MAX_HEIGHT = (this.documentHeight * CURSOR_Y_PERCENT) - 60
+      const MAX_HEIGHT = (this.documentHeight * CURSOR_Y_PERCENT) - 100
 
       // sets the bar closest to the cursor to max height and full opacity
       bars[closestBar].style.height = `${MAX_HEIGHT}px`
