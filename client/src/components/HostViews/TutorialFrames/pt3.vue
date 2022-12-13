@@ -139,7 +139,7 @@ export default {
           if (i === this.promptResponse.length) {
             clearInterval(interval)
           }
-        }, 500 * Math.random() + 100)
+        }, 250)
       }
     }
   }

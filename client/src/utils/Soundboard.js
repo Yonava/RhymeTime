@@ -21,9 +21,10 @@ export class SoundTrack {
 
     state.track = new Audio(require(`../../assets/tracks/${track}${fileExtension}`))
     state.track.volume = parseInt(state.musicVolume) / 100
-    state.track.play().catch(() => {
-      state.blockedAudio = track
-    })
+    state.track.play()
+      .catch(() => {
+        state.blockedAudio = track
+      })
   }
   static play() {
     if (!state.track?.play()) return
