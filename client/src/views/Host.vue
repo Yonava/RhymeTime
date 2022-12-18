@@ -138,6 +138,8 @@ export default {
       audienceCount: 0,
       // contains the class for the rhymetime text animation
       rhymetimeTextAnimation: 'rhymetime-text-animation',
+      // queue of players attempting to join
+      joinQueue: [],
 
       Views
     }
@@ -154,6 +156,17 @@ export default {
         this.manuallyPaused = !this.manuallyPaused
       }
     })
+
+    // controls the join queue
+    this.processJoinQueue = setInterval(() => {
+      // if there are players in the queue, handle the first one
+      if (this.joinQueue.length) {
+        const PLAYER = this.joinQueue.shift()
+        this.handlePlayerJoin(PLAYER)
+        // TODO: uncomment when endpoint is ready
+        // this.socket.emit('confirm-player-entry', PLAYER.clientId)
+      }
+    }, 300)
 
     // controls the rhymetime text animation
     setInterval(() => {
@@ -187,39 +200,8 @@ export default {
         })
       })
       this.socket.on('player-join', player => {
-        // game has started or room is full, send player to audience
-        const ROOM_FULL = this.numOfPlayerSpots <= this.playerList.length
-        if (this.currentView !== Views.waiting || ROOM_FULL) {
-          this.socket.emit('kick-player', {
-            clientId: player.clientId,
-            redirect: {
-              name: 'audience',
-              query: {
-                room: this.roomId
-              }
-            }
-          })
-          return
-        }
-
-        // blocks duplicate player names
-        const DUPLICATE_NAME = this.playerList.some(p => p.name === player.name)
-        if (DUPLICATE_NAME) {
-          this.socket.emit('kick-player', {
-            clientId: player.clientId,
-            redirect: {
-              name: 'join',
-              query: {
-                err: 'nickname_taken',
-                room: this.roomId
-              }
-            }
-          })
-          return
-        }
-
-        // player is allowed to join
-        this.playerList.push(player)
+        console.log(player.color, player.pfp)
+        this.joinQueue.push(player)
       })
       this.socket.on('disconnect-event', () => {
         this.socket.emit('host-present')
@@ -273,6 +255,40 @@ export default {
       else if (this.isPageHidden) pausePackage.reason = 'not-visible'
       else pausePackage.reason = 'not-paused'
       this.socket.emit('pause-state', pausePackage)
+    },
+    handlePlayerJoin(player) {
+      // game has started or room is full, send player to audience
+      const ROOM_FULL = this.numOfPlayerSpots <= this.playerList.length
+      if (this.currentView !== Views.waiting || ROOM_FULL) {
+        this.socket.emit('kick-player', {
+          clientId: player.clientId,
+          redirect: {
+            name: 'audience',
+            query: {
+              room: this.roomId
+            }
+          }
+        })
+        return
+      }
+      // blocks duplicate player names
+      const DUPLICATE_NAME = this.playerList.some(p => p.name === player.name)
+      if (DUPLICATE_NAME) {
+        this.socket.emit('kick-player', {
+          clientId: player.clientId,
+          redirect: {
+            name: 'join',
+            query: {
+              err: 'nickname_taken',
+              room: this.roomId
+            }
+          }
+        })
+        return
+      }
+      // player is allowed to join
+      console.log(player)
+      this.playerList.push(player)
     },
     kickPlayer(clientId) {
       let playerIndex = this.playerList

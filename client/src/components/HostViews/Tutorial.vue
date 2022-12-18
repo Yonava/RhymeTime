@@ -12,7 +12,7 @@
       class="vote-display-container center" 
     >
       <h3 class="skip-vote-text">
-        Vote To Skip
+        Vote to Skip Tutorial on Your Device
       </h3>
       <h2 
         class="vote-display-number"
