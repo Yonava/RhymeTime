@@ -38,6 +38,10 @@ io.on('connection', socket => {
     socket.to(roomId).emit('player-join', player)
   })
 
+  socket.on('confirm-player-entry', clientId => {
+    socket.to(roomId).emit('join-confirmed', clientId)
+  })
+
   // emitted by host when they need to kick someone out of the player pool
   // either due to a full room, or manually
   socket.on('kick-player', (kickObj) => {

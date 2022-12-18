@@ -163,10 +163,12 @@ export default {
       if (this.joinQueue.length) {
         const PLAYER = this.joinQueue.shift()
         this.handlePlayerJoin(PLAYER)
-        // TODO: uncomment when endpoint is ready
-        // this.socket.emit('confirm-player-entry', PLAYER.clientId)
       }
-    }, 300)
+      // ensure everyone is out of join queue before closing the interval
+      if (this.roomFull && !this.joinQueue.length) {
+        clearInterval(this.processJoinQueue)
+      }
+    }, 250)
 
     // controls the rhymetime text animation
     setInterval(() => {
@@ -182,6 +184,9 @@ export default {
     },
     pausePlayIcon() {
       return this.isPaused ? 'mdi-play' : 'mdi-pause'
+    },
+    roomFull() {
+      return this.numOfPlayerSpots <= this.playerList.length
     },
     roomId() {
       return this.$store.state.roomid
@@ -200,8 +205,11 @@ export default {
         })
       })
       this.socket.on('player-join', player => {
-        console.log(player.color, player.pfp)
-        this.joinQueue.push(player)
+        if (!this.roomFull) {
+          this.joinQueue.push(player)
+        } else {
+          this.handlePlayerJoin(player)
+        }
       })
       this.socket.on('disconnect-event', () => {
         this.socket.emit('host-present')
@@ -256,10 +264,9 @@ export default {
       else pausePackage.reason = 'not-paused'
       this.socket.emit('pause-state', pausePackage)
     },
-    handlePlayerJoin(player) {
+    handlePlayerJoin() {
       // game has started or room is full, send player to audience
-      const ROOM_FULL = this.numOfPlayerSpots <= this.playerList.length
-      if (this.currentView !== Views.waiting || ROOM_FULL) {
+      if (this.currentView !== Views.waiting || this.roomFull) {
         this.socket.emit('kick-player', {
           clientId: player.clientId,
           redirect: {
@@ -287,8 +294,8 @@ export default {
         return
       }
       // player is allowed to join
-      console.log(player)
       this.playerList.push(player)
+      this.socket.emit('confirm-player-entry', player.clientId)
     },
     kickPlayer(clientId) {
       let playerIndex = this.playerList

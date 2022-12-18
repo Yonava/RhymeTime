@@ -26,7 +26,7 @@
     <!-- Dialog Boxes -->
     <SessionDisbanded 
       :visible="hostLeft" 
-      :hasHostResponded="hasHostResponded"
+      :joinedRoom="joinedRoom"
     />
     <game-paused 
       :visible="pauseData.gamePaused" 
@@ -76,8 +76,8 @@ export default {
       hostPresent: false,
       // hostLeft is different as it only turns false when hostPresent has stayed false for more than n seconds
       hostLeft: false,
-      // true once first host ping has been received
-      hasHostResponded: false,
+      // true once host confirms that they have been assigned a place on the playerList
+      joinedRoom: false,
       // rhyming words in prompt
       wordsInPrompt: [],
       // id that the client stores so host can uniquely identify it
@@ -100,6 +100,7 @@ export default {
         }
         this.$store.state.roomid = roomId
         this.clientId = clientId
+        this.joinedRoom = true
         this.connectedViaToken = true
       } catch (err) {
         console.log(err)
@@ -148,9 +149,13 @@ export default {
       this.socket.on('disconnect-event', () => {
         this.hostCountdown()
       })
+      this.socket.on('join-confirmed', clientId => {
+        if (this.clientId === clientId) {
+          this.joinedRoom = true
+        }
+      })
       this.socket.on('host-present', () => {
         this.hostPresent = true
-        this.hasHostResponded = true
       })
       this.socket.on('new-words', (newWords) => {
         this.wordsInPrompt = newWords
