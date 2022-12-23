@@ -149,6 +149,11 @@ export default {
     document.removeEventListener('visibilitychange', this.modelVisibility)
   },
   mounted() {
+    if (!this.roomId) {
+      this.$router.push({ 
+        name: 'home' 
+      })
+    }
     this.connectSocket()
     document.addEventListener('visibilitychange', this.modelVisibility)
     document.addEventListener('keydown', (event) => {
