@@ -258,6 +258,12 @@ export default {
       this.socket.emit('pause-state', pausePackage)
     },
     handlePlayerJoin(player) {
+
+      const REJOIN = this.playerList.some(p => p.clientId === player.clientId)
+      if (REJOIN) {
+        return this.socket.emit('confirm-player-entry', player.clientId)
+      }
+
       // game has started or room is full, send player to audience
       if (this.currentView !== Views.waiting || this.roomFull) {
         this.socket.emit('kick-player', {
@@ -271,10 +277,9 @@ export default {
         })
         return
       }
+
       // blocks duplicate player names
-      const DUPLICATE_NAME = this.playerList.some(p => {
-        return p.name === player.name && p.clientId !== player.clientId
-      })
+      const DUPLICATE_NAME = this.playerList.some(p => p.name === player.name)
       if (DUPLICATE_NAME) {
         this.socket.emit('kick-player', {
           clientId: player.clientId,
@@ -288,6 +293,7 @@ export default {
         })
         return
       }
+
       // player is allowed to join
       this.playerList.push(player)
       this.socket.emit('confirm-player-entry', player.clientId)

@@ -91,7 +91,7 @@ export default {
       } else {
         this.$store.state.nickname = name
         this.selectedColor = color
-        this.selectedPfp = pfp
+        this.selectedPfp = parseInt(pfp)
       }
     } else {
       this.selectedPfp = Math.floor(Math.random() * this.numOfPfps) + 1
