@@ -162,8 +162,8 @@ export default {
         const PLAYER = this.joinQueue.shift()
         this.handlePlayerJoin(PLAYER)
       }
-      // ensure everyone is out of join queue before closing the interval
-      if (this.roomFull && !this.joinQueue.length) {
+
+      if (this.currentView !== Views.waiting) {
         clearInterval(this.processJoinQueue)
       }
     }, 250)
@@ -203,11 +203,7 @@ export default {
         })
       })
       this.socket.on('player-join', player => {
-        if (!this.roomFull) {
-          this.joinQueue.push(player)
-        } else {
-          this.handlePlayerJoin(player)
-        }
+        this.joinQueue.push(player)
       })
       this.socket.on('disconnect-event', () => {
         this.socket.emit('host-present')
