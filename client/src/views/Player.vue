@@ -15,19 +15,16 @@
     <component
       v-else
       :is="currentView"
-      :wordsInPrompt="wordsInPrompt"
       :socketInstance="socket"
       :clientId="clientId"
-      :connectedToRoom="connectedToRoom"
+      :wordsInPrompt="wordsInPrompt"
       :connectedViaToken="connectedViaToken"
-      :joinedRoom="joinedRoom"
-      @connected-to-room="connectedToRoom = true"
     ></component>
 
     <!-- Dialog Boxes -->
     <SessionDisbanded 
       :visible="hostLeft" 
-      :joinedRoom="joinedRoom"
+      :hasHostResponded="joinedRoom"
     />
     <game-paused 
       :visible="pauseData.gamePaused" 
@@ -113,6 +110,7 @@ export default {
         name: 'join'
       })
     }
+
     // connect to socket
     this.connectSocket()
   },
@@ -125,16 +123,41 @@ export default {
     }
   },
   methods: {
+    connectToRoom() {
+      this.socket.emit('player-join', {
+        name: this.$store.state.nickname,
+        color: 'orange',
+        pfp: 1,
+        clientId: this.clientId
+      })
+
+      Tokens.generate(this.roomId, this.clientId)
+        .then(token => {
+          try {
+            localStorage.setItem('room-token', token)
+          } catch (err) {
+            console.log(err)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     connectSocket() {
       const SOCKET_URL = window.location.href.includes('localhost') ? 'http://localhost:3000' : '/'
       if (this.socket?.connected) return
       this.socket = io(SOCKET_URL)
       this.socket.on('connect', () => {
+        console.log('joining room')
         this.socket.emit('join-room', this.roomId, (response) => {
           if (response === 'connected') {
             this.establishSocketListeners()
             this.hostCountdown()
             this.socket.emit('get-game-state')
+            if (!this.joinedRoom) {
+              console.log(this.socket)
+              this.connectToRoom()
+            }
           }
         })
       })

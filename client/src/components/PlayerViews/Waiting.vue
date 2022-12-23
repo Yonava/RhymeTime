@@ -58,7 +58,6 @@
 </template>
 
 <script>
-import Tokens from '../../api/tokens'
 
 export default {
   props: {
@@ -70,24 +69,13 @@ export default {
       required: true,
       type: Number
     },
-    connectedToRoom: {
-      required: true,
-      type: Boolean
-    },
     connectedViaToken: {
       required: true,
       type: Boolean
     }
   },
-  emits: [
-    'connected-to-room'
-  ],
   created() {
-    // connectedToRoom for the play again case
-    // connectedViaToken for the accidental disconnect/refresh case
-    if (!this.connectedToRoom && !this.connectedViaToken) {
-      this.connectToRoom()
-    } else if (this.connectedViaToken) {
+    if (this.connectedViaToken) {
       // ensure all localStorage data is defined
       let name = localStorage.getItem('player-name')
       let color = localStorage.getItem('player-color')
@@ -105,13 +93,13 @@ export default {
         this.selectedColor = color
         this.selectedPfp = pfp
       }
-    }
-
-    if (!this.connectedViaToken) {
+    } else {
       this.selectedPfp = Math.floor(Math.random() * this.numOfPfps) + 1
       this.selectedColor = this.colors[Math.floor(Math.random() * this.colors.length)]
       this.savePlayerDataLocally()
     }
+
+    this.emitPlayerObject()
   },
   data() {
     return {
@@ -145,31 +133,7 @@ export default {
     }
   },
   methods: {
-    connectToRoom() {
-      this.socketInstance.emit('player-join', {
-        name: this.clientName,
-        color: this.selectedColor,
-        pfp: this.selectedPfp,
-        clientId: this.clientId
-      })
-
-      Tokens.generate(this.roomId, this.clientId)
-        .then(token => {
-          try {
-            localStorage.setItem('room-token', token)
-          } catch (err) {
-            console.log(err)
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
-        .finally(() => {
-          this.$emit('connected-to-room')
-        })
-    },
     emitPlayerObject() {
-      if (!this.joinedRoom) return
       this.socketInstance.emit('player-object-change', {
         name: this.clientName,
         color: this.selectedColor,
@@ -200,9 +164,6 @@ export default {
     selectedPfp() {
       this.emitPlayerObject()
       this.savePlayerDataLocally()
-    },
-    joinedRoom() {
-      this.emitPlayerObject()
     }
   }
 }

@@ -81,6 +81,7 @@ export default {
       currentView: Views.waiting,
       // playerlist contains player objects for every connected player
       playerList: [
+        /*
         {
           name: 'Jack',
           clientId: '123',
@@ -117,6 +118,7 @@ export default {
           pfp: '1',
           color: 'orange'
         }
+        */
       ],
       // prompt responses each round are stored here. response obj format { player: player, response: string }
       promptResponses: [],
@@ -155,18 +157,14 @@ export default {
       }
     })
 
-    // controls the join queue
-    this.processJoinQueue = setInterval(() => {
+    // controls join queue
+    setInterval(() => {
       // if there are players in the queue, handle the first one
       if (this.joinQueue.length) {
         const PLAYER = this.joinQueue.shift()
         this.handlePlayerJoin(PLAYER)
       }
-
-      if (this.currentView !== Views.waiting) {
-        clearInterval(this.processJoinQueue)
-      }
-    }, 250)
+    }, 500)
 
     // controls the rhymetime text animation
     setInterval(() => {
