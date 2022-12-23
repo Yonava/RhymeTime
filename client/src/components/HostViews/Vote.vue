@@ -92,7 +92,7 @@ export default {
     emitPlayerResponses() {
       setTimeout(() => {
         this.socketInstance.emit('candidate-list', this.responses)
-      }, 2_500)
+      }, 1_500)
     },
     countVotes(playerBallot) {
       // this function serves to recount all votes in ballotBox
@@ -152,7 +152,8 @@ export default {
     },
     tackOnTime() {
       setTimeout(() => {
-        this.$store.state.timeRemaining = 20
+        // adds 30 seconds to the timer if there is a tie
+        this.$store.state.timeRemaining = 30
         this.startTimer()
       }, 2000)
     },

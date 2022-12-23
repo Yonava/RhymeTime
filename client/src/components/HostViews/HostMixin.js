@@ -53,7 +53,7 @@ export default {
         SoundTrack.playNew('respond')
         break
       case Views.vote:
-        this.$store.state.timeRemaining = 30
+        this.$store.state.timeRemaining = 90
         SoundTrack.playNew('vote')
         break
       case Views.recap:

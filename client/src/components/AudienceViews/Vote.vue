@@ -60,6 +60,7 @@ export default {
   data() {
     return {
       candidates: [
+        /*
         {
           name: 'Yona',
           clientId: 123,
@@ -78,6 +79,7 @@ export default {
           pfp: '3',
           color: 'red'
         }
+        */
       ],
       // player user has selected to boost
       boostedPlayer: null

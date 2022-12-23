@@ -68,9 +68,11 @@ export default {
       // that have submitted a response { player: Player, response: string }
       candidates: [
         // test data
+        /*
         { player: { name: 'Yona', color: 'blue', pfp: '2', clientId: 1 }, response: 'test1' },
         { player: { name: 'Josh', color: 'green', pfp: '4', clientId: 2 }, response: 'test1' },
         { player: { name: 'Jack', color: 'red', pfp: '3', clientId: 3 }, response: 'test1' },
+        */
       ],
       canVote: true
     }
