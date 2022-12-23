@@ -203,6 +203,7 @@ export default {
         })
       })
       this.socket.on('player-join', player => {
+        console.log('player joined', player.pfp, player.color)
         this.joinQueue.push(player)
       })
       this.socket.on('disconnect-event', () => {

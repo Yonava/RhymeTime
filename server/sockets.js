@@ -110,5 +110,9 @@ io.on('connection', socket => {
   socket.on('skip-vote', (vote) => {
     socket.to(roomId).emit('skip-vote', vote)
   })
+
+  socket.on('finalize-ballot', () => {
+    socket.to(roomId).emit('finalize-ballot')
+  })
   
 })

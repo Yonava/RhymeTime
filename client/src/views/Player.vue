@@ -2,7 +2,7 @@
   <div> 
     <!-- Loading screen -->
     <div 
-      v-if="!hostPresent"
+      v-if="!joinedRoom"
       class="loading-container center"
     >
       <v-progress-circular
@@ -20,6 +20,7 @@
       :clientId="clientId"
       :connectedToRoom="connectedToRoom"
       :connectedViaToken="connectedViaToken"
+      :joinedRoom="joinedRoom"
       @connected-to-room="connectedToRoom = true"
     ></component>
 

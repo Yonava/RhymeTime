@@ -169,6 +169,7 @@ export default {
         })
     },
     emitPlayerObject() {
+      if (!this.joinedRoom) return
       this.socketInstance.emit('player-object-change', {
         name: this.clientName,
         color: this.selectedColor,
@@ -199,6 +200,9 @@ export default {
     selectedPfp() {
       this.emitPlayerObject()
       this.savePlayerDataLocally()
+    },
+    joinedRoom() {
+      this.emitPlayerObject()
     }
   }
 }
