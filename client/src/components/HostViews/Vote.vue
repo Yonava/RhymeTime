@@ -54,7 +54,9 @@ export default {
       // if true, no ballots are accepted
       pollsClosed: false,
       // is set to promptResponses then widdled down in case of a tiebreaker event
-      responses: []
+      responses: [],
+      // stores the number of players have submitted their ballots
+      ballotsSubmitted: 0,
     };
   },
   mounted() {
@@ -68,6 +70,12 @@ export default {
     this.calculatePercentage()
 
     this.emitPlayerResponses()
+
+    // when player submits final ballot
+    this.socketInstance.on('finalize-ballot', () => {
+      this.ballotsSubmitted++
+    })
+
     this.socketInstance.on('broadcast-game-state', () => {
       this.emitPlayerResponses()
     })
@@ -82,7 +90,9 @@ export default {
       return CANDIDATE.votes
     },
     emitPlayerResponses() {
-      this.socketInstance.emit('candidate-list', this.responses)
+      setTimeout(() => {
+        this.socketInstance.emit('candidate-list', this.responses)
+      }, 2_500)
     },
     countVotes(playerBallot) {
       // this function serves to recount all votes in ballotBox
@@ -137,11 +147,12 @@ export default {
       this.pollsClosed = true
       setTimeout(() => this.pollsClosed = false, 500)
       this.emitPlayerResponses()
+      this.ballotsSubmitted = 0
       this.tackOnTime()
     },
     tackOnTime() {
       setTimeout(() => {
-        this.$store.state.timeRemaining = 10
+        this.$store.state.timeRemaining = 20
         this.startTimer()
       }, 2000)
     },
@@ -168,6 +179,13 @@ export default {
       // no edge case allows game to continue :)
       if (this.testMode) return
       this.$emit("change-view", Views.recap)
+    }
+  },
+  watch: {
+    ballotsSubmitted() {
+      if (this.ballotsSubmitted === this.playerList.length) {
+        this.next()
+      }
     }
   }
 }

@@ -81,7 +81,6 @@ export default {
       currentView: Views.waiting,
       // playerlist contains player objects for every connected player
       playerList: [
-        /* UNCOMMENT FOR TESTING
         {
           name: 'Jack',
           clientId: '123',
@@ -118,7 +117,6 @@ export default {
           pfp: '1',
           color: 'orange'
         }
-        */
       ],
       // prompt responses each round are stored here. response obj format { player: player, response: string }
       promptResponses: [],
@@ -264,7 +262,7 @@ export default {
       else pausePackage.reason = 'not-paused'
       this.socket.emit('pause-state', pausePackage)
     },
-    handlePlayerJoin() {
+    handlePlayerJoin(player) {
       // game has started or room is full, send player to audience
       if (this.currentView !== Views.waiting || this.roomFull) {
         this.socket.emit('kick-player', {

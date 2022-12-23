@@ -2,7 +2,7 @@
   <div> 
     <!-- Loading screen -->
     <div 
-      v-if="!hasHostResponded"
+      v-if="!hostPresent"
       class="loading-container center"
     >
       <v-progress-circular
@@ -71,7 +71,7 @@ export default {
       // contains data received from host through pause-state socket endpt
       pauseData: { gamePaused: false, reason: 'not-paused' },
       // used for host to control which view the player is on
-      currentView: Views.vote,
+      currentView: Views.waiting,
       // false if no host can be found in room, is set to false every rollcall
       hostPresent: false,
       // hostLeft is different as it only turns false when hostPresent has stayed false for more than n seconds
