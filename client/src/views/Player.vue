@@ -98,7 +98,6 @@ export default {
         }
         this.$store.state.roomid = roomId
         this.clientId = clientId
-        this.joinedRoom = true
         this.connectedViaToken = true
       } catch (err) {
         console.log(err)
@@ -148,16 +147,12 @@ export default {
       if (this.socket?.connected) return
       this.socket = io(SOCKET_URL)
       this.socket.on('connect', () => {
-        console.log('joining room')
         this.socket.emit('join-room', this.roomId, (response) => {
           if (response === 'connected') {
             this.establishSocketListeners()
             this.hostCountdown()
+            this.connectToRoom()
             this.socket.emit('get-game-state')
-            if (!this.joinedRoom) {
-              console.log(this.socket)
-              this.connectToRoom()
-            }
           }
         })
       })

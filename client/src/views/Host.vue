@@ -272,7 +272,9 @@ export default {
         return
       }
       // blocks duplicate player names
-      const DUPLICATE_NAME = this.playerList.some(p => p.name === player.name)
+      const DUPLICATE_NAME = this.playerList.some(p => {
+        return p.name === player.name && p.clientId !== player.clientId
+      })
       if (DUPLICATE_NAME) {
         this.socket.emit('kick-player', {
           clientId: player.clientId,
