@@ -85,12 +85,11 @@ export default {
       if (!this.$store.state.timeRemaining) return
       this.timer = setInterval(() => {
 
-        this.$store.state.timeRemaining--
-
         if (this.$store.state.timeRemaining === 0) {
-          this.stopTimer()
-          setTimeout(() => this.next(), 500)
-        } 
+          this.next()
+        } else {
+          this.$store.state.timeRemaining--
+        }
         
         if (this.$store.state.timeRemaining <= this.$store.state.almostOutOfTime) {
           playEffect('beep')

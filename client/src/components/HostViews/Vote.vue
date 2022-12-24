@@ -149,19 +149,14 @@ export default {
       setTimeout(() => this.pollsClosed = false, 500)
       this.emitPlayerResponses()
       this.ballotsSubmitted = 0
-      this.tackOnTime()
-    },
-    tackOnTime() {
-      setTimeout(() => {
-        // adds 30 seconds to the timer if there is a tie
-        this.$store.state.timeRemaining = 30
-        this.startTimer()
-      }, 2_000)
+      this.$store.state.timeRemaining = 30
     },
     next() {
       // no candidate edge case
       if (!this.candidates.length) {
-        return this.tackOnTime()
+        return this.$router.push({
+          name: 'home'
+        })
       }
 
       // tie edge case
@@ -169,14 +164,14 @@ export default {
       if (this.candidates.length > 1) {
         if (this.candidates[0].votes === this.candidates[1].votes) {
           return this.runTiebreaker()
-        } else {
-          const roundWinner = this.candidates[0]
-          const winningResponse = this.responses.find(response => {
-            return response.player.name === roundWinner.player.name
-          })
-          this.$emit('round-winner', winningResponse)
         }
       }
+
+      const roundWinner = this.candidates[0]
+      const winningResponse = this.responses.find(response => {
+        return response.player.name === roundWinner.player.name
+      })
+      this.$emit('round-winner', winningResponse)
 
       // no edge case allows game to continue :)
       if (this.testMode) return
