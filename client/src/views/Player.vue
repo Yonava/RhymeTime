@@ -194,7 +194,7 @@ export default {
       // gives host 3 seconds to set hostPresent back to true
       setTimeout(() => {
         this.hostLeft = !this.hostPresent
-      }, 3000)
+      }, 3_000)
     }
   },
   watch: {

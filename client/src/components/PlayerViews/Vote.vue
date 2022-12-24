@@ -19,6 +19,7 @@
                   class="center"
                 >
                   <PlayerCard
+                    v-if="candidate.player.clientId !== clientId"
                     :player="candidate.player"
                     :response="candidate.response"
                   />
@@ -81,7 +82,6 @@ export default {
     this.socketInstance.on('candidate-list', (newCandidates) => {
       // remove self from candidate list
       this.candidates = newCandidates
-        // .filter(candidate => candidate.player.clientId !== this.clientId)
       this.canVote = true
     })
   },
