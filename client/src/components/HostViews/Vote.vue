@@ -92,7 +92,7 @@ export default {
     emitPlayerResponses() {
       setTimeout(() => {
         this.socketInstance.emit('candidate-list', this.responses)
-      }, 1_500)
+      }, 1_000)
     },
     countVotes(playerBallot) {
       // this function serves to recount all votes in ballotBox
@@ -116,6 +116,7 @@ export default {
         const BALLOT = this.ballotBox[playerName]
         for (let i = 0; i < BALLOT.length; i++) {
           const CAND_INX = this.candidates.findIndex(c => c.player.name === BALLOT[i])
+          console.log('candidate index:', CAND_INX)
           this.candidates[CAND_INX].votes += (BALLOT.length - 1) - i
         }
       })
@@ -155,7 +156,7 @@ export default {
         // adds 30 seconds to the timer if there is a tie
         this.$store.state.timeRemaining = 30
         this.startTimer()
-      }, 2000)
+      }, 2_000)
     },
     next() {
       // no candidate edge case

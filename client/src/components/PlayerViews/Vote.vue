@@ -81,7 +81,7 @@ export default {
     this.socketInstance.on('candidate-list', (newCandidates) => {
       // remove self from candidate list
       this.candidates = newCandidates
-        .filter(candidate => candidate.player.clientId !== this.clientId)
+        // .filter(candidate => candidate.player.clientId !== this.clientId)
       this.canVote = true
     })
   },

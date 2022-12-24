@@ -57,7 +57,7 @@
     </div>
     <!-- Game must have 3 players to start -->
     <div
-      @click.stop="playerList.length >= 3 ? next() : null"
+      @click.stop="playerList.length >= 2 ? next() : null"
       :style="`cursor: ${playerList.length >= 3 ? 'pointer' : 'not-allowed'};`"
       class="right-side-box pa-3 pl-6"
     >
