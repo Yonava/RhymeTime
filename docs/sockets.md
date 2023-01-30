@@ -1,7 +1,7 @@
 # Web Socket Documentation
 Find the code for all socket endpoints here: [server/sockets.js](https://github.com/Yonava/RhymeTime/blob/main/server/sockets.js)
 
-Our project utilizes tooling built by [Socket.io](https://socket.io/docs/v4/) for implementing sockets that integrated with http for automatic reconnection
+Our project utilizes tooling built by [Socket.io](https://socket.io/docs/v4/) for implementing sockets that integrate with http for automatic reconnection
 
 ```npm install socket.io```
 [npm](https://www.npmjs.com/package/socket.io)
