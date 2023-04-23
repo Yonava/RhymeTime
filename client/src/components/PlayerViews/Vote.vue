@@ -80,7 +80,6 @@ export default {
   },
   mounted() {
     this.socketInstance.on('candidate-list', (newCandidates) => {
-      // remove self from candidate list
       this.candidates = newCandidates
       this.canVote = true
     })
@@ -94,6 +93,7 @@ export default {
     submitBallot() {
       const BALLOT = {}
       BALLOT[this.clientName] = this.candidates.map(candidate => candidate.player.name)
+      console.log(BALLOT)
       this.socketInstance.emit('submit-ballot', BALLOT)
     },
     finalizeBallot() {

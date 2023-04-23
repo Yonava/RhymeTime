@@ -57,12 +57,12 @@
     </div>
     <!-- Game must have 3 players to start -->
     <div
-      @click.stop="playerList.length >= 3 ? next() : null"
-      :style="`cursor: ${playerList.length >= 3 ? 'pointer' : 'not-allowed'};`"
+      @click.stop="playerList.length >= minPlayers ? next() : null"
+      :style="`cursor: ${playerList.length >= minPlayers ? 'pointer' : 'not-allowed'};`"
       class="right-side-box pa-3 pl-6"
     >
       <div 
-        v-if="playerList.length >= 3"
+        v-if="playerList.length >= minPlayers"
         class="center"
         style="flex-direction: row;"
       >
@@ -80,7 +80,7 @@
         class="side-box-txt mr-1" 
         style="font-size: 20pt; opacity: 0.5"
       >
-        {{ 3 - playerList.length }} More Needed To Start
+        {{ minPlayers - playerList.length }} More Needed To Start
       </p>
     </div>
     <div class="player-card-container">
@@ -129,6 +129,11 @@ export default {
     'player-kicked',
     'toggle-pause'
   ],
+  data() {
+    return {
+      minPlayers: 3,
+    }
+  },
   methods: {
     next() {
       this.$emit('change-view', Views.tutorial)

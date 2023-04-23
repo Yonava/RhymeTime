@@ -96,7 +96,7 @@ export default {
     },
     countVotes(playerBallot) {
       // this function serves to recount all votes in ballotBox
-      // playerBallot obj format: { "nickname of sender client" : []string }
+      // playerBallot obj format: { "nickname of sender client" : string[] }
 
       // reset candidate votes for recount
       for (let i = 0; i < this.candidates.length; i++) {
@@ -115,8 +115,10 @@ export default {
         // counts up the votes on each ballot
         const BALLOT = this.ballotBox[playerName]
         for (let i = 0; i < BALLOT.length; i++) {
+          // INVESTIGATE: sometimes the candidate list is missing a player
           const CAND_INX = this.candidates.findIndex(c => c.player.name === BALLOT[i])
           console.log('candidate index:', CAND_INX)
+          if (CAND_INX === -1) continue
           this.candidates[CAND_INX].votes += (BALLOT.length - 1) - i
         }
       })

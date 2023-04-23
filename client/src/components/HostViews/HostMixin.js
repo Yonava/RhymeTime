@@ -95,7 +95,7 @@ export default {
           playEffect('beep')
         }
 
-      }, 1000)
+      }, 1_000)
       this.timerRunning = true
     },
     stopTimer() {
