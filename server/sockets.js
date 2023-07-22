@@ -13,11 +13,12 @@ const io = module.exports.io = require('socket.io')(SOCKET_SERVER, {
 })
 
 console.log('Sockets Live!')
+console.log('Socket Server: ', SOCKET_SERVER)
 
 io.on('connection', socket => {
   let roomId;
 
-  // used by all clients to connect to a room. 
+  // used by all clients to connect to a room.
   // Callback is sent to client to confirm successful connection
   socket.on('join-room', (room, callback) => {
     roomId = room
@@ -58,7 +59,7 @@ io.on('connection', socket => {
     socket.to(roomId).emit('host-present')
   })
 
-  // emitted by player when they first connect, 
+  // emitted by player when they first connect,
   // tells host to send critical game-state to sync-up player
   socket.on('get-game-state', () => {
     socket.to(roomId).emit('broadcast-game-state')
@@ -72,7 +73,7 @@ io.on('connection', socket => {
     socket.to(roomId).emit('audience-change-view', view)
   })
 
-  // emitted by host to tell players if the game is paused, 
+  // emitted by host to tell players if the game is paused,
   // and what the reason for the pause is
   socket.on('pause-state', (pauseState) => {
     socket.to(roomId).emit('pause-state', pauseState)
@@ -114,5 +115,5 @@ io.on('connection', socket => {
   socket.on('finalize-ballot', () => {
     socket.to(roomId).emit('finalize-ballot')
   })
-  
+
 })
